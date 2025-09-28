@@ -1,0 +1,72 @@
+[versions]
+agp = "8.12.0"
+android-compileSdk = "35"
+android-minSdk = "24"
+android-targetSdk = "35"
+androidx-activity = "1.10.1"
+androidx-appcompat = "1.7.1"
+androidx-constraintlayout = "2.2.1"
+androidx-core = "1.16.0"
+androidx-espresso = "3.6.1"
+androidx-lifecycle = "2.9.1"
+androidx-testExt = "1.2.1"
+composeMultiplatform = "1.8.2"
+coreSplashscreen = "1.0.1"
+junit = "4.13.2"
+kotlin = "2.2.0"
+lifecycleViewmodelKtx = "2.9.2"
+multiplatformSettings = "1.1.1"
+kotlinxSerialization = "1.7.3"
+kotlinxDatetime = "0.6.0"
+kotlinSerialization = "2.2.0"
+playServicesAds = "24.5.0"
+google-material = "1.12.0"
+ktor = "2.3.11"
+play-billing = "7.0.0"
+googleServices = "4.4.3"
+firebaseBom = "34.3.0"
+firebase-crashlytics-gradle = "3.0.1"
+firebase-crashlytics-version = "19.0.2"
+
+[libraries]
+androidx-core-splashscreen = { module = "androidx.core:core-splashscreen", version.ref = "coreSplashscreen" }
+androidx-lifecycle-viewmodel-ktx = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version.ref = "lifecycleViewmodelKtx" }
+kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
+kotlin-testJunit = { module = "org.jetbrains.kotlin:kotlin-test-junit", version.ref = "kotlin" }
+junit = { module = "junit:junit", version.ref = "junit" }
+androidx-core-ktx = { module = "androidx.core:core-ktx", version.ref = "androidx-core" }
+androidx-testExt-junit = { module = "androidx.test.ext:junit", version.ref = "androidx-testExt" }
+androidx-espresso-core = { module = "androidx.test.espresso:espresso-core", version.ref = "androidx-espresso" }
+androidx-appcompat = { module = "androidx.appcompat:appcompat", version.ref = "androidx-appcompat" }
+androidx-constraintlayout = { module = "androidx.constraintlayout:constraintlayout", version.ref = "androidx-constraintlayout" }
+androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "androidx-activity" }
+androidx-lifecycle-viewmodel = { group = "org.jetbrains.androidx.lifecycle", name = "lifecycle-viewmodel", version.ref = "androidx-lifecycle" }
+androidx-lifecycle-runtimeCompose = { group = "org.jetbrains.androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "androidx-lifecycle" }
+androidx-lifecycle-viewmodel-compose = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "androidx-lifecycle" }
+ktor-client-core = { group = "io.ktor", name = "ktor-client-core", version.ref = "ktor" }
+ktor-client-okhttp = { group = "io.ktor", name = "ktor-client-okhttp", version.ref = "ktor" }
+ktor-client-darwin = { group = "io.ktor", name = "ktor-client-darwin", version.ref = "ktor" }
+ktor-client-content-negotiation = { group = "io.ktor", name = "ktor-client-content-negotiation", version.ref = "ktor" }
+ktor-serialization-kotlinx-json = { group = "io.ktor", name = "ktor-serialization-kotlinx-json", version.ref = "ktor" }
+play-services-ads = { module = "com.google.android.gms:play-services-ads", version.ref = "playServicesAds" }
+russhwolf-multiplatformSettings-noArg = { group = "com.russhwolf", name = "multiplatform-settings-no-arg", version.ref = "multiplatformSettings" }
+kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinxSerialization" }
+kotlinx-datetime = { group = "org.jetbrains.kotlinx", name = "kotlinx-datetime", version.ref = "kotlinxDatetime" }
+compose-material3-windowsizeclass = { group = "org.jetbrains.compose.material3", name = "material3-window-size-class", version.ref = "composeMultiplatform" }
+google-android-material = { group = "com.google.android.material", name = "material", version.ref = "google-material" }
+play-review = { group = "com.google.android.play", name = "review-ktx", version = "2.0.2" }
+play-billing = { module = "com.android.billingclient:billing-ktx", version.ref = "play-billing" }
+firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.ref = "firebaseBom" }
+firebase-analytics = { group = "com.google.firebase", name = "firebase-analytics" }
+firebase-crashlytics = { group = "com.google.firebase", name = "firebase-crashlytics-ktx", version.ref = "firebase-crashlytics-version" }
+
+
+[plugins]
+androidApplication = { id = "com.android.application", version.ref = "agp" }
+androidLibrary = { id = "com.android.library", version.ref = "agp" }
+composeMultiplatform = { id = "org.jetbrains.compose", version.ref = "composeMultiplatform" }
+composeCompiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
+kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
+kotlinSerialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlinSerialization" }
+googleServices = { id = "com.google.gms.google-services", version.ref = "googleServices" }
+firebase-crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "firebase-crashlytics-gradle" }
