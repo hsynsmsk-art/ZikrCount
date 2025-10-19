@@ -1,3 +1,5 @@
+// TabletComposables.kt
+
 package com.hgtcsmsk.zikrcount.ui.screens
 
 import androidx.compose.animation.core.Animatable
@@ -23,9 +25,15 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.role
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.hgtcsmsk.zikrcount.AppViewModel
@@ -36,7 +44,6 @@ import com.hgtcsmsk.zikrcount.platform.ShowAdResult
 import com.hgtcsmsk.zikrcount.platform.SoundPlayer
 import com.hgtcsmsk.zikrcount.platform.rememberAdController
 import com.hgtcsmsk.zikrcount.ui.components.CounterDisplay
-import com.hgtcsmsk.zikrcount.ui.components.TabletActionButton
 import com.hgtcsmsk.zikrcount.ui.dialog.ConfirmationDialog
 import com.hgtcsmsk.zikrcount.ui.theme.ZikrTheme
 import com.hgtcsmsk.zikrcount.ui.utils.pressable
@@ -46,13 +53,18 @@ import kotlinx.coroutines.withTimeoutOrNull
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import zikrcount.composeapp.generated.resources.*
+import androidx.compose.ui.platform.LocalHapticFeedback
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
+import org.jetbrains.compose.resources.DrawableResource
 
 @Composable
 fun TabletCountersPageContent(
     viewModel: AppViewModel,
     soundPlayer: SoundPlayer,
-    snackBarHostState: SnackbarHostState
+    snackBarHostState: SnackbarHostState,
+    isLandscape: Boolean
 ) {
+    // ... Bu fonksiyonun içeriğinde değişiklik yok ...
     DisposableEffect(Unit) {
         onDispose {
             viewModel.resetAdFailureCount()
@@ -167,14 +179,16 @@ fun TabletCountersPageContent(
                         .align(Alignment.BottomEnd)
                         .padding(16.dp),
                 ) {
+                    val fabSize = if (isLandscape) 44.dp else 50.dp
+                    // <-- DEĞİŞİKLİK 2: Sayaç Ekleme Düğmesi Düzeltildi -->
+                    val addCounterDescription = stringResource(Res.string.counters_page_add_button)
                     Box(
                         modifier = Modifier
-                            .size(50.dp)
+                            .size(fabSize)
                             .clip(CircleShape)
                             .background(color = ZikrTheme.colors.primary)
-                            .pressable {
+                            .clickable {
                                 if (soundEnabled) soundPlayer.play("mini_click", volume = 0.6f)
-
                                 if (freeSlotsUsed < 2 || purchaseState is PurchaseState.Purchased) {
                                     showAddDialog = true
                                 } else {
@@ -184,13 +198,19 @@ fun TabletCountersPageContent(
                                         showAdDialog = true
                                     }
                                 }
+                            }
+                            // Anlamlı açıklamayı ve rolü tıklanabilir olan Box'a ekliyoruz.
+                            .semantics {
+                                contentDescription = addCounterDescription
+                                role = Role.Button
                             },
                         contentAlignment = Alignment.Center
                     ) {
                         val addButtonResource = if (isNightModeEnabled) Res.drawable.add_dark else Res.drawable.add_light
                         Image(
                             painter = painterResource(addButtonResource),
-                            contentDescription = stringResource(Res.string.counters_page_add_button),
+                            // İçerideki resmi dekoratif olarak işaretliyoruz.
+                            contentDescription = null,
                             modifier = Modifier.fillMaxSize(0.9f)
                         )
                     }
@@ -212,6 +232,7 @@ fun TabletCountersPageContent(
         }
     }
 
+    // ... Bu fonksiyonun geri kalan diyalog kısımlarında değişiklik yok ...
     if (showAddDialog) {
         CounterUpsertDialog(
             onDismiss = { showAddDialog = false },
@@ -334,8 +355,14 @@ fun TabletHomePageContent(
     soundPlayer: SoundPlayer,
     snackBarHostState: SnackbarHostState,
     rotationAngle: Float,
-    onToggle: () -> Unit
+    onToggle: () -> Unit,
+    onNavigateToTheme: () -> Unit,
+    onNavigateToSettings: () -> Unit,
+    isLandscape: Boolean,
+    isTablet: Boolean
 ) {
+    // ... Bu fonksiyonun üst kısmındaki state tanımlamaları aynı ...
+    val haptic = LocalHapticFeedback.current
     val scope = rememberCoroutineScope()
     val counters by viewModel.counters.collectAsState()
     val selectedId by viewModel.lastSelectedCounterId.collectAsState()
@@ -350,6 +377,16 @@ fun TabletHomePageContent(
     val isNightModeEnabled by viewModel.isNightModeEnabled.collectAsState()
     var showResetDialog by remember { mutableStateOf(false) }
     val resetMessage = stringResource(Res.string.snackbar_counter_reset)
+    val showUpdateBadge by viewModel.showUpdateBadge.collectAsState()
+    val buttonGlowModifier = Modifier.shadow(
+        elevation = 8.dp,
+        shape = CircleShape,
+        ambientColor = ZikrTheme.colors.primary.copy(alpha = 0.5f),
+        spotColor = ZikrTheme.colors.primary.copy(alpha = 0.5f)
+    )
+    val updateBadgeText = stringResource(Res.string.accessibility_update_available)
+
+    val isPhoneLandscape = isLandscape && !isTablet
 
     LaunchedEffect(flashEffectEvent) {
         if (flashEffectEvent != null) {
@@ -360,12 +397,9 @@ fun TabletHomePageContent(
             viewModel.onFlashAnimationConsumed()
         }
     }
-
     LaunchedEffect(turCompletedEvent) {
         if (turCompletedEvent != null) {
-            if (soundEnabled) {
-                soundPlayer.play("target", volume = 0.4f)
-            }
+            if (soundEnabled) soundPlayer.play("target", volume = 0.4f)
             scope.launch {
                 turTextScale.animateTo(1.3f, animationSpec = tween(250))
                 turTextScale.animateTo(1f, animationSpec = tween(250))
@@ -373,7 +407,6 @@ fun TabletHomePageContent(
             viewModel.onTurAnimationConsumed()
         }
     }
-
     val zikirName = when (selectedCounter?.id) {
         null -> ""
         AppViewModel.DEFAULT_COUNTER.id -> stringResource(Res.string.default_counter_name)
@@ -381,38 +414,31 @@ fun TabletHomePageContent(
         else -> selectedCounter.name
     }
 
-    // --> DEĞİŞİKLİK: Hatalı fonksiyon çağrısını düzeltiyoruz.
+    // HATA DÜZELTMESİ: Eksik metin parametresi eklendi
+    val tourCompletedText = stringResource(Res.string.accessibility_tour_completed)
+
     val performIncrementAction = { isFullScreen: Boolean ->
         scope.launch {
-            viewModel.incrementSelectedCounter(isFullScreenTap = isFullScreen)
-            if (vibrationEnabled) {
-                platformActionHandler.performCustomVibration()
-            }
-            if (soundEnabled) {
-                soundPlayer.play("audio_click", volume = 0.6f)
-            }
+            viewModel.incrementSelectedCounter(
+                isFullScreenTap = isFullScreen,
+                tourCompletedText = tourCompletedText
+            )
+            haptic.performHapticFeedback(HapticFeedbackType.LongPress)
+            if (soundEnabled) soundPlayer.play("audio_click", volume = 0.6f)
         }
     }
-
     val performDecrementAction = {
         scope.launch {
             viewModel.decrementSelectedCounter()
-            if (vibrationEnabled) {
-                platformActionHandler.performCustomVibration()
-            }
-            if (soundEnabled) {
-                soundPlayer.play("mini_click", volume = 0.6f)
-            }
+            haptic.performHapticFeedback(HapticFeedbackType.LongPress)
+            if (soundEnabled) soundPlayer.play("mini_click", volume = 0.6f)
         }
     }
-
     val fullScreenTouchModifier = if (isFullScreenTouchEnabled) {
         Modifier.pointerInput(Unit) {
             awaitPointerEventScope {
                 while (true) {
-                    awaitFirstDown(requireUnconsumed = true)
-                    performIncrementAction(true)
-                    waitForUpOrCancellation()
+                    awaitFirstDown(requireUnconsumed = true); performIncrementAction(true); waitForUpOrCancellation()
                 }
             }
         }
@@ -423,136 +449,163 @@ fun TabletHomePageContent(
             .fillMaxSize()
             .clip(RoundedCornerShape(24.dp))
             .background(Color.Black.copy(alpha = 0.4f))
-            .border(
-                width = 2.dp,
-                color = ZikrTheme.colors.primary.copy(alpha = 0.7f),
-                shape = RoundedCornerShape(24.dp)
-            )
+            .border(width = 2.dp, color = ZikrTheme.colors.primary.copy(alpha = 0.7f), shape = RoundedCornerShape(24.dp))
             .then(fullScreenTouchModifier)
     ) {
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(ZikrTheme.colors.primary.copy(alpha = flashAlpha.value))
-        )
+        Box(modifier = Modifier.fillMaxSize().background(ZikrTheme.colors.primary.copy(alpha = flashAlpha.value)))
 
         Column(
             modifier = Modifier.fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Spacer(modifier = Modifier.weight(9f))
-
-            Box(
-                modifier = Modifier.fillMaxSize().weight(70f),
-                contentAlignment = Alignment.Center
-            ) {
-                val turModifier = Modifier.graphicsLayer {
-                    scaleX = turTextScale.value
-                    scaleY = turTextScale.value
-                }
-                if (selectedCounter != null) {
-                    CounterDisplay(
-                        counter = selectedCounter,
-                        countName = zikirName,
-                        modifier = Modifier.fillMaxWidth(0.82f),
-                        screenResource = Res.drawable.screen,
-                        turModifier = turModifier
-                    )
-                }
-            }
-
-            Spacer(modifier = Modifier.fillMaxWidth().weight(7f))
-
             Row(
                 modifier = Modifier
-                    .fillMaxWidth(0.65f)
-                    .weight(9f),
+                    .fillMaxWidth()
+                    .padding(horizontal = 20.dp, vertical = 16.dp),
                 horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.Bottom
+                verticalAlignment = Alignment.CenterVertically
             ) {
-                val decreaseButtonResource = if (isNightModeEnabled) Res.drawable.small_decrease_tab_dark else Res.drawable.small_decrease_tab_light
+                val topButtonSize = if (isPhoneLandscape) 36.dp else 40.dp
                 TabletActionButton(
-                    modifier = Modifier.size(48.dp),
-                    iconResource = decreaseButtonResource, // <-- GÜNCELLENDİ
-                    contentDescription = stringResource(Res.string.content_desc_decrement_button),
-                    tintIcon = false,
-                    onClick = {
-                        performDecrementAction()
-                    }
+                    iconResource = Res.drawable.small_back_tab,
+                    contentDescription = stringResource(Res.string.content_desc_toggle_panels_button),
+                    onClick = { onToggle() },
+                    modifier = Modifier.size(topButtonSize).then(buttonGlowModifier).rotate(rotationAngle)
                 )
-
-                TabletActionButton(
-                    modifier = Modifier.size(48.dp),
-                    iconResource = Res.drawable.small_refresh_tab,
-                    contentDescription = stringResource(Res.string.content_desc_reset_button),
-                    tintIcon = false,
-                    onClick = {
-                        if (soundEnabled) {
-                            soundPlayer.play("mini_click", volume = 0.6f)
+                Row(horizontalArrangement = Arrangement.spacedBy(if(isPhoneLandscape) 8.dp else 16.dp)) {
+                    TabletActionButton(
+                        iconResource = Res.drawable.brush,
+                        contentDescription = stringResource(Res.string.content_desc_theme_button),
+                        onClick = {
+                            if (soundEnabled) {
+                                soundPlayer.play("mini_click")
+                            }
+                            onNavigateToTheme()
+                        },
+                        modifier = Modifier.size(topButtonSize).then(buttonGlowModifier)
+                    )
+                    Box(contentAlignment = Alignment.TopEnd) {
+                        // <-- DEĞİŞİKLİK 4: Ayarlar Butonu Güncelleme Anonsu -->
+                        val settingsDescription = if (showUpdateBadge) {
+                            stringResource(Res.string.content_desc_settings_button) + updateBadgeText
+                        } else {
+                            stringResource(Res.string.content_desc_settings_button)
                         }
-                        showResetDialog = true
+                        TabletActionButton(
+                            iconResource = Res.drawable.setting,
+                            contentDescription = settingsDescription,
+                            onClick = {
+                                if (soundEnabled) {
+                                    soundPlayer.play("mini_click")
+                                }
+                                onNavigateToSettings()
+                            },
+                            modifier = Modifier.size(topButtonSize).then(buttonGlowModifier)
+                        )
+                        if (showUpdateBadge) {
+                            Box(modifier = Modifier.padding(4.dp).size(if (isPhoneLandscape) 8.dp else 12.dp).background(Color.Red, CircleShape).border(1.dp, Color.White, CircleShape))
+                        }
                     }
+                }
+            }
+
+            if (!isPhoneLandscape) {
+                Spacer(modifier = Modifier.weight(1f))
+            }
+
+            val displayWidthFraction = if (isPhoneLandscape) 0.85f else 0.85f
+            if (selectedCounter != null) {
+                val screenResource = if (isLandscape) Res.drawable.screen_horizantal else Res.drawable.screen
+                CounterDisplay(
+                    counter = selectedCounter,
+                    countName = zikirName,
+                    modifier = Modifier.fillMaxWidth(displayWidthFraction),
+                    screenResource = screenResource,
+                    turModifier = Modifier.graphicsLayer { scaleX = turTextScale.value; scaleY = turTextScale.value },
+                    isLandscape = isLandscape,
+                    isTablet = isTablet
                 )
             }
 
-            val isNightModeEnabled by viewModel.isNightModeEnabled.collectAsState()
-            val scale = remember { Animatable(1.0f) }
+            Spacer(modifier = Modifier.weight(1f))
 
-            Box(
-                modifier = Modifier
-                    .weight(26f)
-                    .aspectRatio(1f)
-                    .clip(CircleShape)
-                    .background(color = ZikrTheme.colors.primary),
-                contentAlignment = Alignment.Center
+            val buttonRowModifier = if (isLandscape) {
+                Modifier
+                    .fillMaxWidth(if (isPhoneLandscape) 0.95f else 0.8f)
+                    .height(if (isPhoneLandscape) 65.dp else 85.dp)
+            } else {
+                Modifier.fillMaxWidth(0.8f)
+            }
+
+            Row(
+                modifier = buttonRowModifier,
+                horizontalArrangement = Arrangement.spacedBy(16.dp, Alignment.CenterHorizontally),
+                verticalAlignment = Alignment.CenterVertically
             ) {
-                // Gece modu durumuna göre doğru görsel kaynağını seçiyoruz
-                val buttonResource = if (isNightModeEnabled) {
-                    Res.drawable.big_button_dark
-                } else {
-                    Res.drawable.big_button_light
+                val decreaseButtonResource = if (isNightModeEnabled) Res.drawable.small_decrease_tab_dark else Res.drawable.small_decrease_tab_light
+                Box(modifier = Modifier.weight(1f), contentAlignment = Alignment.Center) {
+                    TabletActionButton(
+                        modifier = Modifier.size(if (isPhoneLandscape) 40.dp else 50.dp).then(buttonGlowModifier),
+                        iconResource = decreaseButtonResource,
+                        contentDescription = stringResource(Res.string.content_desc_decrement_button),
+                        tintIcon = false,
+                        onClick = { performDecrementAction() }
+                    )
                 }
 
-                Image(
-                    painter = painterResource(buttonResource), // <-- DÜZELTİLDİ
-                    contentDescription = stringResource(Res.string.content_desc_increment_button),
+                val incrementButtonWeight = if (isPhoneLandscape) 0.8f else if (isLandscape) 1.0f else 1.6f
+                val scale = remember { Animatable(1.0f) }
+                // <-- DEĞİŞİKLİK 1: Ana Artırma Düğmesi Düzeltildi -->
+                val incrementDescription = stringResource(Res.string.content_desc_increment_button)
+                Box(
                     modifier = Modifier
-                        .fillMaxSize(0.97f)
-                        .graphicsLayer {
-                            scaleX = scale.value
-                            scaleY = scale.value
-                        }
+                        .weight(incrementButtonWeight)
+                        .aspectRatio(1f)
+                        .clip(CircleShape)
+                        .background(color = ZikrTheme.colors.primary)
+                        // Tıklama olayını ve anlamlı açıklamayı bu Box'a taşıyoruz.
                         .pointerInput(isFullScreenTouchEnabled) {
                             if (!isFullScreenTouchEnabled) {
                                 awaitPointerEventScope {
                                     while (true) {
                                         awaitFirstDown(requireUnconsumed = false)
-                                        scope.launch {
-                                            scale.animateTo(0.93f, tween(15))
-                                            scale.animateTo(1.0f, tween(30))
-                                        }
+                                        scope.launch { scale.animateTo(0.93f, tween(15)); scale.animateTo(1.0f, tween(30)) }
                                         performIncrementAction(false)
                                         waitForUpOrCancellation()
                                     }
                                 }
                             }
                         }
-                )
+                        .semantics {
+                            contentDescription = incrementDescription
+                            role = Role.Button
+                        },
+                    contentAlignment = Alignment.Center
+                ) {
+                    val buttonResource = if (isNightModeEnabled) Res.drawable.big_button_dark else Res.drawable.big_button_light
+                    Image(
+                        painter = painterResource(buttonResource),
+                        // İçerideki resmi dekoratif olarak işaretliyoruz.
+                        contentDescription = null,
+                        modifier = Modifier
+                            .fillMaxSize(0.97f)
+                            .graphicsLayer { scaleX = scale.value; scaleY = scale.value }
+                    )
+                }
+
+                val resetButtonResource = if (isNightModeEnabled) Res.drawable.small_refresh_tab_dark else Res.drawable.small_refresh_tab_light
+                Box(modifier = Modifier.weight(1f), contentAlignment = Alignment.Center) {
+                    TabletActionButton(
+                        modifier = Modifier.size(if (isPhoneLandscape) 40.dp else 50.dp).then(buttonGlowModifier),
+                        iconResource = resetButtonResource,
+                        contentDescription = stringResource(Res.string.content_desc_reset_button),
+                        tintIcon = false,
+                        onClick = { if (soundEnabled) soundPlayer.play("mini_click", volume = 0.6f); showResetDialog = true }
+                    )
+                }
             }
-
-            Spacer(modifier = Modifier.fillMaxWidth().weight(20f))
+            Spacer(modifier = Modifier.weight(1f))
         }
-
-        TabletActionButton(
-            iconResource = Res.drawable.small_back_tab,
-            contentDescription = stringResource(Res.string.content_desc_toggle_panels_button),
-            onClick = { onToggle() },
-            modifier = Modifier
-                .align(Alignment.TopStart)
-                .padding(top = 20.dp, start = 20.dp)
-                .size(44.dp)
-                .rotate(rotationAngle)
-        )
     }
 
     if (showResetDialog) {
@@ -567,12 +620,46 @@ fun TabletHomePageContent(
             confirmButtonText = stringResource(Res.string.action_reset),
             onDismiss = { showResetDialog = false },
             onConfirm = {
-                viewModel.resetSelectedCounter()
-                showResetDialog = false
-                scope.launch {
-                    snackBarHostState.showSnackbar(resetMessage)
+                if (soundEnabled) {
+                    soundPlayer.play("mini_click")
                 }
+                viewModel.resetSelectedCounter(resetMessage)
+                showResetDialog = false
             }
+        )
+    }
+}
+
+
+// <-- DEĞİŞİKLİK 3: TabletActionButton Bileşeni İyileştirildi -->
+@Composable
+private fun TabletActionButton(
+    iconResource: DrawableResource,
+    contentDescription: String,
+    modifier: Modifier = Modifier,
+    tintIcon: Boolean = true,
+    onClick: () -> Unit = {}
+) {
+    Box(
+        modifier = modifier
+            .clip(CircleShape)
+            .background(color = Color.White.copy(alpha = 0.2f))
+            .border(1.dp, Color.White.copy(alpha = 0.3f), CircleShape)
+            .clickable { onClick() }
+            // Tıklanabilir olan Box'a anlamlı açıklamayı ve rolü ekliyoruz.
+            .semantics {
+                this.contentDescription = contentDescription
+                this.role = Role.Button
+            },
+        contentAlignment = Alignment.Center
+    ) {
+        val colorFilter = if (tintIcon) ColorFilter.tint(Color.White) else null
+        Image(
+            painter = painterResource(iconResource),
+            // İçerideki resmi dekoratif olarak işaretliyoruz.
+            contentDescription = null,
+            colorFilter = colorFilter,
+            modifier = Modifier.fillMaxSize(0.7f)
         )
     }
 }

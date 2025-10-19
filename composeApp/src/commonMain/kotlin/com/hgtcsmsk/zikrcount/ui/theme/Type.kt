@@ -55,3 +55,17 @@ val DefaultTypography = Typography(
         fontSize = 14.sp,
     )
 )
+
+fun Typography.withAdjustedFontSizes(amount: Int): Typography {
+    return this.copy(
+        bodyLarge = this.bodyLarge.copy(fontSize = (this.bodyLarge.fontSize.value + amount).sp),
+        bodyMedium = this.bodyMedium.copy(fontSize = (this.bodyMedium.fontSize.value + amount).sp),
+        bodySmall = this.bodySmall.copy(fontSize = (this.bodySmall.fontSize.value + amount).sp),
+        titleLarge = this.titleLarge.copy(fontSize = (this.titleLarge.fontSize.value + amount).sp),
+        titleMedium = this.titleMedium.copy(fontSize = (this.titleMedium.fontSize.value + amount).sp),
+        titleSmall = this.titleSmall.copy(fontSize = (this.titleSmall.fontSize.value + amount).sp),
+        labelLarge = this.labelLarge.copy(fontSize = (this.labelLarge.fontSize.value + amount).sp),
+        labelMedium = this.labelMedium.copy(fontSize = (this.labelMedium.fontSize.value + amount).sp),
+        labelSmall = this.labelSmall.copy(fontSize = (this.labelSmall.fontSize.value + amount).sp)
+    )
+}

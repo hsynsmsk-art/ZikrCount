@@ -1,10 +1,8 @@
+// DialogButtons.kt (EKRAN BOYUTUNA DUYARLI SON HALİ)
+
 package com.hgtcsmsk.zikrcount.ui.dialog
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.widthIn
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
@@ -12,53 +10,93 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.unit.dp
 import com.hgtcsmsk.zikrcount.ui.components.ResponsiveText
 import com.hgtcsmsk.zikrcount.ui.theme.ZikrTheme
 import org.jetbrains.compose.resources.stringResource
-import zikrcount.composeapp.generated.resources.Res
 import zikrcount.composeapp.generated.resources.*
+import kotlin.math.max
 
 @Composable
 fun DialogButtons(
     onConfirm: () -> Unit,
     onDismiss: () -> Unit,
     confirmButtonText: String,
-    isConfirmEnabled: Boolean = true
+    isConfirmEnabled: Boolean = true,
+    showDismissButton: Boolean = true
 ) {
-    Row(
-        modifier = Modifier
-            .widthIn(max = 600.dp)
-            .fillMaxWidth()
-            .padding(horizontal = 16.dp, vertical = 8.dp),
-        horizontalArrangement = Arrangement.spacedBy(8.dp)
-    ) {
-        OutlinedButton(
-            onClick = onDismiss,
-            modifier = Modifier.weight(1f)
-        ) {
-            ResponsiveText(
-                text = stringResource(Res.string.action_cancel),
-                color = Color.Gray,
-                style = MaterialTheme.typography.bodyMedium
-            )
+    Layout(
+        modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
+        content = {
+            if (showDismissButton) {
+                OutlinedButton(onClick = onDismiss) {
+                    ResponsiveText(
+                        text = stringResource(Res.string.action_cancel),
+                        color = Color.Gray,
+                        style = MaterialTheme.typography.bodyMedium
+                    )
+                }
+            }
+            TextButton(
+                onClick = onConfirm,
+                enabled = isConfirmEnabled,
+                colors = ButtonDefaults.textButtonColors(
+                    containerColor = ZikrTheme.colors.primary,
+                    contentColor = Color.Black,
+                    disabledContainerColor = Color.Gray,
+                    disabledContentColor = Color.DarkGray
+                )
+            ) {
+                ResponsiveText(
+                    text = confirmButtonText,
+                    color = if (isConfirmEnabled) Color.Black else Color.DarkGray,
+                    style = MaterialTheme.typography.bodyMedium
+                )
+            }
         }
-        TextButton(
-            onClick = onConfirm,
-            enabled = isConfirmEnabled,
-            modifier = Modifier.weight(1f),
-            colors = ButtonDefaults.textButtonColors(
-                containerColor = ZikrTheme.colors.primary,
-                contentColor = Color.Black,
-                disabledContainerColor = Color.Gray,
-                disabledContentColor = Color.DarkGray
-            )
-        ) {
-            ResponsiveText(
-                text = confirmButtonText,
-                color = if (isConfirmEnabled) Color.Black else Color.DarkGray,
-                style = MaterialTheme.typography.bodyMedium
-            )
+    ) { measurables, constraints ->
+
+        // --- ADAPTİF MANTIK ---
+
+        // 1. ADIM: Mevcut ekranın genişliğini al.
+        val screenWidthDp = constraints.maxWidth / density
+
+        // 2. ADIM: Ekran genişliğine göre bir minimum buton genişliği belirle.
+        // Genişlik 500dp'den büyükse (tablet/yatay), daha geniş bir min. boyut kullan.
+        val minButtonWidth = if (screenWidthDp > 500) 160.dp else 110.dp
+        val minButtonWidthPx = minButtonWidth.roundToPx()
+
+        // 3. ADIM: Butonların ihtiyaç duyduğu en geniş "doğal" genişliği sorgula.
+        val maxIntrinsicWidth = if (measurables.isNotEmpty()) {
+            measurables.maxOf { it.maxIntrinsicWidth(constraints.maxHeight) }
+        } else {
+            0
+        }
+
+        // 4. ADIM: Nihai buton genişliğini hesapla:
+        // Doğal genişlik ve o anki ekran için belirlenen minimum genişlikten BÜYÜK olanı seç.
+        val finalButtonWidth = max(maxIntrinsicWidth, minButtonWidthPx)
+
+        // 5. ADIM: Tüm butonları, bu nihai genişlikte TEK SEFERDE ölç.
+        val placeables = measurables.map {
+            it.measure(constraints.copy(minWidth = finalButtonWidth))
+        }
+
+        // 6. ADIM: Butonları ve boşlukları ekrana yerleştir.
+        val buttonCount = placeables.size
+        // Toplam buton genişliği, mevcut alandan büyükse taşmayı önle
+        val totalWidthOfButtons = (finalButtonWidth * buttonCount).coerceAtMost(constraints.maxWidth)
+        val totalSpacing = (constraints.maxWidth - totalWidthOfButtons)
+        val gapCount = buttonCount + 1
+        val gapSize = if (gapCount > 0) totalSpacing / gapCount else 0
+
+        layout(constraints.maxWidth, placeables.maxOfOrNull { it.height } ?: 0) {
+            var xPosition = gapSize
+            placeables.forEach { placeable ->
+                placeable.placeRelative(x = xPosition, y = 0)
+                xPosition += finalButtonWidth + gapSize
+            }
         }
     }
 }

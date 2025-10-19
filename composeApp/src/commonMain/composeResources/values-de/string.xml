@@ -1,3 +1,172 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <resources>
+
+    <string name="action_save">Speichern</string>
+    <string name="action_delete">Löschen</string>
+    <string name="action_cancel">Abbrechen</string>
+    <string name="action_back">Zurück</string>
+    <string name="action_close">Schließen</string>
+    <string name="action_edit">Bearbeiten</string>
+    <string name="action_reset">Zurücksetzen</string>
+    <string name="action_confirm">Erlauben</string>
+    <string name="action_watch_ad">Werbung ansehen</string>
+    <string name="action_get_reward">Belohnung erhalten</string>
+    <string name="action_rate_app">App bewerten</string>
+    <string name="action_no_thanks">Nein, danke</string>
+    <string name="action_yes_enable">Ja, aktivieren</string>
+    <string name="action_update">Aktualisieren</string>
+    <string name="action_later">Später</string>
+
+    <string name="common_success">Erfolgreich</string>
+    <string name="common_ok">OK</string>
+    <string name="common_preview">Vorschau</string>
+    <string name="common_google">Google</string>
+    <string name="common_unknown_date">Unbekanntes Datum</string>
+    <string name="common_loading">Wird geladen...</string>
+
+    <string name="home_display_round">Runde: %1$d</string>
+    <string name="home_display_target">Ziel: %1$d</string>
+    <string name="default_counter_name">Unendlicher Zähler</string>
+    <string name="prayer_tasbih_counter_name">Gebets-Tasbih</string>
+    <string name="prayer_tasbih_part1">Subhanallah</string>
+    <string name="prayer_tasbih_part2">Alhamdulillah</string>
+    <string name="prayer_tasbih_part3">Allahu Akbar</string>
+    <string name="home_update_available">Update verfügbar</string>
+
+    <string name="counters_page_title">Meine Zähler</string>
+    <string name="counters_page_add_button">Zähler hinzufügen</string>
+    <string name="counter_card_count">Stand: %1$d</string>
+    <string name="counter_card_creation_date">Erstellt: %1$s</string>
+    <string name="counter_card_pin">Oben anheften</string>
+    <string name="counter_card_unpin">Anheftung entfernen</string>
+    <string name="counter_card_add_count">Zahl hinzufügen</string>
+    <string name="counter_card_options">Zähleroptionen</string>
+    <string name="dialog_add_counter_title">Zähler hinzufügen</string>
+    <string name="dialog_edit_counter_title">Zähler bearbeiten</string>
+    <string name="dialog_counter_name_label">Zählername</string>
+    <string name="dialog_counter_target_label">Ziel</string>
+    <string name="dialog_counter_add_count_label">Hinzuzufügende Zahl</string>
+    <string name="dialog_counter_decrease_count">Abzuziehende Zahl</string>
+    <string name="dialog_delete_counter_title">Zähler löschen</string>
+    <string name="dialog_delete_counter_message">Sind Sie sicher, dass Sie den Zähler "%1$s" löschen möchten?</string>
+    <string name="dialog_reset_counter_title">Zähler zurücksetzen</string>
+    <string name="dialog_reset_counter_message">Sind Sie sicher, dass Sie den Zähler "%1$s" zurücksetzen möchten?</string>
+
+    <string name="theme_page_title">Designs</string>
+    <string name="theme_page_tab_background">Hintergrund</string>
+    <string name="theme_page_tab_display">Design</string>
+    <string name="theme_page_default_theme_name">Standard</string>
+    <string name="theme_page_unlock_success">Erfolgreich freigeschaltet und ausgewählt!</string>
+    <string name="theme_page_loading_ad">Werbung wird geladen, bitte warten</string>
+    <string name="theme_preview_background_desc">Hintergrund %1$d%2$s</string>
+    <string name="theme_preview_theme_desc">Farbdesign %1$d%2$s</string>
+    <string name="theme_preview_state_selected">, Ausgewählt</string>
+    <string name="theme_preview_state_locked">, Gesperrt</string>
+
+    <string name="settings_title">Einstellungen</string>
+    <string name="settings_category_ads">Werbung</string>
+    <string name="settings_ads_removed_title">Werbung entfernt</string>
+    <string name="settings_ads_removed_subtitle">Sie nutzen die werbefreie Version.</string>
+    <string name="settings_remove_ads_title">Werbung entfernen</string>
+    <string name="settings_category_general">Allgemeine Einstellungen</string>
+    <string name="settings_sound">Ton</string>
+    <string name="settings_vibration">Vibration</string>
+    <string name="settings_night_mode">Nachtmodus</string>
+    <string name="settings_fullscreen_touch">Vollbild-Berührung</string>
+    <string name="settings_category_accessibility">Bedienungshilfen</string>
+    <string name="settings_counter_reading_title">Zähler vorlesen</string>
+    <string name="settings_counter_reading_subtitle">Wenn aktiviert, wird der Zählerstand laut vorgelesen.</string>
+    <string name="settings_tts_engine_title">Bevorzugte Engine</string>
+    <string name="settings_tts_language_title">Bevorzugte Sprache</string>
+    <string name="settings_tts_language_loading">Wird geladen...</string>
+    <string name="settings_tts_language_select">Sprache wählen</string>
+    <string name="settings_tts_speech_rate_title">Sprechgeschwindigkeit</string>
+    <string name="settings_tts_speech_rate_slow">Langsam</string>
+    <string name="settings_tts_speech_rate_fast">Schnell</string>
+    <string name="settings_tts_huawei_warning">Diese TTS-Engine unterstützt keine Anpassung der Sprechgeschwindigkeit.</string>
+    <string name="settings_category_app">Anwendung</string>
+    <string name="settings_backup">Automatische Sicherung</string>
+    <string name="settings_share">Teilen</string>
+    <string name="settings_rate">Bewerten Sie uns</string>
+    <string name="settings_privacy_policy">Datenschutzrichtlinie</string>
+    <string name="settings_contact_us">Kontakt</string>
+    <string name="settings_update_banner">Neue Version verfügbar</string>
+
+    <string name="tts_test_sound">33</string>
+
+    <string name="premium_page_title">Werbung entfernen</string>
+    <string name="premium_title">Werbefrei nutzen</string>
+    <string name="premium_description">Mit einer einmaligen Zahlung entfernen Sie alle Werbeanzeigen und schalten alle Funktionen frei.</string>
+    <string name="premium_purchase_button_loading">Wird geladen...</string>
+    <string name="premium_purchase_button_price">Upgrade für %1$s</string>
+    <string name="premium_purchase_button_default">Kaufen</string>
+    <string name="premium_purchase_pending">Ihre Zahlung wartet auf Bestätigung...</string>
+    <string name="premium_restore_button">Käufe wiederherstellen</string>
+    <string name="premium_restore_loading">Wird wiederhergestellt...</string>
+    <string name="premium_already_purchased_title">Werbung entfernt</string>
+    <string name="premium_already_purchased_description">Sie genießen die werbefreie Version und alle Funktionen. Vielen Dank für Ihre Unterstützung!</string>
+
+    <string name="dialog_ad_unlock_item_message">Um diesen Inhalt freizuschalten, müssen Sie zuerst eine kurze Werbung ansehen.</string>
+    <string name="dialog_ad_add_counter_message">Um einen neuen Zähler hinzuzufügen, müssen Sie zuerst eine kurze Werbung ansehen.</string>
+    <string name="dialog_ad_loading_video">Videowerbung wird geladen, bitte warten</string>
+    <string name="dialog_gift_title">Ein Geschenk</string>
+    <string name="dialog_gift_message">Werbung ist vorübergehend nicht verfügbar. Wir haben Ihre Belohnung für Sie aktiviert.</string>
+    <string name="dialog_backup_title">Automatische Sicherung</string>
+    <string name="dialog_backup_message">Wenn Sie es erlauben, werden Ihre Zähler und Einstellungen automatisch in Ihrem %1$s-Hauptkonto gesichert. So können Sie Ihre Daten bei einem Handywechsel einfach wiederherstellen.</string>
+    <string name="dialog_rate_title">Unterstützen Sie uns</string>
+    <string name="dialog_rate_message">Ihr Feedback ist uns sehr wichtig. Würden Sie sich ein paar Sekunden Zeit nehmen, um unsere App zu bewerten und uns zu unterstützen?</string>
+    <string name="dialog_error_connection_title">Verbindungsfehler</string>
+    <string name="dialog_error_connection_message">Werbung konnte nicht geladen werden. Bitte überprüfen Sie Ihre Internetverbindung und versuchen Sie es erneut.</string>
+    <string name="dialog_error_ad_load_title">Werbung konnte nicht geladen werden</string>
+    <string name="dialog_error_ad_load_message">Derzeit ist keine Werbung zum Anzeigen verfügbar. Bitte versuchen Sie es später erneut.</string>
+    <string name="dialog_talkback_title">Hilfe zur Barrierefreiheit</string>
+    <string name="dialog_talkback_message">Es scheint, als ob Sie TalkBack verwenden. Möchten Sie, dass der Zählerstand bei jedem Zählen laut vorgelesen wird?</string>
+    <string name="dialog_error_tts_title">Nicht verfügbar</string>
+    <string name="dialog_error_tts_message">Die Funktion "Zähler vorlesen" ist nicht verfügbar, da auf Ihrem Telefon keine TTS (Text-to-Speech) Engine gefunden wurde.</string>
+
+    <string name="dialog_update_mandatory_title">Update erforderlich</string>
+    <string name="dialog_update_optional_title">Neue Version verfügbar</string>
+    <string name="dialog_update_mandatory_message">Um die App weiterhin nutzen zu können, aktualisieren Sie bitte auf die neueste Version.</string>
+    <string name="dialog_update_optional_message">Eine neue Version der App bietet ein besseres Erlebnis. Möchten Sie aktualisieren?</string>
+    <string name="dialog_update_whats_new">Was ist neu:</string>
+
+    <string name="snackbar_counter_reset">Zähler erfolgreich zurückgesetzt!</string>
+    <string name="snackbar_counter_deleted">Zähler erfolgreich gelöscht!</string>
+    <string name="snackbar_counter_saved">Zähler erfolgreich gespeichert!</string>
+    <string name="snackbar_item_unlocked">Erfolgreich freigeschaltet!</string>
+    <string name="snackbar_restore_no_purchase">Kein aktiver Kauf zur Wiederherstellung gefunden.</string>
+    <string name="snackbar_restore_error">Ein Fehler ist aufgetreten. Bitte überprüfen Sie Ihre Internetverbindung und versuchen Sie es erneut.</string>
+
+    <string name="content_desc_main_display">Zähleranzeige</string>
+    <string name="content_desc_app_background">App-Hintergrund</string>
+    <string name="content_desc_increment_button">Zähler erhöhen</string>
+    <string name="content_desc_decrement_button">Verringern</string>
+    <string name="content_desc_reset_button">Zähler zurücksetzen</string>
+    <string name="content_desc_settings_button">Einstellungen</string>
+    <string name="content_desc_counters_list_button">Zählerliste</string>
+    <string name="content_desc_theme_button">Design ändern</string>
+    <string name="content_desc_settings_menu_button">Einstellungsmenü öffnen</string>
+    <string name="content_desc_toggle_panels_button">Paneele anzeigen/ausblenden</string>
+    <string name="content_desc_locked_item">Gesperrt</string>
+    <string name="content_desc_theme_page_background">Seitenhintergrund</string>
+    <string name="content_desc_theme_preview_background">Design-Hintergrundfarbe</string>
+    <string name="content_desc_theme_preview_overlay">Design-Benutzeroberfläche</string>
+    <string name="content_desc_counter_actions">Zähleraktionen</string>
+    <string name="content_desc_counter_actions_expanded">Erweitert</string>
+    <string name="content_desc_counter_actions_collapsed">Eingeklappt</string>
+
+    <string name="accessibility_value">Wert </string>
+    <string name="accessibility_target">Ziel </string>
+    <string name="accessibility_divider"> von </string>
+    <string name="accessibility_round">Runde </string>
+    <string name="accessibility_tour_completed">%1$s, Runde %2$s abgeschlossen</string>
+    <string name="accessibility_update_available">, Update verfügbar</string>
+
+    <string name="contact_email_subject">Dhikr Zähler Feedback</string>
+    <string name="contact_email_address" translatable="false">appfabrictr@gmail.com</string>
+    <string name="privacy_policy_url" translatable="false">https://zikirmatik-sayac-ec148.web.app/privacy.html</string>
+
+    <string name="share_title">App teilen</string>
+    <string name="share_text">Du solltest diese großartige Dhikr-Zähler-App ausprobieren! https://play.google.com/store/apps/details?id=%1$s</string>
+
 </resources>

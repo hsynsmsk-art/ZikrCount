@@ -1,3 +1,172 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <resources>
+
+    <string name="action_save">Сохранить</string>
+    <string name="action_delete">Удалить</string>
+    <string name="action_cancel">Отмена</string>
+    <string name="action_back">Назад</string>
+    <string name="action_close">Закрыть</string>
+    <string name="action_edit">Изменить</string>
+    <string name="action_reset">Сбросить</string>
+    <string name="action_confirm">Разрешить</string>
+    <string name="action_watch_ad">Смотреть рекламу</string>
+    <string name="action_get_reward">Получить награду</string>
+    <string name="action_rate_app">Оценить приложение</string>
+    <string name="action_no_thanks">Нет, спасибо</string>
+    <string name="action_yes_enable">Да, включить</string>
+    <string name="action_update">Обновить</string>
+    <string name="action_later">Позже</string>
+
+    <string name="common_success">Успешно</string>
+    <string name="common_ok">ОК</string>
+    <string name="common_preview">Предпросмотр</string>
+    <string name="common_google">Google</string>
+    <string name="common_unknown_date">Неизвестная дата</string>
+    <string name="common_loading">Загрузка...</string>
+
+    <string name="home_display_round">Круг: %1$d</string>
+    <string name="home_display_target">Цель: %1$d</string>
+    <string name="default_counter_name">Бесконечный счетчик</string>
+    <string name="prayer_tasbih_counter_name">Молитвенный Тасбих</string>
+    <string name="prayer_tasbih_part1">Субханаллах</string>
+    <string name="prayer_tasbih_part2">Альхамдулиллях</string>
+    <string name="prayer_tasbih_part3">Аллаху Акбар</string>
+    <string name="home_update_available">доступно обновление</string>
+
+    <string name="counters_page_title">Мои счетчики</string>
+    <string name="counters_page_add_button">Добавить счетчик</string>
+    <string name="counter_card_count">Счет: %1$d</string>
+    <string name="counter_card_creation_date">Создано: %1$s</string>
+    <string name="counter_card_pin">Закрепить наверху</string>
+    <string name="counter_card_unpin">Открепить</string>
+    <string name="counter_card_add_count">Добавить число</string>
+    <string name="counter_card_options">Опции счетчика</string>
+    <string name="dialog_add_counter_title">Добавить счетчик</string>
+    <string name="dialog_edit_counter_title">Изменить счетчик</string>
+    <string name="dialog_counter_name_label">Имя счетчика</string>
+    <string name="dialog_counter_target_label">Цель</string>
+    <string name="dialog_counter_add_count_label">Число для добавления</string>
+    <string name="dialog_counter_decrease_count">Число для вычитания</string>
+    <string name="dialog_delete_counter_title">Удалить счетчик</string>
+    <string name="dialog_delete_counter_message">Вы уверены, что хотите удалить счетчик "%1$s"?</string>
+    <string name="dialog_reset_counter_title">Сбросить счетчик</string>
+    <string name="dialog_reset_counter_message">Вы уверены, что хотите сбросить счетчик "%1$s"?</string>
+
+    <string name="theme_page_title">Темы</string>
+    <string name="theme_page_tab_background">Фон</string>
+    <string name="theme_page_tab_display">Тема</string>
+    <string name="theme_page_default_theme_name">По умолчанию</string>
+    <string name="theme_page_unlock_success">Успешно разблокировано и выбрано!</string>
+    <string name="theme_page_loading_ad">Загрузка рекламы, пожалуйста, подождите</string>
+    <string name="theme_preview_background_desc">Фон %1$d%2$s</string>
+    <string name="theme_preview_theme_desc">Цветовая тема %1$d%2$s</string>
+    <string name="theme_preview_state_selected">, Выбрано</string>
+    <string name="theme_preview_state_locked">, Заблокировано</string>
+
+    <string name="settings_title">Настройки</string>
+    <string name="settings_category_ads">Реклама</string>
+    <string name="settings_ads_removed_title">Реклама удалена</string>
+    <string name="settings_ads_removed_subtitle">Вы используете версию без рекламы.</string>
+    <string name="settings_remove_ads_title">Убрать рекламу</string>
+    <string name="settings_category_general">Общие настройки</string>
+    <string name="settings_sound">Звук</string>
+    <string name="settings_vibration">Вибрация</string>
+    <string name="settings_night_mode">Ночной режим</string>
+    <string name="settings_fullscreen_touch">Касание по всему экрану</string>
+    <string name="settings_category_accessibility">Специальные возможности</string>
+    <string name="settings_counter_reading_title">Чтение счетчика</string>
+    <string name="settings_counter_reading_subtitle">Если включено, значение счетчика читается вслух.</string>
+    <string name="settings_tts_engine_title">Предпочтительный движок</string>
+    <string name="settings_tts_language_title">Предпочтительный язык</string>
+    <string name="settings_tts_language_loading">Загрузка...</string>
+    <string name="settings_tts_language_select">Выбрать язык</string>
+    <string name="settings_tts_speech_rate_title">Скорость речи</string>
+    <string name="settings_tts_speech_rate_slow">Медленно</string>
+    <string name="settings_tts_speech_rate_fast">Быстро</string>
+    <string name="settings_tts_huawei_warning">Этот движок TTS не поддерживает настройку скорости речи.</string>
+    <string name="settings_category_app">Приложение</string>
+    <string name="settings_backup">Автоматическое резервное копирование</string>
+    <string name="settings_share">Поделиться</string>
+    <string name="settings_rate">Оценить нас</string>
+    <string name="settings_privacy_policy">Политика конфиденциальности</string>
+    <string name="settings_contact_us">Связаться с нами</string>
+    <string name="settings_update_banner">Доступна новая версия</string>
+
+    <string name="tts_test_sound">33</string>
+
+    <string name="premium_page_title">Убрать рекламу</string>
+    <string name="premium_title">Перейти на версию без рекламы</string>
+    <string name="premium_description">С помощью разового платежа удалите всю рекламу и разблокируйте все функции.</string>
+    <string name="premium_purchase_button_loading">Загрузка...</string>
+    <string name="premium_purchase_button_price">Обновить за %1$s</string>
+    <string name="premium_purchase_button_default">Купить</string>
+    <string name="premium_purchase_pending">Ваш платеж ожидает подтверждения...</string>
+    <string name="premium_restore_button">Восстановить покупки</string>
+    <string name="premium_restore_loading">Восстановление...</string>
+    <string name="premium_already_purchased_title">Реклама удалена</string>
+    <string name="premium_already_purchased_description">Вы используете версию без рекламы и все функции. Спасибо за вашу поддержку!</string>
+
+    <string name="dialog_ad_unlock_item_message">Чтобы разблокировать этот контент, вы должны сначала посмотреть короткую рекламу.</string>
+    <string name="dialog_ad_add_counter_message">Чтобы добавить новый счетчик, вы должны сначала посмотреть короткую рекламу.</string>
+    <string name="dialog_ad_loading_video">Загрузка видеорекламы, пожалуйста, подождите</string>
+    <string name="dialog_gift_title">Подарок</string>
+    <string name="dialog_gift_message">Реклама временно недоступна. Мы активировали вашу награду для вас.</string>
+    <string name="dialog_backup_title">Автоматическое резервное копирование</string>
+    <string name="dialog_backup_message">Когда вы разрешите, ваши счетчики и настройки будут автоматически скопированы в вашу основную учетную запись %1$s. Это позволит вам легко восстановить данные при смене телефона.</string>
+    <string name="dialog_rate_title">Поддержите нас</string>
+    <string name="dialog_rate_message">Ваш отзыв очень важен для нас. Не могли бы вы уделить несколько секунд, чтобы оценить наше приложение и поддержать нас?</string>
+    <string name="dialog_error_connection_title">Ошибка соединения</string>
+    <string name="dialog_error_connection_message">Не удалось загрузить рекламу. Пожалуйста, проверьте ваше интернет-соединение и попробуйте снова.</string>
+    <string name="dialog_error_ad_load_title">Не удалось загрузить рекламу</string>
+    <string name="dialog_error_ad_load_message">В данный момент нет доступной рекламы для показа. Пожалуйста, попробуйте позже.</string>
+    <string name="dialog_talkback_title">Справка по доступности</string>
+    <string name="dialog_talkback_message">Похоже, вы используете TalkBack. Хотите, чтобы счетчик читался вслух при каждом счете?</string>
+    <string name="dialog_error_tts_title">Недоступно</string>
+    <string name="dialog_error_tts_message">Функция "Чтение счетчика" недоступна, так как на вашем телефоне не найден движок TTS (Text-to-Speech).</string>
+
+    <string name="dialog_update_mandatory_title">Требуется обновление</string>
+    <string name="dialog_update_optional_title">Доступна новая версия</string>
+    <string name="dialog_update_mandatory_message">Чтобы продолжить использование приложения, обновите его до последней версии.</string>
+    <string name="dialog_update_optional_message">Новая версия приложения предлагает лучший опыт. Хотите обновиться?</string>
+    <string name="dialog_update_whats_new">Что нового:</string>
+
+    <string name="snackbar_counter_reset">Счетчик успешно сброшен!</string>
+    <string name="snackbar_counter_deleted">Счетчик успешно удален!</string>
+    <string name="snackbar_counter_saved">Счетчик успешно сохранен!</string>
+    <string name="snackbar_item_unlocked">Успешно разблокировано!</string>
+    <string name="snackbar_restore_no_purchase">Активная покупка для восстановления не найдена.</string>
+    <string name="snackbar_restore_error">Произошла ошибка. Пожалуйста, проверьте ваше интернет-соединение и попробуйте снова.</string>
+
+    <string name="content_desc_main_display">Экран счетчика</string>
+    <string name="content_desc_app_background">Фон приложения</string>
+    <string name="content_desc_increment_button">Увеличить счетчик</string>
+    <string name="content_desc_decrement_button">Уменьшить</string>
+    <string name="content_desc_reset_button">Сбросить счетчик</string>
+    <string name="content_desc_settings_button">Настройки</string>
+    <string name="content_desc_counters_list_button">Список счетчиков</string>
+    <string name="content_desc_theme_button">Сменить тему</string>
+    <string name="content_desc_settings_menu_button">Открыть меню настроек</string>
+    <string name="content_desc_toggle_panels_button">Показать/скрыть панели</string>
+    <string name="content_desc_locked_item">Заблокировано</string>
+    <string name="content_desc_theme_page_background">Фон страницы</string>
+    <string name="content_desc_theme_preview_background">Цвет фона темы</string>
+    <string name="content_desc_theme_preview_overlay">Слой пользовательского интерфейса темы</string>
+    <string name="content_desc_counter_actions">Действия счетчика</string>
+    <string name="content_desc_counter_actions_expanded">Развернуто</string>
+    <string name="content_desc_counter_actions_collapsed">Свернуто</string>
+
+    <string name="accessibility_value">Значение </string>
+    <string name="accessibility_target">Цель </string>
+    <string name="accessibility_divider"> из </string>
+    <string name="accessibility_round">Круг </string>
+    <string name="accessibility_tour_completed">%1$s, круг %2$s завершен</string>
+    <string name="accessibility_update_available">, доступно обновление</string>
+
+    <string name="contact_email_subject">Отзыв о счетчике Зикр</string>
+    <string name="contact_email_address" translatable="false">appfabrictr@gmail.com</string>
+    <string name="privacy_policy_url" translatable="false">https://zikirmatik-sayac-ec148.web.app/privacy.html</string>
+
+    <string name="share_title">Поделиться приложением</string>
+    <string name="share_text">Вы должны попробовать это замечательное приложение счетчика зикр! https://play.google.com/store/apps/details?id=%1$s</string>
+
 </resources>

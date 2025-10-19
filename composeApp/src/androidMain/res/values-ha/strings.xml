@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="app_name">Mai ƙirgawa Zikiri</string> <string name="error_no_share_app">Ba a sami manhajar da za ta yi rabawa ba.</string>
+  <string name="error_no_store_or_browser">Ba a sami Google Play Store ko burauzar yanar gizo ba.</string>
+  <string name="error_cannot_open_settings">Ba a iya buɗe saituna ba.</string>
+  <string name="error_cannot_open_link_app">Ba a sami manhajar da za ta buɗe wannan mahadar ba.</string>
+  <string name="error_cannot_open_link">Ba a iya buɗe mahada ba.</string>
+  <string name="error_no_email_app">Ba a sami manhajar da za ta aika imel ba.</string>
+  <string name="error_cannot_send_email">Ba a iya aika imel ba.</string>
+
+</resources>

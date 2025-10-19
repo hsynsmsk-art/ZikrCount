@@ -1,3 +1,171 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <resources>
+
+    <string name="action_save">保存</string>
+    <string name="action_delete">删除</string>
+    <string name="action_cancel">取消</string>
+    <string name="action_back">返回</string>
+    <string name="action_close">关闭</string>
+    <string name="action_edit">编辑</string>
+    <string name="action_reset">重置</string>
+    <string name="action_confirm">允许</string>
+    <string name="action_watch_ad">观看广告</string>
+    <string name="action_get_reward">获取奖励</string>
+    <string name="action_rate_app">评价应用</string>
+    <string name="action_no_thanks">不用了，谢谢</string>
+    <string name="action_yes_enable">是，启用</string>
+    <string name="action_update">更新</string>
+    <string name="action_later">稍后</string>
+
+    <string name="common_success">成功</string>
+    <string name="common_ok">确定</string>
+    <string name="common_preview">预览</string>
+    <string name="common_google">Google</string>
+    <string name="common_unknown_date">未知日期</string>
+    <string name="common_loading">加载中...</string>
+
+    <string name="home_display_round">轮次: %1$d</string>
+    <string name="home_display_target">目标: %1$d</string>
+    <string name="default_counter_name">无限计数器</string>
+    <string name="prayer_tasbih_counter_name">礼拜泰斯比哈</string>
+    <string name="prayer_tasbih_part1">苏布哈南拉</string>
+    <string name="prayer_tasbih_part2">艾勒哈姆杜利拉</string>
+    <string name="prayer_tasbih_part3">安拉胡阿克巴</string>
+    <string name="home_update_available">有可用更新</string>
+
+    <string name="counters_page_title">我的计数器</string>
+    <string name="counters_page_add_button">添加计数器</string>
+    <string name="counter_card_count">计数: %1$d</string>
+    <string name="counter_card_creation_date">创建于: %1$s</string>
+    <string name="counter_card_pin">置顶</string>
+    <string name="counter_card_unpin">取消置顶</string>
+    <string name="counter_card_add_count">添加计数</string>
+    <string name="counter_card_options">计数器选项</string>
+    <string name="dialog_add_counter_title">添加计数器</string>
+    <string name="dialog_edit_counter_title">编辑计数器</string>
+    <string name="dialog_counter_name_label">计数器名称</string>
+    <string name="dialog_counter_target_label">目标</string>
+    <string name="dialog_counter_add_count_label">要添加的数量</string>
+    <string name="dialog_counter_decrease_count">要减去的数量</string>
+    <string name="dialog_delete_counter_title">删除计数器</string>
+    <string name="dialog_delete_counter_message">您确定要删除计数器“%1$s”吗？</string>
+    <string name="dialog_reset_counter_title">重置计数器</string>
+    <string name="dialog_reset_counter_message">您确定要重置计数器“%1$s”吗？</string>
+
+    <string name="theme_page_title">主题</string>
+    <string name="theme_page_tab_background">背景</string>
+    <string name="theme_page_tab_display">主题</string>
+    <string name="theme_page_default_theme_name">默认</string>
+    <string name="theme_page_unlock_success">成功解锁并选择！</string>
+    <string name="theme_page_loading_ad">正在加载广告，请稍候</string>
+    <string name="theme_preview_background_desc">背景 %1$d%2$s</string>
+    <string name="theme_preview_theme_desc">颜色主题 %1$d%2$s</string>
+    <string name="theme_preview_state_selected">, 已选择</string>
+    <string name="theme_preview_state_locked">, 已锁定</string>
+
+    <string name="settings_title">设置</string>
+    <string name="settings_category_ads">广告</string>
+    <string name="settings_ads_removed_title">广告已移除</string>
+    <string name="settings_ads_removed_subtitle">您正在使用无广告版本。</string>
+    <string name="settings_remove_ads_title">移除广告</string>
+    <string name="settings_category_general">通用设置</string>
+    <string name="settings_sound">声音</string>
+    <string name="settings_vibration">振动</string>
+    <string name="settings_night_mode">夜间模式</string>
+    <string name="settings_fullscreen_touch">全屏触摸</string>
+    <string name="settings_category_accessibility">辅助功能</string>
+    <string name="settings_counter_reading_title">计数器朗读</string>
+    <string name="settings_counter_reading_subtitle">启用后，计数器值将被大声朗读。</string>
+    <string name="settings_tts_engine_title">首选引擎</string>
+    <string name="settings_tts_language_title">首选语言</string>
+    <string name="settings_tts_language_loading">加载中...</string>
+    <string name="settings_tts_language_select">选择语言</string>
+    <string name="settings_tts_speech_rate_title">语速</string>
+    <string name="settings_tts_speech_rate_slow">慢</string>
+    <string name="settings_tts_speech_rate_fast">快</string>
+    <string name="settings_tts_huawei_warning">此 TTS 引擎不支持语速调整。</string>
+    <string name="settings_category_app">应用程序</string>
+    <string name="settings_backup">自动备份</string>
+    <string name="settings_share">分享</string>
+    <string name="settings_rate">给我们评分</string>
+    <string name="settings_privacy_policy">隐私政策</string>
+    <string name="settings_contact_us">联系我们</string>
+    <string name="settings_update_banner">有新版本可用</string>
+
+    <string name="tts_test_sound">33</string>
+
+    <string name="premium_page_title">移除广告</string>
+    <string name="premium_title">享受无广告体验</string>
+    <string name="premium_description">一次性付款即可移除所有广告并解锁所有功能。</string>
+    <string name="premium_purchase_button_loading">加载中...</string>
+    <string name="premium_purchase_button_price">以 %1$s 升级</string>
+    <string name="premium_purchase_button_default">购买</string>
+    <string name="premium_purchase_pending">您的付款正在等待确认...</string>
+    <string name="premium_restore_button">恢复购买</string>
+    <string name="premium_restore_loading">正在恢复...</string>
+    <string name="premium_already_purchased_title">广告已移除</string>
+    <string name="premium_already_purchased_description">您正在享受无广告版本和所有功能。感谢您的支持！</string>
+
+    <string name="dialog_ad_unlock_item_message">要解锁此内容，您必须先观看一个短广告。</string>
+    <string name="dialog_ad_add_counter_message">要添加新计数器，您必须先观看一个短广告。</string>
+    <string name="dialog_ad_loading_video">正在加载视频广告，请稍候</string>
+    <string name="dialog_gift_title">一份礼物</string>
+    <string name="dialog_gift_message">广告暂时不可用。我们已为您激活了奖励。</string>
+    <string name="dialog_backup_title">自动备份</string>
+    <string name="dialog_backup_message">允许后，您的计数器和设置将自动备份到您的主 %1$s 帐户。这使您可以在更换手机时轻松恢复数据。</string>
+    <string name="dialog_rate_title">支持我们</string>
+    <string name="dialog_rate_message">您的反馈对我们非常宝贵。您愿意花几秒钟时间评价我们的应用并支持我们吗？</string>
+    <string name="dialog_error_connection_title">连接错误</string>
+    <string name="dialog_error_connection_message">无法加载广告。请检查您的网络连接并重试。</string>
+    <string name="dialog_error_ad_load_title">广告加载失败</string>
+    <string name="dialog_error_ad_load_message">目前没有可供展示的广告。请稍后再试。</string>
+    <string name="dialog_talkback_title">辅助功能帮助</string>
+    <string name="dialog_talkback_message">您似乎正在使用 TalkBack。您希望每次计数时都大声朗读计数器吗？</string>
+    <string name="dialog_error_tts_title">不可用</string>
+    <string name="dialog_error_tts_message">计数器朗读功能不可用，因为您的手机上未找到 TTS（文本转语音）引擎。</string>
+
+    <string name="dialog_update_mandatory_title">需要更新</string>
+    <string name="dialog_update_optional_title">有新版本可用</string>
+    <string name="dialog_update_mandatory_message">要继续使用该应用，请更新到最新版本。</string>
+    <string name="dialog_update_optional_message">应用的新版本提供了更好的体验。您想更新吗？</string>
+    <string name="dialog_update_whats_new">新内容：</string>
+
+    <string name="snackbar_counter_reset">计数器已成功重置！</string>
+    <string name="snackbar_counter_deleted">计数器已成功删除！</string>
+    <string name="snackbar_counter_saved">计数器已成功保存！</string>
+    <string name="snackbar_item_unlocked">成功解锁！</string>
+    <string name="snackbar_restore_no_purchase">未找到可恢复的有效购买。</string>
+    <string name="snackbar_restore_error">发生错误。请检查您的网络连接并重试。</string>
+
+    <string name="content_desc_main_display">计数器显示</string>
+    <string name="content_desc_app_background">应用背景</string>
+    <string name="content_desc_increment_button">增加计数器</string>
+    <string name="content_desc_decrement_button">减少</string>
+    <string name="content_desc_reset_button">重置计数器</string>
+    <string name="content_desc_settings_button">设置</string>
+    <string name="content_desc_counters_list_button">计数器列表</string>
+    <string name="content_desc_theme_button">更改主题</string>
+    <string name="content_desc_settings_menu_button">打开设置菜单</string>
+    <string name="content_desc_toggle_panels_button">显示/隐藏面板</string>
+    <string name="content_desc_locked_item">已锁定</string>
+    <string name="content_desc_theme_page_background">页面背景</string>
+    <string name="content_desc_theme_preview_background">主题背景颜色</string>
+    <string name="content_desc_theme_preview_overlay">主题 UI 层</string>
+    <string name="content_desc_counter_actions">计数器操作</string>
+    <string name="content_desc_counter_actions_expanded">已展开</string>
+    <string name="content_desc_counter_actions_collapsed">已折叠</string>
+
+    <string name="accessibility_value">值 </string>
+    <string name="accessibility_target">目标 </string>
+    <string name="accessibility_divider"> / </string> <string name="accessibility_round">轮次 </string>
+    <string name="accessibility_tour_completed">%1$s，第 %2$s 轮完成</string>
+    <string name="accessibility_update_available">，有可用更新</string>
+
+    <string name="contact_email_subject">赞念计数器反馈</string>
+    <string name="contact_email_address" translatable="false">appfabrictr@gmail.com</string>
+    <string name="privacy_policy_url" translatable="false">https://zikirmatik-sayac-ec148.web.app/privacy.html</string>
+
+    <string name="share_title">分享应用</string>
+    <string name="share_text">您应该试试这个很棒的赞念计数器应用！https://play.google.com/store/apps/details?id=%1$s</string>
+
 </resources>

@@ -17,6 +17,8 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -25,10 +27,14 @@ import com.hgtcsmsk.zikrcount.platform.PurchaseState
 import com.hgtcsmsk.zikrcount.platform.SystemBackButtonHandler
 import com.hgtcsmsk.zikrcount.platform.rememberPlatformActivity
 import com.hgtcsmsk.zikrcount.ui.components.ResponsiveText
+import com.hgtcsmsk.zikrcount.ui.components.SuccessSnackBar
 import com.hgtcsmsk.zikrcount.ui.theme.ZikrTheme
 import com.hgtcsmsk.zikrcount.ui.utils.autoMirror
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.resources.stringResource
 import zikrcount.composeapp.generated.resources.*
 
 @Composable
@@ -41,74 +47,109 @@ fun PremiumPage(
     val purchaseState by viewModel.purchaseState.collectAsState()
     val productPrice by viewModel.productPrice.collectAsState()
     val selectedBackground by viewModel.selectedBackground.collectAsState()
+    val isRestoring by viewModel.isRestoringPurchases.collectAsState()
 
-    Box(modifier = Modifier.fillMaxSize()) {
-        Image(
-            painter = painterResource(findBackgroundResource(selectedBackground)),
-            contentDescription = "Reklamları Kaldır Sayfası Arka Planı",
-            modifier = Modifier.fillMaxSize(),
-            contentScale = ContentScale.Crop
-        )
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(Color.Black.copy(alpha = 0.85f))
-        )
+    val snackbarHostState = remember { SnackbarHostState() }
+    val scope = rememberCoroutineScope()
 
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .statusBarsPadding()
-                .navigationBarsPadding()
-        ) {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(8.dp),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Image(
-                    painter = painterResource(Res.drawable.action_back),
-                    contentDescription = "Geri",
-                    colorFilter = ColorFilter.tint(Color.White),
-                    modifier = Modifier
-                        .padding(start = 5.dp)
-                        .size(27.dp)
-                        .clip(CircleShape)
-                        .clickable(
-                            interactionSource = remember { MutableInteractionSource() },
-                            indication = null,
-                            onClick = onNavigateBack
-                        )
-                        .autoMirror()
-                )
-                Text(
-                    text = "Reklamları Kaldır",
-                    style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
-                    color = ZikrTheme.colors.primary,
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier.weight(1f)
-                )
-                Spacer(modifier = Modifier.size(32.dp))
+    // HATA DÜZELTMESİ: Snackbar mesajlarını string.xml'den al
+    val noPurchaseMessage = stringResource(Res.string.snackbar_restore_no_purchase)
+    val errorMessage = stringResource(Res.string.snackbar_restore_error)
+
+    LaunchedEffect(key1 = Unit) {
+        viewModel.eventFlow.collectLatest { event ->
+            when (event) {
+                is AppViewModel.UiEvent.ShowSnackbar -> {
+                    scope.launch {
+                        snackbarHostState.showSnackbar(event.message)
+                    }
+                }
             }
+        }
+    }
+
+    Scaffold(
+        contentWindowInsets = WindowInsets.safeDrawing,
+        snackbarHost = {
+            SnackbarHost(hostState = snackbarHostState) { data ->
+                SuccessSnackBar(data = data)
+            }
+        },
+        containerColor = Color.Transparent
+    ) { innerPadding ->
+        Box(
+            modifier = Modifier.fillMaxSize()
+        ) {
+            Image(
+                painter = painterResource(findBackgroundResource(selectedBackground)),
+                // DEĞİŞİKLİK 1: Dekoratif arka plan resmi TalkBack tarafından okunmamalı.
+                contentDescription = null,
+                modifier = Modifier.fillMaxSize(),
+                contentScale = ContentScale.Crop
+            )
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(Color.Black.copy(alpha = 0.85f))
+            )
 
             Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .verticalScroll(rememberScrollState())
-                    .padding(16.dp),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Center
+                    .padding(innerPadding)
             ) {
-                if (purchaseState is PurchaseState.Purchased) {
-                    PurchasedUserContent()
-                } else {
-                    NotPurchasedUserContent(
-                        purchaseState = purchaseState,
-                        productPrice = productPrice,
-                        onPurchaseClick = { activity -> viewModel.purchaseRemoveAds(activity) },
-                        onRestoreClick = { viewModel.restorePurchases() }
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(8.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Image(
+                        painter = painterResource(Res.drawable.action_back),
+                        contentDescription = stringResource(Res.string.action_back),
+                        colorFilter = ColorFilter.tint(Color.White),
+                        modifier = Modifier
+                            .padding(start = 5.dp)
+                            .size(27.dp)
+                            .clip(CircleShape)
+                            .clickable(
+                                interactionSource = remember { MutableInteractionSource() },
+                                indication = null,
+                                onClick = onNavigateBack
+                            )
+                            .autoMirror()
                     )
+                    Text(
+                        text = stringResource(Res.string.premium_page_title),
+                        style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
+                        color = ZikrTheme.colors.primary,
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier.weight(1f)
+                    )
+                    Spacer(modifier = Modifier.size(32.dp))
+                }
+
+                Column(
+                    modifier = Modifier
+                        .weight(1f)
+                        .fillMaxWidth()
+                        .verticalScroll(rememberScrollState())
+                        .padding(16.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center
+                ) {
+                    if (purchaseState is PurchaseState.Purchased) {
+                        PurchasedUserContent()
+                    } else {
+                        NotPurchasedUserContent(
+                            purchaseState = purchaseState,
+                            productPrice = productPrice,
+                            isRestoring = isRestoring,
+                            onPurchaseClick = { activity -> viewModel.purchaseRemoveAds(activity) },
+                            // HATA DÜZELTMESİ: Eksik parametreleri viewModel'e yolla
+                            onRestoreClick = { viewModel.restorePurchases(noPurchaseMessage, errorMessage) }
+                        )
+                    }
                 }
             }
         }
@@ -119,6 +160,7 @@ fun PremiumPage(
 private fun NotPurchasedUserContent(
     purchaseState: PurchaseState,
     productPrice: String?,
+    isRestoring: Boolean,
     onPurchaseClick: (activity: Any) -> Unit,
     onRestoreClick: () -> Unit
 ) {
@@ -126,14 +168,15 @@ private fun NotPurchasedUserContent(
 
     Image(
         painter = painterResource(Res.drawable.no_ads_new),
-        contentDescription = "Reklam Yok İkonu",
+        // DEĞİŞİKLİK 2: "Reklam Yok" ikonu dekoratif olduğu için okunmamalı. Anlamı aşağıdaki başlıkta zaten var.
+        contentDescription = null,
         modifier = Modifier.size(100.dp)
     )
 
     Spacer(modifier = Modifier.height(24.dp))
 
     Text(
-        text = "Reklamsız Deneyime Geçin",
+        text = stringResource(Res.string.premium_title),
         style = MaterialTheme.typography.titleLarge,
         fontWeight = FontWeight.Bold,
         color = Color.White,
@@ -143,7 +186,7 @@ private fun NotPurchasedUserContent(
     Spacer(modifier = Modifier.height(16.dp))
 
     Text(
-        text = "Tek seferlik bir ödeme ile reklamları tamamen kaldırın ve tüm kilitli özellikleri açın.",
+        text = stringResource(Res.string.premium_description),
         style = MaterialTheme.typography.bodyMedium,
         color = Color.White.copy(alpha = 0.8f),
         textAlign = TextAlign.Center
@@ -152,9 +195,9 @@ private fun NotPurchasedUserContent(
     Spacer(modifier = Modifier.height(32.dp))
 
     val purchaseButtonText = when {
-        purchaseState is PurchaseState.Loading -> "Yükleniyor..."
-        productPrice != null -> "$productPrice ile Yükselt"
-        else -> "Satın Al"
+        purchaseState is PurchaseState.Loading -> stringResource(Res.string.premium_purchase_button_loading)
+        productPrice != null -> stringResource(Res.string.premium_purchase_button_price, productPrice)
+        else -> stringResource(Res.string.premium_purchase_button_default)
     }
 
     Button(
@@ -181,18 +224,37 @@ private fun NotPurchasedUserContent(
 
     if (purchaseState is PurchaseState.Pending) {
         Text(
-            text = "Ödemeniz onay bekliyor...",
+            text = stringResource(Res.string.premium_purchase_pending),
             color = ZikrTheme.colors.primary,
             style = MaterialTheme.typography.bodySmall,
             modifier = Modifier.padding(top = 8.dp)
         )
     }
 
-    TextButton(
-        onClick = onRestoreClick,
-        modifier = Modifier.padding(top = 8.dp)
+    // DEĞİŞİKLİK 3: Yükleme durumunu TalkBack'e bildirmek için Box'a semantics eklendi.
+    val restoreStatusText = if (isRestoring) stringResource(Res.string.premium_restore_loading) else ""
+    Box(
+        modifier = Modifier
+            .padding(top = 8.dp)
+            .semantics(mergeDescendants = true) {
+                // Eğer yükleniyorsa, kutunun açıklaması bu metin olacak.
+                if (isRestoring) contentDescription = restoreStatusText
+            },
+        contentAlignment = Alignment.Center
     ) {
-        Text("Satın Alımları Geri Yükle", color = Color.White.copy(alpha = 0.7f))
+        TextButton(
+            onClick = onRestoreClick,
+            enabled = !isRestoring
+        ) {
+            Text(stringResource(Res.string.premium_restore_button), color = Color.White.copy(alpha = if (isRestoring) 0.3f else 0.7f))
+        }
+        if (isRestoring) {
+            CircularProgressIndicator(
+                modifier = Modifier.size(24.dp),
+                strokeWidth = 2.dp,
+                color = Color.White
+            )
+        }
     }
 }
 
@@ -200,7 +262,8 @@ private fun NotPurchasedUserContent(
 private fun PurchasedUserContent() {
     Image(
         painter = painterResource(Res.drawable.success_check),
-        contentDescription = "Reklamlar Kaldırıldı",
+        // DEĞİŞİKLİK 2: "Onay" ikonu dekoratif olduğu için okunmamalı. Anlamı aşağıdaki başlıkta zaten var.
+        contentDescription = null,
         modifier = Modifier.size(100.dp),
         colorFilter = ColorFilter.tint(ZikrTheme.colors.primary)
     )
@@ -208,7 +271,7 @@ private fun PurchasedUserContent() {
     Spacer(modifier = Modifier.height(24.dp))
 
     Text(
-        text = "Reklamlar Kaldırıldı",
+        text = stringResource(Res.string.premium_already_purchased_title),
         style = MaterialTheme.typography.titleLarge,
         fontWeight = FontWeight.Bold,
         color = Color.White,
@@ -218,23 +281,9 @@ private fun PurchasedUserContent() {
     Spacer(modifier = Modifier.height(16.dp))
 
     Text(
-        text = "Uygulamanın reklamsız sürümünün ve tüm özelliklerinin keyfini çıkarıyorsunuz. Desteğiniz için teşekkür ederiz!",
+        text = stringResource(Res.string.premium_already_purchased_description),
         style = MaterialTheme.typography.bodyMedium,
         color = Color.White.copy(alpha = 0.8f),
         textAlign = TextAlign.Center
     )
-}
-
-@Composable
-private fun BenefitRow(icon: DrawableResource, text: String) {
-    Row(verticalAlignment = Alignment.CenterVertically) {
-        Icon(
-            painter = painterResource(icon),
-            contentDescription = null,
-            tint = ZikrTheme.colors.primary,
-            modifier = Modifier.size(24.dp)
-        )
-        Spacer(modifier = Modifier.width(16.dp))
-        Text(text = text, color = Color.White, style = MaterialTheme.typography.bodyMedium)
-    }
 }

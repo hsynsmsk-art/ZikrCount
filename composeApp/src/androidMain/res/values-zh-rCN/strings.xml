@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="app_name">赞念计数器</string> <string name="error_no_share_app">找不到可处理分享的应用。</string>
+  <string name="error_no_store_or_browser">找不到 Google Play 商店或网络浏览器。</string>
+  <string name="error_cannot_open_settings">无法打开设置。</string>
+  <string name="error_cannot_open_link_app">找不到可打开此链接的应用。</string>
+  <string name="error_cannot_open_link">无法打开链接。</string>
+  <string name="error_no_email_app">找不到可发送电子邮件的应用。</string>
+  <string name="error_cannot_send_email">无法发送电子邮件。</string>
+
+</resources>

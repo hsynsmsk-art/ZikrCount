@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="app_name">Compteur Dhikr</string> <string name="error_no_share_app">Aucune application trouvée pour gérer le partage.</string>
+  <string name="error_no_store_or_browser">Google Play Store ou navigateur Web introuvable.</string>
+  <string name="error_cannot_open_settings">Impossible d\'ouvrir les paramètres.</string>
+  <string name="error_cannot_open_link_app">Aucune application trouvée pour ouvrir ce lien.</string>
+  <string name="error_cannot_open_link">Impossible d\'ouvrir le lien.</string>
+  <string name="error_no_email_app">Aucune application trouvée pour envoyer un e-mail.</string>
+  <string name="error_cannot_send_email">Impossible d\'envoyer l\'e-mail.</string>
+
+</resources>

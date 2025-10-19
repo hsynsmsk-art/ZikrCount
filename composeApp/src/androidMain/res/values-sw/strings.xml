@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="app_name">Kaunta ya Dhikri</string> <string name="error_no_share_app">Hakuna programu iliyopatikana ya kushiriki.</string>
+  <string name="error_no_store_or_browser">Duka la Google Play au kivinjari hakijapatikana.</string>
+  <string name="error_cannot_open_settings">Imeshindwa kufungua mipangilio.</string>
+  <string name="error_cannot_open_link_app">Hakuna programu iliyopatikana ya kufungua kiungo hiki.</string>
+  <string name="error_cannot_open_link">Imeshindwa kufungua kiungo.</string>
+  <string name="error_no_email_app">Hakuna programu iliyopatikana ya kutuma barua pepe.</string>
+  <string name="error_cannot_send_email">Imeshindwa kutuma barua pepe.</string>
+
+</resources>

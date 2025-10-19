@@ -1,3 +1,5 @@
+// composeApp/src/androidMain/kotlin/com/hgtcsmsk/zikrcount/platform/BillingService.android.kt
+
 package com.hgtcsmsk.zikrcount.platform
 
 import android.app.Activity
@@ -18,9 +20,11 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.withContext
+import kotlin.coroutines.resume
 
-private const val PREMIUM_PRODUCT_ID = "remove_ads_premium" // Google Play Console'da oluşturacağınız ürünün kimliği
+private const val PREMIUM_PRODUCT_ID = "remove_ads_premium"
 
 actual fun createBillingService(): BillingService {
     return ActualBillingService(appContext)
@@ -45,7 +49,6 @@ class ActualBillingService(context: Context) : BillingService, BillingClientStat
                 handlePurchase(purchase)
             }
         } else {
-            // Hata durumlarını burada yönetebiliriz. Şimdilik sadece durumu geri alıyoruz.
             _purchaseState.value = PurchaseState.NotPurchased
         }
     }
@@ -61,15 +64,14 @@ class ActualBillingService(context: Context) : BillingService, BillingClientStat
 
     override fun onBillingSetupFinished(billingResult: BillingResult) {
         if (billingResult.responseCode == BillingClient.BillingResponseCode.OK) {
-            // Billing servisine başarıyla bağlandık.
-            // Şimdi ürün detaylarını ve eski satın alımları kontrol edelim.
             queryProductDetails()
-            restorePurchases()
+            mainScope.launch {
+                restorePurchases()
+            }
         }
     }
 
     override fun onBillingServiceDisconnected() {
-        // Bağlantı koptu, tekrar bağlanmayı deneyebiliriz.
         billingClient.startConnection(this)
     }
 
@@ -85,13 +87,11 @@ class ActualBillingService(context: Context) : BillingService, BillingClientStat
         billingClient.queryProductDetailsAsync(params) { _, productDetailsList ->
             if (productDetailsList.isNotEmpty()) {
                 productDetails = productDetailsList[0]
-                // Fiyatı alıp StateFlow'u güncelliyoruz.
                 _productPrice.value = productDetails?.oneTimePurchaseOfferDetails?.formattedPrice
             }
         }
     }
 
-    // --- DEĞİŞİKLİK: Fonksiyonun adı arayüze (interface) uyacak şekilde değiştirildi ---
     override fun purchaseRemoveAds(activity: Any) {
         if (!billingClient.isReady || productDetails == null) return
 
@@ -110,26 +110,32 @@ class ActualBillingService(context: Context) : BillingService, BillingClientStat
         billingClient.launchBillingFlow(currentActivity, billingFlowParams)
     }
 
-    override fun restorePurchases() {
-        if (!billingClient.isReady) {
-            _purchaseState.value = PurchaseState.NotPurchased
-            return
-        }
+    override suspend fun restorePurchases(): RestoreResult = withContext(Dispatchers.IO) {
+        suspendCancellableCoroutine { continuation ->
+            if (!billingClient.isReady) {
+                mainScope.launch { _purchaseState.value = PurchaseState.NotPurchased }
+                if (continuation.isActive) continuation.resume(RestoreResult.Error)
+                return@suspendCancellableCoroutine
+            }
 
-        val params = QueryPurchasesParams.newBuilder()
-            .setProductType(BillingClient.ProductType.INAPP)
-            .build()
+            val params = QueryPurchasesParams.newBuilder()
+                .setProductType(BillingClient.ProductType.INAPP)
+                .build()
 
-        billingClient.queryPurchasesAsync(params) { billingResult, purchases ->
-            if (billingResult.responseCode == BillingClient.BillingResponseCode.OK) {
-                val premiumPurchase = purchases.find { it.products.contains(PREMIUM_PRODUCT_ID) }
-                if (premiumPurchase != null) {
-                    handlePurchase(premiumPurchase)
+            billingClient.queryPurchasesAsync(params) { billingResult, purchases ->
+                if (billingResult.responseCode == BillingClient.BillingResponseCode.OK) {
+                    val premiumPurchase = purchases.find { it.products.contains(PREMIUM_PRODUCT_ID) }
+                    if (premiumPurchase != null) {
+                        handlePurchase(premiumPurchase)
+                        if (continuation.isActive) continuation.resume(RestoreResult.Success)
+                    } else {
+                        mainScope.launch { _purchaseState.value = PurchaseState.NotPurchased }
+                        if (continuation.isActive) continuation.resume(RestoreResult.NoPurchasesFound)
+                    }
                 } else {
-                    _purchaseState.value = PurchaseState.NotPurchased
+                    mainScope.launch { _purchaseState.value = PurchaseState.NotPurchased }
+                    if (continuation.isActive) continuation.resume(RestoreResult.Error)
                 }
-            } else {
-                _purchaseState.value = PurchaseState.NotPurchased
             }
         }
     }

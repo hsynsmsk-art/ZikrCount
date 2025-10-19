@@ -63,7 +63,6 @@ private class AndroidAdController(
                 }
             )
             continuation.invokeOnCancellation {
-                // Gerekirse iptal durumunda yapılacaklar
             }
         }
     }
@@ -90,12 +89,10 @@ private class AndroidAdController(
                 rewardedAd = null
                 adState = RewardedAdState.NOT_LOADED
                 viewModel.setAdPlayingState(false)
-                // Ödül alınmadıysa bile burası tetiklenir, bu yüzden onAdResult burada çağrılmaz.
             }
         }
 
         rewardedAd?.show(activity) {
-            // Ödül kazanıldı callback'i
             onAdResult(ShowAdResult.EarnedReward(true))
         }
     }

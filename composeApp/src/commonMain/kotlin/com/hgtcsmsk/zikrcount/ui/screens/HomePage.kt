@@ -1,4 +1,4 @@
-// composeApp/src/commonMain/kotlin/com/hgtcsmsk/zikrcount/ui/screens/HomePage.kt
+// HomePage.kt
 
 package com.hgtcsmsk.zikrcount.ui.screens
 
@@ -17,9 +17,10 @@ import androidx.compose.foundation.gestures.awaitFirstDown
 import androidx.compose.foundation.gestures.waitForUpOrCancellation
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.windowsizeclass.WindowHeightSizeClass
+import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -28,6 +29,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.role
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.stateDescription
 import androidx.compose.ui.unit.dp
 import com.hgtcsmsk.zikrcount.AppViewModel
 import com.hgtcsmsk.zikrcount.data.Counter
@@ -57,8 +63,11 @@ fun HomePage(
     onNavigateToTheme: () -> Unit,
     onNavigateToSettings: () -> Unit,
     platformActionHandler: PlatformActionHandler,
-    soundPlayer: SoundPlayer
+    soundPlayer: SoundPlayer,
+    windowSizeClass: WindowSizeClass
 ) {
+    val isLandscape = windowSizeClass.heightSizeClass == WindowHeightSizeClass.Compact
+
     val counters by viewModel.counters.collectAsState()
     val selectedId by viewModel.lastSelectedCounterId.collectAsState()
     val selectedCounter: Counter? = counters.find { it.id == selectedId }
@@ -73,6 +82,7 @@ fun HomePage(
     val shouldShowRateDialog by viewModel.shouldShowRateDialog.collectAsState()
 
     val showUpdateBadge by viewModel.showUpdateBadge.collectAsState()
+    val updateBadgeText = stringResource(Res.string.accessibility_update_available)
 
     val zikirName = when (selectedCounter?.id) {
         null -> ""
@@ -97,13 +107,23 @@ fun HomePage(
     val snackBarHostState = remember { SnackbarHostState() }
     val resetMessage = stringResource(Res.string.snackbar_counter_reset)
 
+    LaunchedEffect(key1 = Unit) {
+        viewModel.eventFlow.collect { event ->
+            when (event) {
+                is AppViewModel.UiEvent.ShowSnackbar -> {
+                    snackBarHostState.showSnackbar(event.message)
+                }
+            }
+        }
+    }
+
     val turTextScale = remember { Animatable(1f) }
     val turCompletedEvent by viewModel.turCompletedEvent.collectAsState()
     val flashEffectEvent by viewModel.flashEffectEvent.collectAsState()
 
     val bannerAdTrigger = 0
     val isNetworkAvailable by viewModel.isNetworkAvailable.collectAsState()
-    val purchaseState by viewModel.purchaseState.collectAsState() // <-- YENİ EKLENDİ
+    val purchaseState by viewModel.purchaseState.collectAsState()
 
     LaunchedEffect(flashEffectEvent) {
         if (flashEffectEvent != null) {
@@ -128,16 +148,16 @@ fun HomePage(
         }
     }
 
-    // --> DEĞİŞİKLİK: Hatalı fonksiyon çağrısını düzeltiyoruz.
-    // Artık ViewModel'i doğru imza ile çağırıp, ses/titreşim gibi arayüz işlerini burada yapıyoruz.
+    // HATA DÜZELTMESİ: Eksik metin parametresi eklendi
+    val tourCompletedText = stringResource(Res.string.accessibility_tour_completed)
+
     val performIncrementAction = { isFullScreen: Boolean ->
         scope.launch {
             if (isMenuExpanded) isMenuExpanded = false
-
-            // 1. ViewModel'i çağırarak veriyi güncelle
-            viewModel.incrementSelectedCounter(isFullScreenTap = isFullScreen)
-
-            // 2. Arayüz geri bildirimlerini (ses/titreşim) burada tetikle
+            viewModel.incrementSelectedCounter(
+                isFullScreenTap = isFullScreen,
+                tourCompletedText = tourCompletedText
+            )
             if (vibrationEnabled) {
                 platformActionHandler.performCustomVibration()
             }
@@ -159,7 +179,7 @@ fun HomePage(
         Modifier.pointerInput(Unit) {
             awaitPointerEventScope {
                 while (true) {
-                    awaitFirstDown(requireUnconsumed = true)
+                    awaitFirstDown(requireUnconsumed = false)
                     performIncrementAction(true)
                     waitForUpOrCancellation()
                 }
@@ -172,7 +192,7 @@ fun HomePage(
         Image(
             painter = painterResource(findBackgroundResource(selectedBackground)),
             modifier = Modifier.fillMaxSize(),
-            contentDescription = stringResource(Res.string.content_desc_app_background),
+            contentDescription = null,
             contentScale = ContentScale.Crop
         )
 
@@ -188,165 +208,187 @@ fun HomePage(
             modifier = Modifier
                 .fillMaxSize()
                 .background(ZikrTheme.colors.primary.copy(alpha = flashAlpha.value))
+                .then(fullScreenTouchModifier)
         )
 
-        Scaffold(
-            containerColor = Color.Transparent,
-            snackbarHost = {
-                SnackbarHost(
-                    hostState = snackBarHostState,
-                    modifier = Modifier
-                        .navigationBarsPadding()
-                        .padding(bottom = 80.dp, start = 24.dp, end = 24.dp),
-                    snackbar = { data ->
-                        SuccessSnackBar(data = data)
-                    }
-                )
-            }
-        ) { innerPadding ->
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(innerPadding)
-                    .then(fullScreenTouchModifier),
-                contentAlignment = Alignment.Center
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .systemBarsPadding(),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Column(
+                modifier = Modifier.weight(1f),
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Column(
-                    modifier = Modifier.fillMaxSize(),
-                    horizontalAlignment = Alignment.CenterHorizontally
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth(0.98f)
+                        .weight(10f),
+                    horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth(0.98f)
-                            .weight(9f),
-                        horizontalArrangement = Arrangement.SpaceBetween
-                    ) {
+                    TopActionButton(
+                        iconResource = Res.drawable.brush,
+                        contentDescription = stringResource(Res.string.content_desc_theme_button),
+                        onClick = {
+                            if (soundEnabled) {
+                                soundPlayer.play("mini_click")
+                            }
+                            isMenuExpanded = false
+                            onNavigateToTheme()
+                        }
+                    )
+
+                    Box(contentAlignment = Alignment.TopEnd) {
+                        // <-- DEĞİŞİKLİK BURADA BAŞLIYOR -->
+                        // TalkBack için dinamik bir içerik açıklaması oluşturuyoruz.
+                        val settingsContentDesc = if (showUpdateBadge) {
+                            stringResource(Res.string.content_desc_settings_button) + updateBadgeText
+                        } else {
+                            stringResource(Res.string.content_desc_settings_button)
+                        }
+
                         TopActionButton(
-                            iconResource = Res.drawable.brush,
-                            contentDescription = stringResource(Res.string.content_desc_theme_button),
-                            onClick = {
-                                isMenuExpanded = false
-                                onNavigateToTheme()
-                            }
-                        )
-
-                        Box(contentAlignment = Alignment.TopEnd) {
-                            TopActionButton(
-                                iconResource = Res.drawable.setting,
-                                contentDescription = stringResource(Res.string.content_desc_settings_button),
-                                onClick = {
-                                    isMenuExpanded = false
-                                    onNavigateToSettings()
-                                }
-                            )
-                            if (showUpdateBadge) {
-                                Box(
-                                    modifier = Modifier
-                                        .padding(4.dp)
-                                        .size(10.dp)
-                                        .background(Color.Red, CircleShape)
-                                        .border(1.dp, Color.White, CircleShape)
-                                )
-                            }
-                        }
-                    }
-
-                    Box(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .weight(70f),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        val turModifier = Modifier.graphicsLayer {
-                            scaleX = turTextScale.value
-                            scaleY = turTextScale.value
-                        }
-                        if (selectedCounter != null) {
-                            CounterDisplay(
-                                counter = selectedCounter,
-                                countName = zikirName,
-                                modifier = Modifier.fillMaxWidth(0.82f),
-                                screenResource = Res.drawable.screen,
-                                turModifier = turModifier
-                            )
-                        }
-                    }
-                    Spacer(modifier = Modifier.fillMaxWidth().weight(7f))
-
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth(0.65f)
-                            .weight(9f),
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        verticalAlignment = Alignment.Bottom
-                    ) {
-                        val listButtonResource = if (isNightModeEnabled) Res.drawable.small_list_dark else Res.drawable.small_list_light
-                        SmallActionButton(
-                            iconResource = listButtonResource, // <-- GÜNCELLENDİ
-                            contentDescription = stringResource(Res.string.content_desc_counters_list_button),
+                            iconResource = Res.drawable.setting,
+                            // Dinamik açıklamayı burada kullanıyoruz.
+                            contentDescription = settingsContentDesc,
                             onClick = {
                                 if (soundEnabled) {
                                     soundPlayer.play("mini_click")
                                 }
                                 isMenuExpanded = false
-                                onNavigateToCounters()
+                                onNavigateToSettings()
                             }
                         )
+                        // <-- DEĞİŞİKLİK BİTİYOR -->
 
-                        ExpandingMenu(
-                            isExpanded = isMenuExpanded,
-                            isNightModeEnabled = isNightModeEnabled,
-                            onToggle = { isMenuExpanded = !isMenuExpanded },
-                            soundEnabled = soundEnabled,
-                            soundPlayer = soundPlayer,
-                            onShowResetDialog = { showResetDialog = true },
-                            onDecrement = { performDecrementAction() }
+                        if (showUpdateBadge) {
+                            Box(
+                                modifier = Modifier
+                                    .padding(4.dp)
+                                    .size(10.dp)
+                                    .background(Color.Red, CircleShape)
+                                    .border(1.dp, Color.White, CircleShape)
+                            )
+                        }
+                    }
+                }
+
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .weight(70f),
+                    contentAlignment = Alignment.Center
+                ) {
+                    val turModifier = Modifier.graphicsLayer {
+                        scaleX = turTextScale.value
+                        scaleY = turTextScale.value
+                    }
+                    if (selectedCounter != null) {
+                        CounterDisplay(
+                            counter = selectedCounter,
+                            countName = zikirName,
+                            modifier = Modifier.fillMaxWidth(0.82f),
+                            screenResource = Res.drawable.screen,
+                            turModifier = turModifier,
+                            isLandscape = false
                         )
                     }
+                }
+                Spacer(modifier = Modifier.fillMaxWidth().weight(7f))
 
-                    val scale = remember { Animatable(1.0f) }
-                    Box(
-                        modifier = Modifier
-                            .weight(26f)
-                            .aspectRatio(1f)
-                            .clip(CircleShape)
-                            .background(color = ZikrTheme.colors.primary),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        // Gece modu durumuna göre doğru görsel kaynağını seçiyoruz.
-                        val buttonResource = if (isNightModeEnabled) {
-                            Res.drawable.big_button_dark
-                        } else {
-                            Res.drawable.big_button_light
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth(0.65f)
+                        .weight(9f),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.Bottom
+                ) {
+                    val listButtonResource = if (isNightModeEnabled) Res.drawable.small_list_dark else Res.drawable.small_list_light
+                    SmallActionButton(
+                        iconResource = listButtonResource,
+                        contentDescription = stringResource(Res.string.content_desc_counters_list_button),
+                        onClick = {
+                            if (soundEnabled) {
+                                soundPlayer.play("mini_click")
+                            }
+                            isMenuExpanded = false
+                            onNavigateToCounters()
                         }
+                    )
 
-                        Image(
-                            painter = painterResource(buttonResource), // <-- DEĞİŞTİRİLEN SATIR
-                            contentDescription = stringResource(Res.string.content_desc_increment_button),
-                            modifier = Modifier
-                                .fillMaxSize(0.97f)
-                                .graphicsLayer {
-                                    scaleX = scale.value
-                                    scaleY = scale.value
-                                }
-                                .pointerInput(isFullScreenTouchEnabled) {
-                                    if (!isFullScreenTouchEnabled) {
-                                        awaitPointerEventScope {
-                                            while (true) {
-                                                awaitFirstDown(requireUnconsumed = false)
-                                                scope.launch {
-                                                    scale.animateTo(0.93f, tween(15))
-                                                    scale.animateTo(1.0f, tween(30))
-                                                }
-                                                performIncrementAction(false)
-                                                waitForUpOrCancellation()
-                                            }
+                    ExpandingMenu(
+                        isExpanded = isMenuExpanded,
+                        isNightModeEnabled = isNightModeEnabled,
+                        onToggle = { isMenuExpanded = !isMenuExpanded },
+                        soundEnabled = soundEnabled,
+                        soundPlayer = soundPlayer,
+                        onShowResetDialog = { showResetDialog = true },
+                        onDecrement = { performDecrementAction() }
+                    )
+                }
+
+                val scale = remember { Animatable(1.0f) }
+                val incrementDescription = stringResource(Res.string.content_desc_increment_button)
+                Box(
+                    modifier = Modifier
+                        .weight(30f)
+                        .aspectRatio(1f)
+                        .clip(CircleShape)
+                        .background(color = ZikrTheme.colors.primary)
+                        // <-- DEĞİŞİKLİK: Ana artırma düğmesi için de düzeltme yapıldı -->
+                        .semantics {
+                            contentDescription = incrementDescription
+                            role = Role.Button
+                        }
+                        .pointerInput(isFullScreenTouchEnabled) {
+                            if (!isFullScreenTouchEnabled) {
+                                awaitPointerEventScope {
+                                    while (true) {
+                                        awaitFirstDown(requireUnconsumed = false)
+                                        scope.launch {
+                                            scale.animateTo(0.93f, tween(15))
+                                            scale.animateTo(1.0f, tween(30))
                                         }
+                                        performIncrementAction(false)
+                                        waitForUpOrCancellation()
                                     }
                                 }
-                        )
+                            }
+                        },
+                    contentAlignment = Alignment.Center
+                ) {
+                    val buttonResource = if (isNightModeEnabled) {
+                        Res.drawable.big_button_dark
+                    } else {
+                        Res.drawable.big_button_light
                     }
-                    Spacer(modifier = Modifier.fillMaxWidth().weight(20f))
+                    Image(
+                        painter = painterResource(buttonResource),
+                        contentDescription = null, // Açıklama dış Box'a taşındı
+                        modifier = Modifier
+                            .fillMaxSize(0.97f)
+                            .graphicsLayer {
+                                scaleX = scale.value
+                                scaleY = scale.value
+                            }
+                    )
+                }
+                Spacer(modifier = Modifier.fillMaxWidth().weight(15f))
+            }
+
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(60.dp)
+                    .navigationBarsPadding(),
+                contentAlignment = Alignment.Center
+            ) {
+                if (isNetworkAvailable && purchaseState !is PurchaseState.Purchased) {
+                    BannerAd(
+                        modifier = Modifier.fillMaxWidth(),
+                        trigger = bannerAdTrigger
+                    )
                 }
             }
         }
@@ -355,20 +397,20 @@ fun HomePage(
             modifier = Modifier
                 .fillMaxWidth()
                 .align(Alignment.BottomCenter)
-                .navigationBarsPadding(),
+                .padding(bottom = 80.dp),
             contentAlignment = Alignment.Center
         ) {
-            // <-- DEĞİŞTİ: Artık premium değilse reklam gösteriyoruz -->
-            if (isNetworkAvailable && purchaseState !is PurchaseState.Purchased) {
-                BannerAd(
-                    modifier = Modifier
-                        .wrapContentWidth()
-                        .wrapContentHeight(),
-                    trigger = bannerAdTrigger
-                )
+            SnackbarHost(
+                hostState = snackBarHostState,
+                modifier = Modifier
+                    .padding(horizontal = 24.dp)
+            ) { data ->
+                SuccessSnackBar(data = data)
             }
         }
     }
+
+    // ... Diyalog kodlarında değişiklik yok ...
 
     if (shouldShowRateDialog) {
         ConfirmationDialog(
@@ -407,18 +449,19 @@ fun HomePage(
             confirmButtonText = stringResource(Res.string.action_reset),
             onDismiss = { showResetDialog = false },
             onConfirm = {
-                viewModel.resetSelectedCounter()
-                showResetDialog = false
-                scope.launch {
-                    snackBarHostState.showSnackbar(resetMessage)
+                if (soundEnabled) {
+                    soundPlayer.play("mini_click")
                 }
+                viewModel.resetSelectedCounter(resetMessage)
+                showResetDialog = false
             }
         )
     }
 }
 
+
 @Composable
-private fun ExpandingMenu(
+fun ExpandingMenu(
     isExpanded: Boolean,
     isNightModeEnabled: Boolean,
     onToggle: () -> Unit,
@@ -463,7 +506,12 @@ private fun ExpandingMenu(
         if (isExpandedState) -(animationRadius.value * sin(135 * PI / 180f)).toFloat().dp else 0.dp
     }
 
+    val expandedStateText = stringResource(Res.string.content_desc_counter_actions_expanded)
+    val collapsedStateText = stringResource(Res.string.content_desc_counter_actions_collapsed)
+
     Box(contentAlignment = Alignment.Center) {
+        // "Sıfırla" ve "Azalt" butonları, düzelttiğimiz SmallActionButton'ı kullandığı için
+        // artık otomatik olarak erişilebilir olacak.
         SmallActionButton(
             modifier = Modifier
                 .size(40.dp)
@@ -478,7 +526,6 @@ private fun ExpandingMenu(
                 onToggle()
             }
         )
-
         SmallActionButton(
             modifier = Modifier
                 .size(40.dp)
@@ -492,13 +539,19 @@ private fun ExpandingMenu(
             }
         )
 
+        // Ana Buton
         val setButtonResource = if (isNightModeEnabled) Res.drawable.small_set_dark else Res.drawable.small_set_light
         SmallActionButton(
             iconResource = setButtonResource,
-            contentDescription = stringResource(Res.string.content_desc_settings_menu_button),
+            contentDescription = stringResource(Res.string.content_desc_counter_actions),
             onClick = {
                 if (soundEnabled) soundPlayer.play("mini_click")
                 onToggle()
+            },
+            // Bu modifier, düzelttiğimiz SmallActionButton'ın kendi semantics'i ile birleşecek
+            // ve artık doğru şekilde çalışacaktır.
+            modifier = Modifier.semantics {
+                stateDescription = if (isExpanded) expandedStateText else collapsedStateText
             }
         )
     }

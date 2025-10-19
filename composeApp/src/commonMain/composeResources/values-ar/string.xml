@@ -1,3 +1,172 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <resources>
+
+    <string name="action_save">حفظ</string>
+    <string name="action_delete">حذف</string>
+    <string name="action_cancel">إلغاء</string>
+    <string name="action_back">رجوع</string>
+    <string name="action_close">إغلاق</string>
+    <string name="action_edit">تعديل</string>
+    <string name="action_reset">تصفير</string>
+    <string name="action_confirm">سماح</string>
+    <string name="action_watch_ad">شاهد إعلانًا</string>
+    <string name="action_get_reward">احصل على المكافأة</string>
+    <string name="action_rate_app">قيّم التطبيق</string>
+    <string name="action_no_thanks">لا، شكراً</string>
+    <string name="action_yes_enable">نعم، تفعيل</string>
+    <string name="action_update">تحديث</string>
+    <string name="action_later">لاحقًا</string>
+
+    <string name="common_success">نجاح</string>
+    <string name="common_ok">موافق</string>
+    <string name="common_preview">معاينة</string>
+    <string name="common_google">Google</string>
+    <string name="common_unknown_date">تاريخ غير معروف</string>
+    <string name="common_loading">جارٍ التحميل...</string>
+
+    <string name="home_display_round">الدورة: %1$d</string>
+    <string name="home_display_target">الهدف: %1$d</string>
+    <string name="default_counter_name">عداد لا نهائي</string>
+    <string name="prayer_tasbih_counter_name">تسبيح الصلاة</string>
+    <string name="prayer_tasbih_part1">سبحان الله</string>
+    <string name="prayer_tasbih_part2">الحمد لله</string>
+    <string name="prayer_tasbih_part3">الله أكبر</string>
+    <string name="home_update_available">تحديث متوفر</string>
+
+    <string name="counters_page_title">عداداتي</string>
+    <string name="counters_page_add_button">أضف عداد</string>
+    <string name="counter_card_count">العدد: %1$d</string>
+    <string name="counter_card_creation_date">أنشئ في: %1$s</string>
+    <string name="counter_card_pin">تثبيت في الأعلى</string>
+    <string name="counter_card_unpin">إزالة التثبيت</string>
+    <string name="counter_card_add_count">إضافة عدد</string>
+    <string name="counter_card_options">خيارات العداد</string>
+    <string name="dialog_add_counter_title">إضافة عداد</string>
+    <string name="dialog_edit_counter_title">تعديل العداد</string>
+    <string name="dialog_counter_name_label">اسم العداد</string>
+    <string name="dialog_counter_target_label">الهدف</string>
+    <string name="dialog_counter_add_count_label">العدد للإضافة</string>
+    <string name="dialog_counter_decrease_count">العدد للطرح</string>
+    <string name="dialog_delete_counter_title">حذف العداد</string>
+    <string name="dialog_delete_counter_message">هل أنت متأكد أنك تريد حذف عداد "%1$s"؟</string>
+    <string name="dialog_reset_counter_title">تصفير العداد</string>
+    <string name="dialog_reset_counter_message">هل أنت متأكد أنك تريد تصفير عداد "%1$s"؟</string>
+
+    <string name="theme_page_title">السمات</string>
+    <string name="theme_page_tab_background">الخلفية</string>
+    <string name="theme_page_tab_display">السمة</string>
+    <string name="theme_page_default_theme_name">افتراضي</string>
+    <string name="theme_page_unlock_success">تم الفتح والاختيار بنجاح!</string>
+    <string name="theme_page_loading_ad">جارٍ تحميل الإعلان، يرجى الانتظار</string>
+    <string name="theme_preview_background_desc">الخلفية %1$d%2$s</string>
+    <string name="theme_preview_theme_desc">سمة اللون %1$d%2$s</string>
+    <string name="theme_preview_state_selected">، محدد</string>
+    <string name="theme_preview_state_locked">، مقفل</string>
+
+    <string name="settings_title">الإعدادات</string>
+    <string name="settings_category_ads">الإعلانات</string>
+    <string name="settings_ads_removed_title">تمت إزالة الإعلانات</string>
+    <string name="settings_ads_removed_subtitle">أنت تستخدم النسخة الخالية من الإعلانات.</string>
+    <string name="settings_remove_ads_title">إزالة الإعلانات</string>
+    <string name="settings_category_general">إعدادات عامة</string>
+    <string name="settings_sound">الصوت</string>
+    <string name="settings_vibration">الاهتزاز</string>
+    <string name="settings_night_mode">الوضع الليلي</string>
+    <string name="settings_fullscreen_touch">اللمس بملء الشاشة</string>
+    <string name="settings_category_accessibility">إمكانية الوصول</string>
+    <string name="settings_counter_reading_title">قراءة العداد</string>
+    <string name="settings_counter_reading_subtitle">عند التفعيل، تُقرأ قيمة العداد بصوت عالٍ.</string>
+    <string name="settings_tts_engine_title">المحرك المفضل</string>
+    <string name="settings_tts_language_title">اللغة المفضلة</string>
+    <string name="settings_tts_language_loading">جارٍ التحميل...</string>
+    <string name="settings_tts_language_select">اختر اللغة</string>
+    <string name="settings_tts_speech_rate_title">سرعة القراءة</string>
+    <string name="settings_tts_speech_rate_slow">بطيء</string>
+    <string name="settings_tts_speech_rate_fast">سريع</string>
+    <string name="settings_tts_huawei_warning">محرك TTS هذا لا يدعم تعديل سرعة القراءة.</string>
+    <string name="settings_category_app">التطبيق</string>
+    <string name="settings_backup">النسخ الاحتياطي التلقائي</string>
+    <string name="settings_share">مشاركة</string>
+    <string name="settings_rate">قيّمنا</string>
+    <string name="settings_privacy_policy">سياسة الخصوصية</string>
+    <string name="settings_contact_us">اتصل بنا</string>
+    <string name="settings_update_banner">إصدار جديد متوفر</string>
+
+    <string name="tts_test_sound">33</string>
+
+    <string name="premium_page_title">إزالة الإعلانات</string>
+    <string name="premium_title">تجربة بلا إعلانات</string>
+    <string name="premium_description">بدمعة لمرة واحدة، قم بإزالة جميع الإعلانات وفتح جميع الميزات.</string>
+    <string name="premium_purchase_button_loading">جارٍ التحميل...</string>
+    <string name="premium_purchase_button_price">الترقية مقابل %1$s</string>
+    <string name="premium_purchase_button_default">شراء</string>
+    <string name="premium_purchase_pending">الدفع الخاص بك قيد انتظار التأكيد...</string>
+    <string name="premium_restore_button">استعادة المشتريات</string>
+    <string name="premium_restore_loading">جارٍ الاستعادة...</string>
+    <string name="premium_already_purchased_title">تمت إزالة الإعلانات</string>
+    <string name="premium_already_purchased_description">أنت تستمتع بالنسخة الخالية من الإعلانات وبجميع الميزات. شكراً لدعمك!</string>
+
+    <string name="dialog_ad_unlock_item_message">لفتح هذا المحتوى، يجب عليك أولاً مشاهدة إعلان قصير.</string>
+    <string name="dialog_ad_add_counter_message">لإضافة عداد جديد، يجب عليك أولاً مشاهدة إعلان قصير.</string>
+    <string name="dialog_ad_loading_video">جارٍ تحميل إعلان الفيديو، يرجى الانتظار</string>
+    <string name="dialog_gift_title">هدية</string>
+    <string name="dialog_gift_message">الإعلانات غير متاحة مؤقتاً. لقد قمنا بتفعيل مكافأتك لك.</string>
+    <string name="dialog_backup_title">النسخ الاحتياطي التلقائي</string>
+    <string name="dialog_backup_message">عند السماح، سيتم نسخ عداداتك وإعداداتك احتياطيًا تلقائيًا إلى حساب %1$s الرئيسي الخاص بك. يتيح لك هذا استعادة بياناتك بسهولة عند تغيير هاتفك.</string>
+    <string name="dialog_rate_title">ادعمنا</string>
+    <string name="dialog_rate_message">ملاحظاتك قيمة جدًا بالنسبة لنا. هل تمانع في تخصيص بضع ثوانٍ لتقييم تطبيقنا ودعمنا؟</string>
+    <string name="dialog_error_connection_title">خطأ في الاتصال</string>
+    <string name="dialog_error_connection_message">تعذر تحميل الإعلان. يرجى التحقق من اتصالك بالإنترنت والمحاولة مرة أخرى.</string>
+    <string name="dialog_error_ad_load_title">فشل تحميل الإعلان</string>
+    <string name="dialog_error_ad_load_message">لا يوجد إعلان متاح للعرض الآن. يرجى المحاولة مرة أخرى لاحقًا.</string>
+    <string name="dialog_talkback_title">مساعدة إمكانية الوصول</string>
+    <string name="dialog_talkback_message">يبدو أنك تستخدم TalkBack. هل ترغب في قراءة العداد بصوت عالٍ عند كل ضغطة؟</string>
+    <string name="dialog_error_tts_title">غير متوفر</string>
+    <string name="dialog_error_tts_message">ميزة قراءة العداد غير متاحة لعدم العثور على محرك TTS (تحويل النص إلى كلام) على هاتفك.</string>
+
+    <string name="dialog_update_mandatory_title">التحديث مطلوب</string>
+    <string name="dialog_update_optional_title">إصدار جديد متوفر</string>
+    <string name="dialog_update_mandatory_message">للاستمرار في استخدام التطبيق، يرجى التحديث إلى أحدث إصدار.</string>
+    <string name="dialog_update_optional_message">إصدار جديد من التطبيق يقدم تجربة أفضل. هل ترغب في التحديث؟</string>
+    <string name="dialog_update_whats_new">ما الجديد:</string>
+
+    <string name="snackbar_counter_reset">تم تصفير العداد بنجاح!</string>
+    <string name="snackbar_counter_deleted">تم حذف العداد بنجاح!</string>
+    <string name="snackbar_counter_saved">تم حفظ العداد بنجاح!</string>
+    <string name="snackbar_item_unlocked">تم الفتح بنجاح!</string>
+    <string name="snackbar_restore_no_purchase">لم يتم العثور على عملية شراء نشطة لاستعادتها.</string>
+    <string name="snackbar_restore_error">حدث خطأ. يرجى التحقق من اتصالك بالإنترنت والمحاولة مرة أخرى.</string>
+
+    <string name="content_desc_main_display">شاشة العداد</string>
+    <string name="content_desc_app_background">خلفية التطبيق</string>
+    <string name="content_desc_increment_button">زيادة العداد</string>
+    <string name="content_desc_decrement_button">إنقاص</string>
+    <string name="content_desc_reset_button">تصفير العداد</string>
+    <string name="content_desc_settings_button">الإعدادات</string>
+    <string name="content_desc_counters_list_button">قائمة العدادات</string>
+    <string name="content_desc_theme_button">تغيير السمة</string>
+    <string name="content_desc_settings_menu_button">فتح قائمة الإعدادات</string>
+    <string name="content_desc_toggle_panels_button">إظهار/إخفاء اللوحات</string>
+    <string name="content_desc_locked_item">مقفل</string>
+    <string name="content_desc_theme_page_background">خلفية الصفحة</string>
+    <string name="content_desc_theme_preview_background">لون خلفية السمة</string>
+    <string name="content_desc_theme_preview_overlay">طبقة واجهة مستخدم السمة</string>
+    <string name="content_desc_counter_actions">إجراءات العداد</string>
+    <string name="content_desc_counter_actions_expanded">موسعة</string>
+    <string name="content_desc_counter_actions_collapsed">مطوية</string>
+
+    <string name="accessibility_value">القيمة </string>
+    <string name="accessibility_target">الهدف </string>
+    <string name="accessibility_divider"> من </string>
+    <string name="accessibility_round">الدورة </string>
+    <string name="accessibility_tour_completed">%1$s، اكتملت الدورة %2$s</string>
+    <string name="accessibility_update_available">، تحديث متوفر</string>
+
+    <string name="contact_email_subject">ملاحظات حول عداد الذكر</string>
+    <string name="contact_email_address" translatable="false">appfabrictr@gmail.com</string>
+    <string name="privacy_policy_url" translatable="false">https://zikirmatik-sayac-ec148.web.app/privacy.html</string>
+
+    <string name="share_title">شارك التطبيق</string>
+    <string name="share_text">يجب أن تجرب هذا التطبيق الرائع لعداد الذكر! https://play.google.com/store/apps/details?id=%1$s</string>
+
 </resources>

@@ -1,3 +1,172 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <resources>
+
+    <string name="action_save">Adana</string>
+    <string name="action_delete">Gogewa</string>
+    <string name="action_cancel">Soke</string>
+    <string name="action_back">Baya</string>
+    <string name="action_close">Rufewa</string>
+    <string name="action_edit">Gyara</string>
+    <string name="action_reset">Sake saitawa</string>
+    <string name="action_confirm">Yarda</string>
+    <string name="action_watch_ad">Kalli Talla</string>
+    <string name="action_get_reward">Karɓi Sakamako</string>
+    <string name="action_rate_app">Mana sharhi</string>
+    <string name="action_no_thanks">A\'a, Na gode</string>
+    <string name="action_yes_enable">Eh, Kunna</string>
+    <string name="action_update">Sabunta</string>
+    <string name="action_later">Daga baya</string>
+
+    <string name="common_success">An yi nasara</string>
+    <string name="common_ok">TOH</string>
+    <string name="common_preview">Dubawa</string>
+    <string name="common_google">Google</string>
+    <string name="common_unknown_date">Kwanan wata da ba\'a sani ba</string>
+    <string name="common_loading">Ana lodawa...</string>
+
+    <string name="home_display_round">Zagaye: %1$d</string>
+    <string name="home_display_target">Manufa: %1$d</string>
+    <string name="default_counter_name">Mai ƙirgawa marar iyaka</string>
+    <string name="prayer_tasbih_counter_name">Tasbihin Sallah</string>
+    <string name="prayer_tasbih_part1">Subhanallah</string>
+    <string name="prayer_tasbih_part2">Alhamdulillah</string>
+    <string name="prayer_tasbih_part3">Allahu Akbar</string>
+    <string name="home_update_available">akwai sabon sigari</string>
+
+    <string name="counters_page_title">Masu ƙirgawa na</string>
+    <string name="counters_page_add_button">Ƙara Mai ƙirgawa</string>
+    <string name="counter_card_count">Ƙirga: %1$d</string>
+    <string name="counter_card_creation_date">An ƙirƙira: %1$s</string>
+    <string name="counter_card_pin">Maƙala a sama</string>
+    <string name="counter_card_unpin">Cire Maƙala</string>
+    <string name="counter_card_add_count">Ƙara Lamba</string>
+    <string name="counter_card_options">Zaɓuɓɓukan mai ƙirgawa</string>
+    <string name="dialog_add_counter_title">Ƙara Mai ƙirgawa</string>
+    <string name="dialog_edit_counter_title">Gyara Mai ƙirgawa</string>
+    <string name="dialog_counter_name_label">Sunan Mai ƙirgawa</string>
+    <string name="dialog_counter_target_label">Manufa</string>
+    <string name="dialog_counter_add_count_label">Lambar da za\'a ƙara</string>
+    <string name="dialog_counter_decrease_count">Lambar da za\'a rage</string>
+    <string name="dialog_delete_counter_title">Goge Mai ƙirgawa</string>
+    <string name="dialog_delete_counter_message">Ka tabbata kana son goge mai ƙirgawa "%1$s"?</string>
+    <string name="dialog_reset_counter_title">Sake saita Mai ƙirgawa</string>
+    <string name="dialog_reset_counter_message">Ka tabbata kana son sake saita mai ƙirgawa "%1$s"?</string>
+
+    <string name="theme_page_title">Jigogi</string>
+    <string name="theme_page_tab_background">Fage</string>
+    <string name="theme_page_tab_display">Jigo</string>
+    <string name="theme_page_default_theme_name">Asali</string>
+    <string name="theme_page_unlock_success">An buɗe kuma an zaɓa cikin nasara!</string>
+    <string name="theme_page_loading_ad">Ana loda talla, da fatan za a jira</string>
+    <string name="theme_preview_background_desc">Fage %1$d%2$s</string>
+    <string name="theme_preview_theme_desc">Jigon Launi %1$d%2$s</string>
+    <string name="theme_preview_state_selected">, An zaba</string>
+    <string name="theme_preview_state_locked">, A kulle</string>
+
+    <string name="settings_title">Saituna</string>
+    <string name="settings_category_ads">Tallace-tallace</string>
+    <string name="settings_ads_removed_title">An Cire Tallace-tallace</string>
+    <string name="settings_ads_removed_subtitle">Kuna amfani da sigar ba tare da talla ba.</string>
+    <string name="settings_remove_ads_title">Cire Tallace-tallace</string>
+    <string name="settings_category_general">Saituna Gabaɗaya</string>
+    <string name="settings_sound">Sauti</string>
+    <string name="settings_vibration">Girgizawa</string>
+    <string name="settings_night_mode">Yanayin Dare</string>
+    <string name="settings_fullscreen_touch">Taɓa Cikakken Fuska</string>
+    <string name="settings_category_accessibility">Sauƙin Amfani</string>
+    <string name="settings_counter_reading_title">Karatun Mai ƙirgawa</string>
+    <string name="settings_counter_reading_subtitle">Idan an kunna, ana karanta adadin mai ƙirgawa da sauti.</string>
+    <string name="settings_tts_engine_title">Injin da Aka Fi So</string>
+    <string name="settings_tts_language_title">Harshen da Aka Fi So</string>
+    <string name="settings_tts_language_loading">Ana lodawa...</string>
+    <string name="settings_tts_language_select">Zaɓi Harshe</string>
+    <string name="settings_tts_speech_rate_title">Gudun Magana</string>
+    <string name="settings_tts_speech_rate_slow">A hankali</string>
+    <string name="settings_tts_speech_rate_fast">Da sauri</string>
+    <string name="settings_tts_huawei_warning">Wannan injin TTS baya goyon bayan daidaita gudun magana.</string>
+    <string name="settings_category_app">Aikace-aikace</string>
+    <string name="settings_backup">Ajiyar Bayani ta atomatik</string>
+    <string name="settings_share">Raba</string>
+    <string name="settings_rate">Mana sharhi</string>
+    <string name="settings_privacy_policy">Manufar Sirri</string>
+    <string name="settings_contact_us">Tuntube Mu</string>
+    <string name="settings_update_banner">Akwai sabon sigar</string>
+
+    <string name="tts_test_sound">33</string>
+
+    <string name="premium_page_title">Cire Tallace-tallace</string>
+    <string name="premium_title">Yi Amfani Ba Tare da Talla ba</string>
+    <string name="premium_description">Da biyan kuɗi sau ɗaya, cire duk tallace-tallace kuma buɗe dukkan fasalulluka.</string>
+    <string name="premium_purchase_button_loading">Ana lodawa...</string>
+    <string name="premium_purchase_button_price">Haɓaka da %1$s</string>
+    <string name="premium_purchase_button_default">Siya</string>
+    <string name="premium_purchase_pending">Ana jiran tabbatar da biyan kuɗin ku...</string>
+    <string name="premium_restore_button">Mayar da Sayayya</string>
+    <string name="premium_restore_loading">Ana mayarwa...</string>
+    <string name="premium_already_purchased_title">An Cire Tallace-tallace</string>
+    <string name="premium_already_purchased_description">Kuna jin daɗin sigar ba tare da talla ba da dukkan fasalulluka. Na gode da goyon bayan ku!</string>
+
+    <string name="dialog_ad_unlock_item_message">Don buɗe wannan abun ciki, dole ne ka fara kallon ɗan gajeren talla.</string>
+    <string name="dialog_ad_add_counter_message">Don ƙara sabon mai ƙirgawa, dole ne ka fara kallon ɗan gajeren talla.</string>
+    <string name="dialog_ad_loading_video">Ana loda tallan bidiyo, da fatan za a jira</string>
+    <string name="dialog_gift_title">Kyauta</string>
+    <string name="dialog_gift_message">Tallace-tallace ba sa samuwa na ɗan lokaci. Mun kunna maka sakamakon ka.</string>
+    <string name="dialog_backup_title">Ajiyar Bayani ta atomatik</string>
+    <string name="dialog_backup_message">Idan ka yarda, za a adana masu ƙirgawa da saitunanka ta atomatik zuwa babban asusunka na %1$s. Wannan yana ba ka damar mayar da bayananka cikin sauƙi idan ka canza waya.</string>
+    <string name="dialog_rate_title">Goyi Bayan Mu</string>
+    <string name="dialog_rate_message">Ra\'ayinka yana da matuƙar muhimmanci a gare mu. Za ka iya ɗaukar ƴan daƙiƙu don mana sharhi da goyon baya?</string>
+    <string name="dialog_error_connection_title">Matsalar Haɗi</string>
+    <string name="dialog_error_connection_message">Ba a iya loda talla ba. Da fatan za a duba haɗin intanet ɗinka kuma a sake gwadawa.</string>
+    <string name="dialog_error_ad_load_title">Ba a Iya Loda Talla ba</string>
+    <string name="dialog_error_ad_load_message">Babu tallan da ke akwai a yanzu. Da fatan za a sake gwadawa daga baya.</string>
+    <string name="dialog_talkback_title">Taimakon Sauƙin Amfani</string>
+    <string name="dialog_talkback_message">Da alama kana amfani da TalkBack. Kana so a karanta mai ƙirgawa da sauti a kowane lamba?</string>
+    <string name="dialog_error_tts_title">Ba Ya Samuwa</string>
+    <string name="dialog_error_tts_message">Fasalin Karatun Mai ƙirgawa ba ya samuwa saboda ba a sami injin TTS (Rubutu-zuwa-Magana) a wayarka ba.</string>
+
+    <string name="dialog_update_mandatory_title">Ana Bukatar Sabuntawa</string>
+    <string name="dialog_update_optional_title">Akwai Sabon Sigar</string>
+    <string name="dialog_update_mandatory_message">Don ci gaba da amfani da manhajar, da fatan za a sabunta zuwa sabuwar sigar.</string>
+    <string name="dialog_update_optional_message">Sabuwar sigar manhajar tana ba da ingantacciyar kwarewa. Kana so ka sabunta?</string>
+    <string name="dialog_update_whats_new">Menene Sabo:</string>
+
+    <string name="snackbar_counter_reset">An sake saita mai ƙirgawa cikin nasara!</string>
+    <string name="snackbar_counter_deleted">An goge mai ƙirgawa cikin nasara!</string>
+    <string name="snackbar_counter_saved">An adana mai ƙirgawa cikin nasara!</string>
+    <string name="snackbar_item_unlocked">An buɗe cikin nasara!</string>
+    <string name="snackbar_restore_no_purchase">Ba a sami siyan da ke aiki ba don mayarwa.</string>
+    <string name="snackbar_restore_error">An sami matsala. Da fatan za a duba haɗin intanet ɗinka kuma a sake gwadawa.</string>
+
+    <string name="content_desc_main_display">Nunin Mai ƙirgawa</string>
+    <string name="content_desc_app_background">Fagen Manhaja</string>
+    <string name="content_desc_increment_button">Ƙara Mai ƙirgawa</string>
+    <string name="content_desc_decrement_button">Rage</string>
+    <string name="content_desc_reset_button">Sake saita Mai ƙirgawa</string>
+    <string name="content_desc_settings_button">Saituna</string>
+    <string name="content_desc_counters_list_button">Jerin Masu ƙirgawa</string>
+    <string name="content_desc_theme_button">Canja Jigo</string>
+    <string name="content_desc_settings_menu_button">Buɗe menu na saituna</string>
+    <string name="content_desc_toggle_panels_button">Nuna/Ɓoye Fuskoki</string>
+    <string name="content_desc_locked_item">A kulle</string>
+    <string name="content_desc_theme_page_background">Fagen Shafi</string>
+    <string name="content_desc_theme_preview_background">Launin fagen jigo</string>
+    <string name="content_desc_theme_preview_overlay">Layer na UI na jigo</string>
+    <string name="content_desc_counter_actions">Ayyukan Mai ƙirgawa</string>
+    <string name="content_desc_counter_actions_expanded">An faɗaɗa</string>
+    <string name="content_desc_counter_actions_collapsed">An naɗe</string>
+
+    <string name="accessibility_value">Adadi </string>
+    <string name="accessibility_target">Manufa </string>
+    <string name="accessibility_divider"> na </string>
+    <string name="accessibility_round">Zagaye </string>
+    <string name="accessibility_tour_completed">%1$s, zagaye na %2$s ya kammala</string>
+    <string name="accessibility_update_available">, akwai sabon sigari</string>
+
+    <string name="contact_email_subject">Ra\'ayi game da Zikiri Counter</string>
+    <string name="contact_email_address" translatable="false">appfabrictr@gmail.com</string>
+    <string name="privacy_policy_url" translatable="false">https://zikirmatik-sayac-ec148.web.app/privacy.html</string>
+
+    <string name="share_title">Raba Manhaja</string>
+    <string name="share_text">Ya kamata ka gwada wannan babbar manhajar mai ƙirgawa zikiri! https://play.google.com/store/apps/details?id=%1$s</string>
+
 </resources>

@@ -1,3 +1,172 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <resources>
+
+    <string name="action_save">Simpan</string>
+    <string name="action_delete">Padam</string>
+    <string name="action_cancel">Batal</string>
+    <string name="action_back">Kembali</string>
+    <string name="action_close">Tutup</string>
+    <string name="action_edit">Sunting</string>
+    <string name="action_reset">Tetapkan Semula</string>
+    <string name="action_confirm">Benarkan</string>
+    <string name="action_watch_ad">Tonton Iklan</string>
+    <string name="action_get_reward">Dapatkan Ganjaran</string>
+    <string name="action_rate_app">Nilaikan Aplikasi</string>
+    <string name="action_no_thanks">Tidak, Terima Kasih</string>
+    <string name="action_yes_enable">Ya, Aktifkan</string>
+    <string name="action_update">Kemas kini</string>
+    <string name="action_later">Kemudian</string>
+
+    <string name="common_success">Berjaya</string>
+    <string name="common_ok">OK</string>
+    <string name="common_preview">Pratonton</string>
+    <string name="common_google">Google</string>
+    <string name="common_unknown_date">Tarikh Tidak Diketahui</string>
+    <string name="common_loading">Memuatkan...</string>
+
+    <string name="home_display_round">Pusingan: %1$d</string>
+    <string name="home_display_target">Sasaran: %1$d</string>
+    <string name="default_counter_name">Pembilang Tanpa Had</string>
+    <string name="prayer_tasbih_counter_name">Tasbih Solat</string>
+    <string name="prayer_tasbih_part1">Subhanallah</string>
+    <string name="prayer_tasbih_part2">Alhamdulillah</string>
+    <string name="prayer_tasbih_part3">Allahu Akbar</string>
+    <string name="home_update_available">kemas kini tersedia</string>
+
+    <string name="counters_page_title">Pembilang Saya</string>
+    <string name="counters_page_add_button">Tambah Pembilang</string>
+    <string name="counter_card_count">Kiraan: %1$d</string>
+    <string name="counter_card_creation_date">Dicipta: %1$s</string>
+    <string name="counter_card_pin">Semat ke Atas</string>
+    <string name="counter_card_unpin">Nyahsemat</string>
+    <string name="counter_card_add_count">Tambah Kiraan</string>
+    <string name="counter_card_options">Pilihan pembilang</string>
+    <string name="dialog_add_counter_title">Tambah Pembilang</string>
+    <string name="dialog_edit_counter_title">Sunting Pembilang</string>
+    <string name="dialog_counter_name_label">Nama Pembilang</string>
+    <string name="dialog_counter_target_label">Sasaran</string>
+    <string name="dialog_counter_add_count_label">Nombor untuk Ditambah</string>
+    <string name="dialog_counter_decrease_count">Nombor untuk Dikurangkan</string>
+    <string name="dialog_delete_counter_title">Padam Pembilang</string>
+    <string name="dialog_delete_counter_message">Adakah anda pasti mahu memadam pembilang "%1$s"?</string>
+    <string name="dialog_reset_counter_title">Tetapkan Semula Pembilang</string>
+    <string name="dialog_reset_counter_message">Adakah anda pasti mahu menetapkan semula pembilang "%1$s"?</string>
+
+    <string name="theme_page_title">Tema</string>
+    <string name="theme_page_tab_background">Latar Belakang</string>
+    <string name="theme_page_tab_display">Tema</string>
+    <string name="theme_page_default_theme_name">Lalai</string>
+    <string name="theme_page_unlock_success">Berjaya dibuka kunci dan dipilih!</string>
+    <string name="theme_page_loading_ad">Memuatkan iklan, sila tunggu</string>
+    <string name="theme_preview_background_desc">Latar Belakang %1$d%2$s</string>
+    <string name="theme_preview_theme_desc">Tema Warna %1$d%2$s</string>
+    <string name="theme_preview_state_selected">, Dipilih</string>
+    <string name="theme_preview_state_locked">, Dikunci</string>
+
+    <string name="settings_title">Tetapan</string>
+    <string name="settings_category_ads">Iklan</string>
+    <string name="settings_ads_removed_title">Iklan Dibuang</string>
+    <string name="settings_ads_removed_subtitle">Anda menggunakan versi bebas iklan.</string>
+    <string name="settings_remove_ads_title">Buang Iklan</string>
+    <string name="settings_category_general">Tetapan Umum</string>
+    <string name="settings_sound">Bunyi</string>
+    <string name="settings_vibration">Getaran</string>
+    <string name="settings_night_mode">Mod Malam</string>
+    <string name="settings_fullscreen_touch">Sentuhan Skrin Penuh</string>
+    <string name="settings_category_accessibility">Kebolehcapaian</string>
+    <string name="settings_counter_reading_title">Bacaan Pembilang</string>
+    <string name="settings_counter_reading_subtitle">Apabila diaktifkan, nilai pembilang dibacakan dengan kuat.</string>
+    <string name="settings_tts_engine_title">Enjin Pilihan</string>
+    <string name="settings_tts_language_title">Bahasa Pilihan</string>
+    <string name="settings_tts_language_loading">Memuatkan...</string>
+    <string name="settings_tts_language_select">Pilih Bahasa</string>
+    <string name="settings_tts_speech_rate_title">Kadar Pertuturan</string>
+    <string name="settings_tts_speech_rate_slow">Perlahan</string>
+    <string name="settings_tts_speech_rate_fast">Laju</string>
+    <string name="settings_tts_huawei_warning">Enjin TTS ini tidak menyokong pelarasan kadar pertuturan.</string>
+    <string name="settings_category_app">Aplikasi</string>
+    <string name="settings_backup">Sandaran Auto</string>
+    <string name="settings_share">Kongsi</string>
+    <string name="settings_rate">Nilaikan Kami</string>
+    <string name="settings_privacy_policy">Dasar Privasi</string>
+    <string name="settings_contact_us">Hubungi Kami</string>
+    <string name="settings_update_banner">Versi baru tersedia</string>
+
+    <string name="tts_test_sound">33</string>
+
+    <string name="premium_page_title">Buang Iklan</string>
+    <string name="premium_title">Nikmati Tanpa Iklan</string>
+    <string name="premium_description">Dengan pembayaran sekali sahaja, buang semua iklan dan buka kunci semua ciri.</string>
+    <string name="premium_purchase_button_loading">Memuatkan...</string>
+    <string name="premium_purchase_button_price">Naik Taraf dengan %1$s</string>
+    <string name="premium_purchase_button_default">Beli</string>
+    <string name="premium_purchase_pending">Pembayaran anda sedang menunggu pengesahan...</string>
+    <string name="premium_restore_button">Pulihkan Pembelian</string>
+    <string name="premium_restore_loading">Memulihkan...</string>
+    <string name="premium_already_purchased_title">Iklan Dibuang</string>
+    <string name="premium_already_purchased_description">Anda menikmati versi bebas iklan dan semua ciri. Terima kasih atas sokongan anda!</string>
+
+    <string name="dialog_ad_unlock_item_message">Untuk membuka kunci kandungan ini, anda mesti menonton iklan pendek terlebih dahulu.</string>
+    <string name="dialog_ad_add_counter_message">Untuk menambah pembilang baru, anda mesti menonton iklan pendek terlebih dahulu.</string>
+    <string name="dialog_ad_loading_video">Memuatkan iklan video, sila tunggu</string>
+    <string name="dialog_gift_title">Hadiah</string>
+    <string name="dialog_gift_message">Iklan tidak tersedia buat sementara waktu. Kami telah mengaktifkan ganjaran anda untuk anda.</string>
+    <string name="dialog_backup_title">Sandaran Auto</string>
+    <string name="dialog_backup_message">Apabila anda membenarkan, pembilang dan tetapan anda akan disandarkan secara automatik ke akaun %1$s utama anda. Ini membolehkan anda memulihkan data anda dengan mudah apabila menukar telefon.</string>
+    <string name="dialog_rate_title">Sokong Kami</string>
+    <string name="dialog_rate_message">Maklum balas anda sangat berharga bagi kami. Sudikah anda meluangkan beberapa saat untuk menilai aplikasi kami dan menyokong kami?</string>
+    <string name="dialog_error_connection_title">Ralat Sambungan</string>
+    <string name="dialog_error_connection_message">Tidak dapat memuatkan iklan. Sila periksa sambungan internet anda dan cuba lagi.</string>
+    <string name="dialog_error_ad_load_title">Gagal Memuatkan Iklan</string>
+    <string name="dialog_error_ad_load_message">Tiada iklan tersedia untuk ditayangkan sekarang. Sila cuba lagi kemudian.</string>
+    <string name="dialog_talkback_title">Bantuan Kebolehcapaian</string>
+    <string name="dialog_talkback_message">Nampaknya anda menggunakan TalkBack. Adakah anda mahu pembilang dibacakan dengan kuat setiap kiraan?</string>
+    <string name="dialog_error_tts_title">Tidak Tersedia</string>
+    <string name="dialog_error_tts_message">Ciri Bacaan Pembilang tidak tersedia kerana tiada enjin TTS (Teks-ke-Ucapan) ditemui pada telefon anda.</string>
+
+    <string name="dialog_update_mandatory_title">Kemas Kini Diperlukan</string>
+    <string name="dialog_update_optional_title">Versi Baru Tersedia</string>
+    <string name="dialog_update_mandatory_message">Untuk terus menggunakan aplikasi, sila kemas kini ke versi terkini.</string>
+    <string name="dialog_update_optional_message">Versi baru aplikasi menawarkan pengalaman yang lebih baik. Adakah anda mahu mengemas kini?</string>
+    <string name="dialog_update_whats_new">Apa yang baru:</string>
+
+    <string name="snackbar_counter_reset">Pembilang berjaya ditetapkan semula!</string>
+    <string name="snackbar_counter_deleted">Pembilang berjaya dipadam!</string>
+    <string name="snackbar_counter_saved">Pembilang berjaya disimpan!</string>
+    <string name="snackbar_item_unlocked">Berjaya dibuka kunci!</string>
+    <string name="snackbar_restore_no_purchase">Tiada pembelian aktif ditemui untuk dipulihkan.</string>
+    <string name="snackbar_restore_error">Berlaku ralat. Sila periksa sambungan internet anda dan cuba lagi.</string>
+
+    <string name="content_desc_main_display">Paparan Pembilang</string>
+    <string name="content_desc_app_background">Latar belakang aplikasi</string>
+    <string name="content_desc_increment_button">Tambah Pembilang</string>
+    <string name="content_desc_decrement_button">Kurangkan</string>
+    <string name="content_desc_reset_button">Tetapkan Semula Pembilang</string>
+    <string name="content_desc_settings_button">Tetapan</string>
+    <string name="content_desc_counters_list_button">Senarai Pembilang</string>
+    <string name="content_desc_theme_button">Tukar Tema</string>
+    <string name="content_desc_settings_menu_button">Buka menu tetapan</string>
+    <string name="content_desc_toggle_panels_button">Tunjuk/Sembunyi Panel</string>
+    <string name="content_desc_locked_item">Dikunci</string>
+    <string name="content_desc_theme_page_background">Latar Belakang Halaman</string>
+    <string name="content_desc_theme_preview_background">Warna latar belakang tema</string>
+    <string name="content_desc_theme_preview_overlay">Lapisan UI tema</string>
+    <string name="content_desc_counter_actions">Tindakan Pembilang</string>
+    <string name="content_desc_counter_actions_expanded">Diperluas</string>
+    <string name="content_desc_counter_actions_collapsed">Diringkaskan</string>
+
+    <string name="accessibility_value">Nilai </string>
+    <string name="accessibility_target">Sasaran </string>
+    <string name="accessibility_divider"> daripada </string>
+    <string name="accessibility_round">Pusingan </string>
+    <string name="accessibility_tour_completed">%1$s, pusingan %2$s selesai</string>
+    <string name="accessibility_update_available">, kemas kini tersedia</string>
+
+    <string name="contact_email_subject">Maklum Balas Pembilang Zikir</string>
+    <string name="contact_email_address" translatable="false">appfabrictr@gmail.com</string>
+    <string name="privacy_policy_url" translatable="false">https://zikirmatik-sayac-ec148.web.app/privacy.html</string>
+
+    <string name="share_title">Kongsi Aplikasi</string>
+    <string name="share_text">Anda patut mencuba aplikasi pembilang zikir yang hebat ini! https://play.google.com/store/apps/details?id=%1$s</string>
+
 </resources>

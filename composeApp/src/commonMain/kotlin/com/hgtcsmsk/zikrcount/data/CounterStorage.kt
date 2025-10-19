@@ -6,7 +6,6 @@ import kotlinx.serialization.builtins.SetSerializer
 import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.json.Json
 
-
 expect fun createSettings(): Settings
 
 class CounterStorage(private val settings: Settings) {
@@ -188,6 +187,14 @@ class CounterStorage(private val settings: Settings) {
         return settings.getBoolean(ARE_ADS_REMOVED_KEY, false)
     }
 
+    fun saveIsTalkbackPromptShown(isShown: Boolean) {
+        settings.putBoolean(TALKBACK_PROMPT_SHOWN_KEY, isShown)
+    }
+
+    fun getIsTalkbackPromptShown(): Boolean {
+        return settings.getBoolean(TALKBACK_PROMPT_SHOWN_KEY, false)
+    }
+
     companion object {
         private const val COUNTERS_KEY = "counters_list"
         private const val LAST_SELECTED_ID_KEY = "last_selected_counter_id"
@@ -209,5 +216,6 @@ class CounterStorage(private val settings: Settings) {
         private const val TTS_LANGUAGE_KEY = "tts_language_key"
         private const val LAST_UPDATE_CHECK_TIMESTAMP_KEY = "last_update_check_timestamp"
         private const val ARE_ADS_REMOVED_KEY = "are_ads_removed"
+        private const val TALKBACK_PROMPT_SHOWN_KEY = "talkback_prompt_shown"
     }
 }

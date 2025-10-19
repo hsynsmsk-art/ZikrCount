@@ -102,8 +102,8 @@ android {
         applicationId = "com.hgtcsmsk.zikrcount"
         minSdk = libs.versions.android.minSdk.get().toInt()
         targetSdk = libs.versions.android.targetSdk.get().toInt()
-        versionCode = 16
-        versionName = "2.16"
+        versionCode = 21
+        versionName = "2.21"
     }
     packaging {
         resources {

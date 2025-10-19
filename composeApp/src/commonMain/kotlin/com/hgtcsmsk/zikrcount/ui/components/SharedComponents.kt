@@ -12,6 +12,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.role
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
 import com.hgtcsmsk.zikrcount.ui.utils.pressable
 import org.jetbrains.compose.resources.DrawableResource
@@ -56,13 +60,20 @@ fun SmallActionButton(
     onClick: () -> Unit = {}
 ) {
     Box(
+        // <-- DEĞİŞİKLİK BURADA BAŞLIYOR -->
         modifier = modifier
             .fillMaxHeight()
             .aspectRatio(1f)
             .clip(CircleShape)
             .background(color = Color.White.copy(alpha = 0.2f))
             .border(1.dp, Color.White.copy(alpha = 0.3f), CircleShape)
+            // Butonun anlamını ve rolünü, tıklanabilir olan bu dış katmana ekliyoruz.
+            .semantics {
+                this.contentDescription = contentDescription
+                this.role = Role.Button
+            }
             .pressable { onClick() },
+        // <-- DEĞİŞİKLİK BİTİYOR -->
         contentAlignment = Alignment.Center
     ) {
         Box(
@@ -76,11 +87,13 @@ fun SmallActionButton(
                 Image(painter = painterResource(iconResource), contentDescription = null, modifier = Modifier.offset(x = -strokeWidth), colorFilter = ColorFilter.tint(strokeColor))
                 Image(painter = painterResource(iconResource), contentDescription = null, modifier = Modifier.offset(y = strokeWidth), colorFilter = ColorFilter.tint(strokeColor))
                 Image(painter = painterResource(iconResource), contentDescription = null, modifier = Modifier.offset(y = -strokeWidth), colorFilter = ColorFilter.tint(strokeColor))
-                Image(painter = painterResource(iconResource), contentDescription = contentDescription, colorFilter = ColorFilter.tint(Color.White))
+                // <-- DEĞİŞİKLİK BURADA: İçerideki resmin açıklamasını null yapıyoruz. -->
+                Image(painter = painterResource(iconResource), contentDescription = null, colorFilter = ColorFilter.tint(Color.White))
             } else {
                 Image(
                     painter = painterResource(iconResource),
-                    contentDescription = contentDescription
+                    // <-- DEĞİŞİKLİK BURADA: İçerideki resmin açıklamasını null yapıyoruz. -->
+                    contentDescription = null
                 )
             }
         }
@@ -100,15 +113,19 @@ fun TabletActionButton(
             .clip(CircleShape)
             .background(color = Color.White.copy(alpha = 0.2f))
             .border(1.dp, Color.White.copy(alpha = 0.3f), CircleShape)
-            .clickable { onClick() },
+            .clickable { onClick() }
+            .semantics {
+                this.contentDescription = contentDescription
+                this.role = Role.Button
+            },
         contentAlignment = Alignment.Center
     ) {
         val colorFilter = if (tintIcon) ColorFilter.tint(Color.White) else null
         Image(
             painter = painterResource(iconResource),
-            contentDescription = contentDescription,
+            contentDescription = null,
             colorFilter = colorFilter,
-            modifier = Modifier.fillMaxSize(0.6f)
+            modifier = Modifier.fillMaxSize(0.7f)
         )
     }
 }

@@ -15,7 +15,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalLifecycleOwner
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.lifecycle.Lifecycle
@@ -29,14 +29,10 @@ import com.google.android.gms.ads.LoadAdError
 @Composable
 actual fun BannerAd(modifier: Modifier, trigger: Int) {
     val context = LocalContext.current
-    val activity = context as? Activity ?: return
     val lifecycleOwner = LocalLifecycleOwner.current
-
     var isAdLoaded by remember { mutableStateOf(false) }
-
-    val adView = remember {
-        AdView(context)
-    }
+    val adView = remember { AdView(context) }
+    val activity = context as? Activity ?: return
 
     DisposableEffect(lifecycleOwner, adView) {
         val observer = LifecycleEventObserver { _, event ->
@@ -54,16 +50,12 @@ actual fun BannerAd(modifier: Modifier, trigger: Int) {
         }
     }
 
-    // ### DÜZELTME: Sabit yükseklik kaldırıldı ###
-    // Box'ın yüksekliğini, içindeki reklamın gerçek yüksekliğine göre
-    // otomatik olarak ayarlaması için .wrapContentHeight() kullanıyoruz.
     Box(
         modifier = modifier
             .fillMaxWidth()
-            .wrapContentHeight() // .height(50.dp) yerine bu kullanıldı.
+            .wrapContentHeight()
             .background(Color.Transparent)
     ) {
-        // AndroidView'ın update bloğu, trigger gibi bir anahtar değiştiğinde yeniden çalışır.
         AndroidView(
             factory = { adView },
             update = { view ->
@@ -73,13 +65,13 @@ actual fun BannerAd(modifier: Modifier, trigger: Int) {
                 view.setAdSize(
                     AdSize.getCurrentOrientationAnchoredAdaptiveBannerAdSize(context, adWidth)
                 )
+
                 view.adUnitId = "ca-app-pub-9986172682955464/9149678118"
 
                 view.setAdListener(object : AdListener() {
                     override fun onAdLoaded() {
                         isAdLoaded = true
                     }
-
                     override fun onAdFailedToLoad(error: LoadAdError) {
                         isAdLoaded = false
                         println("Ad failed to load: ${error.message}")
@@ -88,7 +80,6 @@ actual fun BannerAd(modifier: Modifier, trigger: Int) {
 
                 view.loadAd(AdRequest.Builder().build())
             },
-            // Reklam yüklenmediyse, bu bileşenin hiç yer kaplamamasını sağlıyoruz.
             modifier = if (isAdLoaded) Modifier.fillMaxWidth() else Modifier.height(0.dp)
         )
     }

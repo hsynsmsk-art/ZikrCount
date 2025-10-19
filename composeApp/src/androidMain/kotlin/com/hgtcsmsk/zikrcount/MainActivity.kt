@@ -15,7 +15,6 @@ class MainActivity : ComponentActivity() {
 
     private val viewModel: AppViewModel by viewModels()
 
-    // EKLENDİ: NetworkMonitor'ü başlat
     private val networkMonitor by lazy {
         NetworkMonitor(
             onNetworkAvailable = {
@@ -33,13 +32,17 @@ class MainActivity : ComponentActivity() {
 
     @OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
-        val splashScreen = installSplashScreen()
+        // NİHAİ ÇÖZÜM: Hem başlık çubuğunu kaldıran hem de kenardan kenara
+        // görünümü sağlayan iki yöntem birleştirildi.
+        setTheme(R.style.Theme_App)
         super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
 
+        val splashScreen = installSplashScreen()
         splashScreen.setKeepOnScreenCondition {
             viewModel.isLoading.value
         }
-        enableEdgeToEdge()
+
         window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
 
         setContent {
@@ -48,16 +51,16 @@ class MainActivity : ComponentActivity() {
         }
     }
 
-    // EKLENDİ: onResume ve onPause fonksiyonları
     override fun onResume() {
         super.onResume()
-        // Uygulama ön plana geldiğinde dinleyiciyi kaydet
         networkMonitor.register()
+        // <-- DEĞİŞİKLİK BAŞLIYOR -->
+        viewModel.checkAccessibilityStatusOnResume()
+        // <-- DEĞİŞİKLİK BİTİYOR -->
     }
 
     override fun onPause() {
         super.onPause()
-        // Uygulama arka plana gittiğinde dinleyiciyi kaldır
         networkMonitor.unregister()
     }
 }

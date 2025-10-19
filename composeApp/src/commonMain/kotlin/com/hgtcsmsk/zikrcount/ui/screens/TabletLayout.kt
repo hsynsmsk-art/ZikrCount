@@ -1,4 +1,4 @@
-// composeApp/src/commonMain/kotlin/com/hgtcsmsk/zikrcount/ui/screens/TabletLayout.kt
+// TabletLayout.kt
 
 package com.hgtcsmsk.zikrcount.ui.screens
 
@@ -7,30 +7,34 @@ import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.windowsizeclass.WindowHeightSizeClass
+import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.hgtcsmsk.zikrcount.AppViewModel
 import com.hgtcsmsk.zikrcount.platform.BannerAd
 import com.hgtcsmsk.zikrcount.platform.PlatformActionHandler
+import com.hgtcsmsk.zikrcount.platform.PurchaseState
 import com.hgtcsmsk.zikrcount.platform.SoundPlayer
 import com.hgtcsmsk.zikrcount.ui.components.SuccessSnackBar
-import com.hgtcsmsk.zikrcount.ui.components.TabletActionButton
-import com.hgtcsmsk.zikrcount.ui.dialog.ConfirmationDialog
+import com.hgtcsmsk.zikrcount.ui.theme.ZikrTheme
+import com.hgtcsmsk.zikrcount.ui.theme.withAdjustedFontSizes
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import zikrcount.composeapp.generated.resources.*
+import kotlin.math.max
 
 @Composable
 fun TabletLayout(
@@ -38,187 +42,164 @@ fun TabletLayout(
     platformActionHandler: PlatformActionHandler,
     soundPlayer: SoundPlayer,
     onNavigateToTheme: () -> Unit,
-    onNavigateToSettings: () -> Unit
+    onNavigateToSettings: () -> Unit,
+    windowSizeClass: WindowSizeClass
 ) {
-    val selectedBackground by viewModel.selectedBackground.collectAsState()
-    val isNightModeEnabled by viewModel.isNightModeEnabled.collectAsState()
-    val showBackupDialog by viewModel.showBackupConfirmationDialog.collectAsState()
-    val snackBarHostState = remember { SnackbarHostState() }
-    var isDualPaneVisible by remember { mutableStateOf(true) }
-    val bannerAdTrigger = 0
-    val isNetworkAvailable by viewModel.isNetworkAvailable.collectAsState()
-    val isAdPlaying by viewModel.isAdPlaying.collectAsState()
-
-    // --> YENİ: Bildirim ikonunu göstermek için ViewModel'den durumu dinliyoruz.
-    val showUpdateBadge by viewModel.showUpdateBadge.collectAsState()
-
-    var rememberedStatusBarHeight by remember { mutableStateOf(0.dp) }
-    val currentStatusBarHeight = WindowInsets.statusBars.asPaddingValues().calculateTopPadding()
-    if (currentStatusBarHeight > 0.dp) {
-        rememberedStatusBarHeight = currentStatusBarHeight
+    val isPhoneLandscape = windowSizeClass.heightSizeClass == WindowHeightSizeClass.Compact
+    val localTypography = if (isPhoneLandscape) {
+        MaterialTheme.typography.withAdjustedFontSizes(-2)
+    } else {
+        MaterialTheme.typography
     }
 
-    Box(modifier = Modifier.fillMaxSize()) {
-        Image(
-            painter = painterResource(findBackgroundResource(selectedBackground)),
-            modifier = Modifier.fillMaxSize(),
-            contentDescription = stringResource(Res.string.content_desc_app_background),
-            contentScale = ContentScale.Crop
-        )
-
-        if (isNightModeEnabled) {
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .background(Color.Black.copy(alpha = 0.8f))
-            )
-        }
-
-        Scaffold(
-            contentWindowInsets = WindowInsets(0.dp),
-            containerColor = Color.Transparent,
-            snackbarHost = {
-                SnackbarHost(
-                    hostState = snackBarHostState,
-                    modifier = Modifier.align(Alignment.BottomCenter)
-                        .navigationBarsPadding()
-                        .padding(bottom = 80.dp, start = 24.dp, end = 24.dp),
-                    snackbar = { data -> SuccessSnackBar(data = data) }
-                )
-            }
-        ) { innerPadding ->
-            Column(modifier = Modifier.fillMaxSize()) {
-                Spacer(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(rememberedStatusBarHeight)
-                        .background(if (isAdPlaying) Color.Black else Color.Transparent)
-                )
-
-                BoxWithConstraints(
-                    modifier = Modifier
-                        .weight(1f)
-                        .padding(innerPadding)
-                        .padding(horizontal = 16.dp, vertical = 8.dp)
-                ) {
-                    val animationSpecFloat = tween<Float>(durationMillis = 600)
-                    val animationSpecDp = tween<Dp>(durationMillis = 600)
-
-                    val rotationAngle by animateFloatAsState(
-                        targetValue = if (isDualPaneVisible) 0f else 180f,
-                        animationSpec = animationSpecFloat, label = "rotation"
-                    )
-
-                    val leftPaneAlpha by animateFloatAsState(
-                        targetValue = if (isDualPaneVisible) 1f else 0f,
-                        animationSpec = tween(durationMillis = 400), label = "leftPaneAlpha"
-                    )
-
-                    val paneWidth = this.maxWidth * 0.45f
-                    val offsetValue = (paneWidth / 2) + 8.dp
-
-                    val paneOffset by animateDpAsState(
-                        targetValue = if (isDualPaneVisible) offsetValue else 0.dp,
-                        animationSpec = animationSpecDp, label = "paneOffset"
-                    )
-
-                    Box(
-                        modifier = Modifier.fillMaxSize(),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        if (leftPaneAlpha > 0f) {
-                            Box(
-                                modifier = Modifier
-                                    .offset(x = -paneOffset)
-                                    .fillMaxWidth(0.45f)
-                                    .aspectRatio(9f / 18f)
-                                    .graphicsLayer { alpha = leftPaneAlpha }
-                            ) {
-                                TabletCountersPageContent(viewModel, soundPlayer, snackBarHostState)
-                            }
-                        }
-
-                        Box(
-                            modifier = Modifier
-                                .offset(x = paneOffset)
-                                .fillMaxWidth(0.45f)
-                                .aspectRatio(9f / 18f)
-                        ) {
-                            TabletHomePageContent(
-                                viewModel,
-                                platformActionHandler,
-                                soundPlayer,
-                                snackBarHostState,
-                                rotationAngle = rotationAngle,
-                                onToggle = { isDualPaneVisible = !isDualPaneVisible }
-                            )
-                        }
-                    }
-
-                    Box(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .align(Alignment.TopCenter)
-                            .padding(top = 12.dp)
-                    ) {
-                        TabletActionButton(
-                            iconResource = Res.drawable.brush,
-                            contentDescription = stringResource(Res.string.content_desc_theme_button),
-                            onClick = onNavigateToTheme,
-                            modifier = Modifier.align(Alignment.TopStart).size(44.dp)
-                        )
-
-                        // --> YENİ: Tabletteki ayarlar butonu da artık bir Box içinde.
-                        Box(
-                            modifier = Modifier.align(Alignment.TopEnd),
-                            contentAlignment = Alignment.TopEnd
-                        ) {
-                            TabletActionButton(
-                                iconResource = Res.drawable.setting,
-                                contentDescription = stringResource(Res.string.content_desc_settings_button),
-                                onClick = onNavigateToSettings,
-                                modifier = Modifier.size(44.dp)
-                            )
-                            if (showUpdateBadge) {
-                                Box(
-                                    modifier = Modifier
-                                        .padding(1.dp)
-                                        .size(12.dp)
-                                        .background(Color.Red, CircleShape)
-                                        .border(1.dp, Color.White, CircleShape)
-                                )
-                            }
-                        }
+    MaterialTheme(typography = localTypography) {
+        val selectedBackground by viewModel.selectedBackground.collectAsState()
+        val isNightModeEnabled by viewModel.isNightModeEnabled.collectAsState()
+        val snackBarHostState = remember { SnackbarHostState() }
+        LaunchedEffect(key1 = Unit) {
+            viewModel.eventFlow.collect { event ->
+                when (event) {
+                    is AppViewModel.UiEvent.ShowSnackbar -> {
+                        snackBarHostState.showSnackbar(event.message)
                     }
                 }
             }
         }
+        var isDualPaneVisible by remember { mutableStateOf(true) }
+        val bannerAdTrigger = 0
+        val isNetworkAvailable by viewModel.isNetworkAvailable.collectAsState()
+        val purchaseState by viewModel.purchaseState.collectAsState()
 
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .align(Alignment.BottomCenter)
-                .navigationBarsPadding(),
-            contentAlignment = Alignment.Center
-        ) {
-            if (isNetworkAvailable) {
-                BannerAd(
-                    modifier = Modifier.fillMaxWidth(),
-                    trigger = bannerAdTrigger
+        BoxWithConstraints(modifier = Modifier.fillMaxSize()) {
+            val isLandscape = maxWidth > maxHeight
+
+            Image(
+                painter = painterResource(findBackgroundResource(selectedBackground)),
+                modifier = Modifier.fillMaxSize(),
+                contentDescription = stringResource(Res.string.content_desc_app_background),
+                contentScale = ContentScale.Crop
+            )
+
+            if (isNightModeEnabled) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(Color.Black.copy(alpha = 0.8f))
                 )
             }
-        }
 
-        if (showBackupDialog) {
-            val accountType = stringResource(Res.string.common_google)
-            val dialogMessage = stringResource(Res.string.dialog_backup_message, accountType)
-            ConfirmationDialog(
-                title = stringResource(Res.string.dialog_backup_title),
-                question = dialogMessage,
-                confirmButtonText = stringResource(Res.string.action_confirm),
-                onDismiss = { viewModel.onBackupConfirmationResult(false) },
-                onConfirm = { viewModel.onBackupConfirmationResult(true) }
-            )
+            Scaffold(
+                containerColor = Color.Transparent,
+                snackbarHost = {
+                    SnackbarHost(hostState = snackBarHostState) { data ->
+                        SuccessSnackBar(data = data)
+                    }
+                },
+                bottomBar = {
+                    // Kapsayıcı, sistemin navigasyon çubuğu boşluklarını (sadece yatayda)
+                    // dikkate alarak kendi kendine boşluk bırakacak.
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .windowInsetsPadding(WindowInsets.navigationBars.only(WindowInsetsSides.Horizontal)),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        if (isNetworkAvailable && purchaseState !is PurchaseState.Purchased) {
+                            val bannerHeight = if (isPhoneLandscape) 60.dp else 140.dp
+                            BannerAd(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .height(bannerHeight),
+                                trigger = bannerAdTrigger
+                            )
+                        }
+                    }
+                }
+            ) { innerPadding ->
+                val layoutDirection = LocalLayoutDirection.current
+
+                // --- ANA İÇERİK ALANI İÇİN DEĞİŞİKLİK ---
+                val contentPadding = if (isLandscape && isPhoneLandscape) {
+                    // Telefon Yatay Modu için Simetrik İçerik Alanı
+                    val startPadding = innerPadding.calculateStartPadding(layoutDirection)
+                    val endPadding = innerPadding.calculateEndPadding(layoutDirection)
+                    val maxHorizontalPadding = remember(startPadding, endPadding) { max(startPadding.value, endPadding.value) }.dp
+
+                    PaddingValues(
+                        top = innerPadding.calculateTopPadding(),
+                        start = maxHorizontalPadding,
+                        end = maxHorizontalPadding,
+                        bottom = innerPadding.calculateBottomPadding() + 8.dp
+                    )
+                } else if (isLandscape) {
+                    // Tablet Yatay Modu (orijinal davranış)
+                    PaddingValues(
+                        top = innerPadding.calculateTopPadding(),
+                        start = innerPadding.calculateStartPadding(layoutDirection),
+                        end = innerPadding.calculateEndPadding(layoutDirection),
+                        bottom = innerPadding.calculateBottomPadding() + 8.dp
+                    )
+                }
+                else {
+                    // Dikey Mod (orijinal davranış)
+                    PaddingValues(
+                        top = innerPadding.calculateTopPadding(),
+                        start = innerPadding.calculateStartPadding(layoutDirection),
+                        end = innerPadding.calculateEndPadding(layoutDirection),
+                        bottom = 0.dp
+                    )
+                }
+
+                BoxWithConstraints(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(contentPadding)
+                ) {
+                    val currentMaxWidth = maxWidth
+                    val paneModifier = if (isLandscape) Modifier.fillMaxHeight() else Modifier.aspectRatio(9f / 18f)
+
+                    val animationSpecFloat = tween<Float>(durationMillis = 600)
+                    val animationSpecDp = tween<Dp>(durationMillis = 600)
+                    val rotationAngle by animateFloatAsState(targetValue = if (isDualPaneVisible) 0f else 360f, animationSpec = animationSpecFloat, label = "rotation")
+                    val leftPaneAlpha by animateFloatAsState(targetValue = if (isDualPaneVisible) 1f else 0f, animationSpec = tween(durationMillis = 400), label = "leftPaneAlpha")
+
+                    val paneWidth = currentMaxWidth * 0.45f
+                    val offsetValue = (paneWidth / 2) + 8.dp
+                    val paneOffset by animateDpAsState(targetValue = if (isDualPaneVisible) offsetValue else 0.dp, animationSpec = animationSpecDp, label = "paneOffset")
+
+                    Box(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(horizontal = 16.dp, vertical = 8.dp),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        if (leftPaneAlpha > 0f) {
+                            Box(
+                                modifier = Modifier.offset(x = -paneOffset).fillMaxWidth(0.45f).then(paneModifier).graphicsLayer { alpha = leftPaneAlpha }
+                            ) {
+                                TabletCountersPageContent(viewModel, soundPlayer, snackBarHostState, isLandscape = isLandscape)
+                            }
+                        }
+
+                        Box(
+                            modifier = Modifier.offset(x = paneOffset).fillMaxWidth(0.45f).then(paneModifier)
+                        ) {
+                            TabletHomePageContent(
+                                viewModel = viewModel,
+                                platformActionHandler = platformActionHandler,
+                                soundPlayer = soundPlayer,
+                                snackBarHostState = snackBarHostState,
+                                rotationAngle = rotationAngle,
+                                onToggle = { isDualPaneVisible = !isDualPaneVisible },
+                                onNavigateToTheme = onNavigateToTheme,
+                                onNavigateToSettings = onNavigateToSettings,
+                                isLandscape = isLandscape,
+                                isTablet = !isPhoneLandscape
+                            )
+                        }
+                    }
+                }
+            }
         }
     }
 }

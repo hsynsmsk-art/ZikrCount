@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="app_name">Dhikr Counter</string>
+
+  <string name="error_no_share_app">Paylaşım yapılabilecek bir uygulama bulunamadı.</string>
+  <string name="error_no_store_or_browser">Google Play Store veya web tarayıcı bulunamadı.</string>
+  <string name="error_cannot_open_settings">Ayarlar açılamadı.</string>
+  <string name="error_cannot_open_link_app">Bu bağlantıyı açacak bir uygulama bulunamadı.</string>
+  <string name="error_cannot_open_link">Bağlantı açılamadı.</string>
+  <string name="error_no_email_app">E-posta gönderecek bir uygulama bulunamadı.</string>
+  <string name="error_cannot_send_email">E-posta gönderilemedi.</string>
+
+</resources>

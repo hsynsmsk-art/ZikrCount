@@ -1,5 +1,6 @@
 package com.hgtcsmsk.zikrcount.ui.dialog
 
+import androidx.compose.foundation.Image // Image import'u düzeltildi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -16,16 +17,18 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign // TextAlign import'u düzeltildi
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import com.hgtcsmsk.zikrcount.ui.theme.ZikrTheme
 import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.resources.stringResource // stringResource import'u eklendi
 import zikrcount.composeapp.generated.resources.*
 
 @Composable
 fun TtsSelectionDialog(
-    title: String,
+    title: String, // Başlık dışarıdan geldiği için stringResource kullanmıyoruz
     options: List<Pair<String, String>>,
     selectedValue: String,
     onSelect: (String) -> Unit,
@@ -59,18 +62,18 @@ fun TtsSelectionDialog(
                     // Kapatma butonuyla aynı genişlikte boş bir alan ekleyerek başlığı ortalıyoruz.
                     Spacer(modifier = Modifier.size(24.dp))
                     Text(
-                        text = title,
+                        text = title, // Başlık dışarıdan geliyor
                         style = MaterialTheme.typography.bodyLarge,
                         color = Color.Black,
                         fontWeight = FontWeight.Bold,
                         modifier = Modifier.weight(1f),
-                        textAlign = androidx.compose.ui.text.style.TextAlign.Center, // <--- DÜZELTİLDİ
+                        textAlign = TextAlign.Center, // TextAlign import'u kullanıldı
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis
                     )
-                    androidx.compose.foundation.Image(
+                    Image( // androidx.compose.foundation.Image kullanıldı
                         painter = painterResource(Res.drawable.action_delete),
-                        contentDescription = "Kapat",
+                        contentDescription = stringResource(Res.string.action_close), // Metin string.xml'den alındı
                         modifier = Modifier
                             .size(24.dp)
                             .clickable { onDismiss() }

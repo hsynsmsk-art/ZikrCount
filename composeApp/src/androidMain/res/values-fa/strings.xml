@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="app_name">شمارنده ذکر</string> <string name="error_no_share_app">برنامه‌ای برای اشتراک‌گذاری یافت نشد.</string>
+  <string name="error_no_store_or_browser">فروشگاه Google Play یا مرورگر وب یافت نشد.</string>
+  <string name="error_cannot_open_settings">باز کردن تنظیمات امکان‌پذیر نبود.</string>
+  <string name="error_cannot_open_link_app">برنامه‌ای برای باز کردن این پیوند یافت نشد.</string>
+  <string name="error_cannot_open_link">باز کردن پیوند امکان‌پذیر نبود.</string>
+  <string name="error_no_email_app">برنامه‌ای برای ارسال ایمیل یافت نشد.</string>
+  <string name="error_cannot_send_email">ارسال ایمیل امکان‌پذیر نبود.</string>
+
+</resources>

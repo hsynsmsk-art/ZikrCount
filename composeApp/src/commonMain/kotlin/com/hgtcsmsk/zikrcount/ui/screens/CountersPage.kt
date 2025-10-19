@@ -27,6 +27,11 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.clearAndSetSemantics
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.role
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -40,6 +45,7 @@ import com.hgtcsmsk.zikrcount.platform.RewardedAdState
 import com.hgtcsmsk.zikrcount.platform.ShowAdResult
 import com.hgtcsmsk.zikrcount.platform.SoundPlayer
 import com.hgtcsmsk.zikrcount.platform.SystemBackButtonHandler
+import com.hgtcsmsk.zikrcount.platform.formatTimestampToLocalDateTime
 import com.hgtcsmsk.zikrcount.platform.rememberAdController
 import com.hgtcsmsk.zikrcount.ui.components.SuccessSnackBar
 import com.hgtcsmsk.zikrcount.ui.dialog.ConfirmationDialog
@@ -154,7 +160,7 @@ fun CountersPage(
         Box(modifier = Modifier.fillMaxSize()) {
             Image(
                 painter = painterResource(findBackgroundResource(selectedBackground)),
-                contentDescription = stringResource(Res.string.content_desc_app_background),
+                contentDescription = null,
                 modifier = Modifier.fillMaxSize(),
                 contentScale = ContentScale.Crop
             )
@@ -257,7 +263,10 @@ fun CountersPage(
                         modifier = Modifier
                             .clip(CircleShape)
                             .fillMaxSize(0.9f)
+                            // --- DEĞİŞİKLİK BURADA BAŞLIYOR ---
+                            .semantics { role = Role.Button } // Bu satırı ekleyin
                             .clickable(
+                                // --- DEĞİŞİKLİK BURADA BİTİYOR ---
                                 interactionSource = interactionSource,
                                 indication = null,
                                 onClick = {
@@ -278,11 +287,17 @@ fun CountersPage(
                 }
             }
             if (isShowingAdLoadingIndicator) {
+                val loadingMessage = stringResource(Res.string.dialog_ad_loading_video)
                 Box(
+                    // <-- DEĞİŞİKLİK BURADA BAŞLIYOR -->
                     modifier = Modifier
                         .fillMaxSize()
                         .background(Color.Black.copy(alpha = 0.5f))
-                        .clickable(enabled = false, onClick = {}),
+                        .clickable(enabled = false, onClick = {})
+                        .semantics(mergeDescendants = true) {
+                            contentDescription = loadingMessage
+                        },
+                    // <-- DEĞİŞİKLİK BİTİYOR -->
                     contentAlignment = Alignment.Center
                 ) {
                     CircularProgressIndicator(color = ZikrTheme.colors.primary)
@@ -482,7 +497,7 @@ fun CounterCard(
                     Box {
                         Image(
                             painter = painterResource(Res.drawable.ellipsis),
-                            contentDescription = stringResource(Res.string.action_edit),
+                            contentDescription = stringResource(Res.string.counter_card_options),
                             colorFilter = ColorFilter.tint(textColor),
                             modifier = Modifier
                                 .size(24.dp)
@@ -645,19 +660,12 @@ fun CounterCard(
 @Composable
 private fun rememberFormattedDateTime(timestamp: Long): String {
     val unknownDateText = stringResource(Res.string.common_unknown_date)
+
+    // remember bloğu, gereksiz yeniden hesaplamayı önlemek için kalabilir.
     return remember(timestamp, unknownDateText) {
-        try {
-            val instant = Instant.fromEpochMilliseconds(timestamp)
-            val localDateTime = instant.toLocalDateTime(TimeZone.currentSystemDefault())
-            val day = localDateTime.dayOfMonth.toString().padStart(2, '0')
-            val month = localDateTime.monthNumber.toString().padStart(2, '0')
-            val year = localDateTime.year
-            val hour = localDateTime.hour.toString().padStart(2, '0')
-            val minute = localDateTime.minute.toString().padStart(2, '0')
-            "$day.$month.$year $hour:$minute"
-        } catch (e: Exception) {
-            unknownDateText
-        }
+        // Artık platforma özel, yerelleştirilmiş fonksiyonu çağırıyoruz.
+        // Hata kontrolü ve formatlama 'actual' tarafta yapılır.
+        formatTimestampToLocalDateTime(timestamp, unknownDateText)
     }
 }
 
@@ -669,6 +677,7 @@ fun ModifyCountDialog(
     onDismiss: () -> Unit,
     onConfirm: (amount: Int) -> Unit
 ) {
+    // ... fonksiyonun başındaki mantık aynı ...
     var amountString by remember { mutableStateOf("") }
     val amountInt = amountString.toIntOrNull() ?: 0
     val target = counter.target
@@ -693,6 +702,7 @@ fun ModifyCountDialog(
         }
     }
     val isConfirmButtonEnabled = amountInt > 0
+    val previewDescription = stringResource(Res.string.common_preview) + ": " + stringResource(Res.string.home_display_target, target) + ", " + stringResource(Res.string.home_display_round, finalTur) + ", " + stringResource(Res.string.accessibility_value) + finalCount
 
     var dialogWidth by remember { mutableStateOf(0.dp) }
     val density = LocalDensity.current
@@ -710,6 +720,7 @@ fun ModifyCountDialog(
                 .background(ZikrTheme.colors.surface),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
+            // ... Başlık Row'u aynı ...
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -743,6 +754,7 @@ fun ModifyCountDialog(
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.Center
                 ) {
+                    // ... OutlinedTextField aynı ...
                     OutlinedTextField(
                         value = amountString,
                         onValueChange = { amountString = it.filter { char -> char.isDigit() } },
@@ -766,19 +778,24 @@ fun ModifyCountDialog(
                         modifier = Modifier
                             .fillMaxWidth(0.8f)
                             .background(color = Color.DarkGray, shape = RoundedCornerShape(percent = 15))
-                            .padding(top = 8.dp),
+                            .padding(top = 8.dp)
+                            .semantics { contentDescription = previewDescription },
                         horizontalAlignment = Alignment.CenterHorizontally,
                         verticalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
                         Text(
                             text = stringResource(Res.string.common_preview),
                             style = MaterialTheme.typography.labelMedium,
-                            color = ZikrTheme.colors.textOnPrimary
+                            color = ZikrTheme.colors.textOnPrimary,
+                            // --- DEĞİŞİKLİK ---
+                            modifier = Modifier.clearAndSetSemantics { }
                         )
                         Text(
                             text = finalCount.toString(),
                             color = ZikrTheme.colors.textOnPrimary,
-                            textAlign = TextAlign.Center, fontSize = 50.sp
+                            textAlign = TextAlign.Center, fontSize = 50.sp,
+                            // --- DEĞİŞİKLİK ---
+                            modifier = Modifier.clearAndSetSemantics { }
                         )
                         Row(
                             modifier = Modifier.fillMaxWidth(0.95f).padding(8.dp),
@@ -786,18 +803,23 @@ fun ModifyCountDialog(
                             verticalAlignment = Alignment.CenterVertically
                         ) {
                             Text(
-                                text = stringResource(Res.string.home_display_round, finalTur),
-                                style = MaterialTheme.typography.labelMedium,
-                                color = ZikrTheme.colors.textOnPrimary
-                            )
-                            Text(
                                 text = stringResource(Res.string.home_display_target, target),
                                 style = MaterialTheme.typography.labelMedium,
-                                color = ZikrTheme.colors.textOnPrimary
+                                color = ZikrTheme.colors.textOnPrimary,
+                                // --- DEĞİŞİKLİK ---
+                                modifier = Modifier.clearAndSetSemantics { }
+                            )
+                            Text(
+                                text = stringResource(Res.string.home_display_round, finalTur),
+                                style = MaterialTheme.typography.labelMedium,
+                                color = ZikrTheme.colors.textOnPrimary,
+                                // --- DEĞİŞİKLİK ---
+                                modifier = Modifier.clearAndSetSemantics { }
                             )
                         }
                     }
                 }
+                // ... DialogButtons aynı ...
                 DialogButtons(
                     onConfirm = {
                         val finalAmount = if (isAdding) amountInt else -amountInt

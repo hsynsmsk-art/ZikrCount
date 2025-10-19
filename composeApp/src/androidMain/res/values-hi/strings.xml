@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="app_name">ज़िक्र काउंटर</string> <string name="error_no_share_app">शेयरिंग को संभालने के लिए कोई ऐप नहीं मिला।</string>
+  <string name="error_no_store_or_browser">Google Play Store या वेब ब्राउज़र नहीं मिला।</string>
+  <string name="error_cannot_open_settings">सेटिंग्स नहीं खोली जा सकीं।</string>
+  <string name="error_cannot_open_link_app">इस लिंक को खोलने के लिए कोई ऐप नहीं मिला।</string>
+  <string name="error_cannot_open_link">लिंक नहीं खोला जा सका।</string>
+  <string name="error_no_email_app">ईमेल भेजने के लिए कोई ऐप नहीं मिला।</string>
+  <string name="error_cannot_send_email">ईमेल नहीं भेजा जा सका।</string>
+
+</resources>

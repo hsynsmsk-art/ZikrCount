@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="app_name">عداد الذكر</string> <string name="error_no_share_app">لم يتم العثور على تطبيق للتعامل مع المشاركة.</string>
+  <string name="error_no_store_or_browser">لم يتم العثور على متجر Google Play أو متصفح الويب.</string>
+  <string name="error_cannot_open_settings">تعذر فتح الإعدادات.</string>
+  <string name="error_cannot_open_link_app">لم يتم العثور على تطبيق لفتح هذا الرابط.</string>
+  <string name="error_cannot_open_link">تعذر فتح الرابط.</string>
+  <string name="error_no_email_app">لم يتم العثور على تطبيق لإرسال البريد الإلكتروني.</string>
+  <string name="error_cannot_send_email">تعذر إرسال البريد الإلكتروني.</string>
+
+</resources>

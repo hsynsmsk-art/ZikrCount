@@ -7,38 +7,31 @@ import android.content.Context
 import android.content.Intent
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
-import android.net.Uri
 import android.os.Build
 import android.os.VibrationEffect
 import android.os.Vibrator
+import android.view.accessibility.AccessibilityManager
+import android.widget.Toast
 import androidx.activity.compose.BackHandler
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
+import androidx.core.content.pm.PackageInfoCompat
+import androidx.core.net.toUri
 import com.google.android.play.core.review.ReviewManagerFactory
+import com.hgtcsmsk.zikrcount.R
 import com.hgtcsmsk.zikrcount.data.CounterStorage
 import com.hgtcsmsk.zikrcount.data.appContext
 import com.hgtcsmsk.zikrcount.data.createSettings
+import org.jetbrains.compose.resources.stringResource
+import zikrcount.composeapp.generated.resources.*
 
-class AndroidPlatform : Platform {
-    override val name: String = "Android ${Build.VERSION.SDK_INT}"
-}
-
-actual fun getPlatform(): Platform = AndroidPlatform()
-
-// --- YENİ EKLENDİ ---
 actual fun getAppVersionCode(): Int {
     return try {
         val packageInfo = appContext.packageManager.getPackageInfo(appContext.packageName, 0)
-        packageInfo.versionCode
-    } catch (e: Exception) {
-        // Hata durumunda varsayılan olarak düşük bir değer dön,
-        // böylece güncelleme kontrolü güvenli tarafta kalır.
-        1
-    }
+        PackageInfoCompat.getLongVersionCode(packageInfo).toInt()
+    } catch (e: Exception) { e.printStackTrace(); 1}
 }
-// --- YENİ EKLENEN KISIM SONU ---
-
 
 @Composable
 actual fun SystemBackButtonHandler(onBackPressed: () -> Unit) {
@@ -50,34 +43,45 @@ actual fun rememberPlatformActionHandler(): PlatformActionHandler {
     val context = LocalContext.current
     val activity = context as? Activity
     val reviewManager = remember { ReviewManagerFactory.create(appContext) }
+    val shareTextFormat = stringResource(Res.string.share_text)
+    val shareTitle = stringResource(Res.string.share_title)
+    val contactEmailAddress = stringResource(Res.string.contact_email_address)
+    val contactEmailSubject = stringResource(Res.string.contact_email_subject)
 
     return remember {
         object : PlatformActionHandler {
             override fun showShareSheet() {
+                val shareText = String.format(shareTextFormat, appContext.packageName)
                 val sendIntent: Intent = Intent().apply {
                     action = Intent.ACTION_SEND
-                    putExtra(Intent.EXTRA_TEXT, "Bu harika zikirmatik uygulamasını mutlaka deneyin! https://play.google.com/store/apps/details?id=${appContext.packageName}")
+                    putExtra(Intent.EXTRA_TEXT, shareText)
                     type = "text/plain"
                 }
-                val shareIntent = Intent.createChooser(sendIntent, null).apply {
-                    addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                val shareIntent = Intent.createChooser(sendIntent, shareTitle)
+                if (shareIntent.resolveActivity(appContext.packageManager) != null) {
+                    appContext.startActivity(shareIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
+                } else {
+                    Toast.makeText(appContext, appContext.getString(R.string.error_no_share_app), Toast.LENGTH_SHORT).show()
                 }
-                appContext.startActivity(shareIntent)
             }
 
             override fun openAppStore() {
-                val intent = Intent(Intent.ACTION_VIEW).apply {
-                    data = android.net.Uri.parse("market://details?id=${appContext.packageName}")
+                val marketUri = "market://details?id=${appContext.packageName}".toUri()
+                val intent = Intent(Intent.ACTION_VIEW, marketUri).apply {
                     addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 }
                 try {
                     appContext.startActivity(intent)
-                } catch (e: ActivityNotFoundException) {
-                    val fallbackIntent = Intent(Intent.ACTION_VIEW).apply {
-                        data = android.net.Uri.parse("https://play.google.com/store/apps/details?id=${appContext.packageName}")
+                } catch (_: ActivityNotFoundException) {
+                    val webUri = "https://play.google.com/store/apps/details?id=${appContext.packageName}".toUri()
+                    val fallbackIntent = Intent(Intent.ACTION_VIEW, webUri).apply {
                         addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                     }
-                    appContext.startActivity(fallbackIntent)
+                    if (fallbackIntent.resolveActivity(appContext.packageManager) != null) {
+                        appContext.startActivity(fallbackIntent)
+                    } else {
+                        Toast.makeText(appContext, appContext.getString(R.string.error_no_store_or_browser), Toast.LENGTH_SHORT).show()
+                    }
                 }
             }
 
@@ -98,10 +102,11 @@ actual fun rememberPlatformActionHandler(): PlatformActionHandler {
                         if (task.isSuccessful) {
                             val reviewInfo = task.result
                             val flow = reviewManager.launchReviewFlow(activity, reviewInfo)
-                            flow.addOnCompleteListener { _ -> }
-                        }
+                            flow.addOnCompleteListener { _ ->
+                            }
+                        } else { openAppStore() }
                     }
-                }
+                } else { openAppStore() }
             }
 
             override fun openTtsSettings() {
@@ -110,7 +115,7 @@ actual fun rememberPlatformActionHandler(): PlatformActionHandler {
                         addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                     }
                     appContext.startActivity(intent)
-                } catch (e: ActivityNotFoundException) {
+                } catch (_: ActivityNotFoundException) {
                     try {
                         val intent = Intent(android.provider.Settings.ACTION_SETTINGS).apply {
                             addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
@@ -118,32 +123,43 @@ actual fun rememberPlatformActionHandler(): PlatformActionHandler {
                         appContext.startActivity(intent)
                     } catch (e2: Exception) {
                         e2.printStackTrace()
+                        Toast.makeText(appContext, appContext.getString(R.string.error_cannot_open_settings), Toast.LENGTH_SHORT).show()
                     }
                 }
             }
 
             override fun openUrl(url: String) {
                 try {
-                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url)).apply {
+                    val intent = Intent(Intent.ACTION_VIEW, url.toUri()).apply {
                         addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                     }
-                    appContext.startActivity(intent)
+                    if (intent.resolveActivity(appContext.packageManager) != null) {
+                        appContext.startActivity(intent)
+                    } else {
+                        Toast.makeText(appContext, appContext.getString(R.string.error_cannot_open_link_app), Toast.LENGTH_SHORT).show()
+                    }
                 } catch (e: Exception) {
                     e.printStackTrace()
+                    Toast.makeText(appContext, appContext.getString(R.string.error_cannot_open_link), Toast.LENGTH_SHORT).show()
                 }
             }
 
             override fun sendEmail(address: String, subject: String) {
                 try {
                     val intent = Intent(Intent.ACTION_SENDTO).apply {
-                        data = Uri.parse("mailto:") // Sadece e-posta uygulamaları
+                        data = "mailto:".toUri()
                         putExtra(Intent.EXTRA_EMAIL, arrayOf(address))
                         putExtra(Intent.EXTRA_SUBJECT, subject)
                         addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                     }
-                    appContext.startActivity(intent)
+                    if (intent.resolveActivity(appContext.packageManager) != null) {
+                        appContext.startActivity(intent)
+                    } else {
+                        Toast.makeText(appContext, appContext.getString(R.string.error_no_email_app), Toast.LENGTH_SHORT).show()
+                    }
                 } catch (e: Exception) {
                     e.printStackTrace()
+                    Toast.makeText(appContext, appContext.getString(R.string.error_cannot_send_email), Toast.LENGTH_SHORT).show()
                 }
             }
         }
@@ -167,4 +183,9 @@ actual fun isInternetAvailable(): Boolean {
         activeNetwork.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET) -> true
         else -> false
     }
+}
+
+actual fun isAccessibilityServiceEnabled(): Boolean {
+    val accessibilityManager = appContext.getSystemService(Context.ACCESSIBILITY_SERVICE) as? AccessibilityManager
+    return accessibilityManager?.isEnabled == true && accessibilityManager.isTouchExplorationEnabled
 }

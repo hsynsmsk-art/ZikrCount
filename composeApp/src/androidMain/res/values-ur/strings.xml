@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="app_name">ذکر کاؤنٹر</string> <string name="error_no_share_app">شیئرنگ کو سنبھالنے کے لیے کوئی ایپ نہیں ملی۔</string>
+  <string name="error_no_store_or_browser">گوگل پلے اسٹور یا ویب براؤزر نہیں ملا۔</string>
+  <string name="error_cannot_open_settings">ترتیبات نہیں کھولی جا سکیں۔</string>
+  <string name="error_cannot_open_link_app">اس لنک کو کھولنے کے لیے کوئی ایپ نہیں ملی۔</string>
+  <string name="error_cannot_open_link">لنک نہیں کھولا جا سکا۔</string>
+  <string name="error_no_email_app">ای میل بھیجنے کے لیے کوئی ایپ نہیں ملی۔</string>
+  <string name="error_cannot_send_email">ای میل نہیں بھیجی جا سکی۔</string>
+
+</resources>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="app_name">Счетчик Зикр</string> <string name="error_no_share_app">Не найдено приложение для обработки отправки.</string>
+  <string name="error_no_store_or_browser">Google Play Store или веб-браузер не найдены.</string>
+  <string name="error_cannot_open_settings">Не удалось открыть настройки.</string>
+  <string name="error_cannot_open_link_app">Не найдено приложение для открытия этой ссылки.</string>
+  <string name="error_cannot_open_link">Не удалось открыть ссылку.</string>
+  <string name="error_no_email_app">Не найдено приложение для отправки электронной почты.</string>
+  <string name="error_cannot_send_email">Не удалось отправить электронное письмо.</string>
+
+</resources>

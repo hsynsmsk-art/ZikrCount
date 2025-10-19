@@ -1,22 +1,21 @@
+// composeApp/src/commonMain/kotlin/com/hgtcsmsk/zikrcount/ui/screens/ThemePage.kt
+
 package com.hgtcsmsk.zikrcount.ui.screens
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.lazy.grid.itemsIndexed
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
+import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -24,8 +23,10 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
-import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.selected
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.hgtcsmsk.zikrcount.AppViewModel
@@ -34,6 +35,7 @@ import com.hgtcsmsk.zikrcount.platform.RewardedAdState
 import com.hgtcsmsk.zikrcount.platform.ShowAdResult
 import com.hgtcsmsk.zikrcount.platform.SystemBackButtonHandler
 import com.hgtcsmsk.zikrcount.platform.rememberAdController
+import com.hgtcsmsk.zikrcount.ui.components.SuccessSnackBar
 import com.hgtcsmsk.zikrcount.ui.dialog.ConfirmationDialog
 import com.hgtcsmsk.zikrcount.ui.utils.autoMirror
 import kotlinx.coroutines.launch
@@ -67,6 +69,7 @@ private fun getColorThemes(): List<ColorTheme> {
     )
 }
 
+// HATA DÜZELTMESİ: Gereksiz @Composable etiketi kaldırıldı.
 fun findColorThemeByName(name: String): ColorTheme {
     return getColorThemes().find { it.name == name } ?: getColorThemes().first()
 }
@@ -91,9 +94,10 @@ fun ThemePage(viewModel: AppViewModel, onNavigateBack: () -> Unit) {
     val selectedThemeName by viewModel.selectedDisplayTheme.collectAsState()
     val unlockedItems by viewModel.unlockedItems.collectAsState()
     val selectedColorTheme = findColorThemeByName(selectedThemeName)
-    val isAdPlaying by viewModel.isAdPlaying.collectAsState()
-    val purchaseState by viewModel.purchaseState.collectAsState() // DÜZELTME: Bu satır eklenmişti.
+    val purchaseState by viewModel.purchaseState.collectAsState()
 
+    // HATA DÜZELTMESİ: `remember` içinden çağrılacak `getBackgroundResources` fonksiyonu
+    // @Composable olmamalı, bu nedenle `remember` bloğu artık hata vermeyecek.
     val allBackgrounds = remember { getBackgroundResources() }
     val allColorThemes = remember { getColorThemes() }
 
@@ -106,6 +110,9 @@ fun ThemePage(viewModel: AppViewModel, onNavigateBack: () -> Unit) {
     val adFailureCount by viewModel.adFailureCount.collectAsState()
     val isShowingAdLoadingIndicator by viewModel.isShowingAdLoadingIndicator.collectAsState()
     val adRetryTrigger by viewModel.adRetryTrigger.collectAsState()
+
+    val snackbarHostState = remember { SnackbarHostState() }
+    val unlockSuccessMessage = stringResource(Res.string.theme_page_unlock_success)
 
     val adController = rememberAdController(
         viewModel = viewModel,
@@ -121,20 +128,20 @@ fun ThemePage(viewModel: AppViewModel, onNavigateBack: () -> Unit) {
         }
     }
 
-    var rememberedStatusBarHeight by remember { mutableStateOf(0.dp) }
-    val currentStatusBarHeight = WindowInsets.statusBars.asPaddingValues().calculateTopPadding()
-    if (currentStatusBarHeight > 0.dp) {
-        rememberedStatusBarHeight = currentStatusBarHeight
-    }
-
     Scaffold(
+        contentWindowInsets = WindowInsets.safeDrawing,
+        snackbarHost = {
+            SnackbarHost(hostState = snackbarHostState) { data ->
+                SuccessSnackBar(data = data)
+            }
+        },
         containerColor = Color.Transparent,
         modifier = Modifier.fillMaxSize()
     ) { innerPadding ->
         Box(modifier = Modifier.fillMaxSize()) {
             Image(
                 painter = painterResource(findBackgroundResource(selectedBackgroundName)),
-                contentDescription = stringResource(Res.string.content_desc_theme_page_background),
+                contentDescription = null, // Dekoratif resim, okunmamalı
                 modifier = Modifier.fillMaxSize(),
                 contentScale = ContentScale.Crop
             )
@@ -144,14 +151,11 @@ fun ThemePage(viewModel: AppViewModel, onNavigateBack: () -> Unit) {
                     .background(Color.Black.copy(alpha = 0.85f))
             )
 
-            Column(modifier = Modifier.fillMaxSize()) {
-                Spacer(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(rememberedStatusBarHeight)
-                        .background(if (isAdPlaying) Color.Black else Color.Transparent)
-                )
-
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(innerPadding)
+            ) {
                 Row(
                     modifier = Modifier.fillMaxWidth().padding(8.dp),
                     verticalAlignment = Alignment.CenterVertically
@@ -185,6 +189,9 @@ fun ThemePage(viewModel: AppViewModel, onNavigateBack: () -> Unit) {
                                     onClick = { scope.launch { pagerState.animateScrollToPage(ThemeTab.Display.index) } }
                                 )
                                 .padding(horizontal = 6.dp)
+                                .semantics {
+                                    this.selected = currentTab == ThemeTab.Display
+                                }
                         ) {
                             val isSelected = currentTab == ThemeTab.Display
                             Text(
@@ -208,6 +215,9 @@ fun ThemePage(viewModel: AppViewModel, onNavigateBack: () -> Unit) {
                                     onClick = { scope.launch { pagerState.animateScrollToPage(ThemeTab.Background.index) } }
                                 )
                                 .padding(horizontal = 6.dp)
+                                .semantics {
+                                    this.selected = currentTab == ThemeTab.Background
+                                }
                         ) {
                             val isSelected = currentTab == ThemeTab.Background
                             Text(
@@ -245,8 +255,7 @@ fun ThemePage(viewModel: AppViewModel, onNavigateBack: () -> Unit) {
                                     itemToUnlock = Pair(UNLOCK_TYPE_THEME, themeName)
                                     showAdDialog = true
                                 }
-                            },
-                            onNavigateBack = onNavigateBack
+                            }
                         )
 
                         ThemeTab.Background -> BackgroundsGrid(
@@ -263,19 +272,22 @@ fun ThemePage(viewModel: AppViewModel, onNavigateBack: () -> Unit) {
                                     itemToUnlock = Pair(UNLOCK_TYPE_BACKGROUND, backgroundName)
                                     showAdDialog = true
                                 }
-                            },
-                            onNavigateBack = onNavigateBack
+                            }
                         )
                         null -> {}
                     }
                 }
             }
             if (isShowingAdLoadingIndicator) {
+                val loadingMessage = stringResource(Res.string.theme_page_loading_ad)
                 Box(
                     modifier = Modifier
                         .fillMaxSize()
                         .background(Color.Black.copy(alpha = 0.5f))
-                        .clickable(enabled = false, onClick = {}),
+                        .clickable(enabled = false, onClick = {})
+                        .semantics(mergeDescendants = true) {
+                            contentDescription = loadingMessage
+                        },
                     contentAlignment = Alignment.Center
                 ) {
                     CircularProgressIndicator(color = selectedColorTheme.primary)
@@ -304,6 +316,9 @@ fun ThemePage(viewModel: AppViewModel, onNavigateBack: () -> Unit) {
                                             viewModel.setSelectedBackground(name)
                                         } else {
                                             viewModel.setSelectedDisplayTheme(name)
+                                        }
+                                        scope.launch {
+                                            snackbarHostState.showSnackbar(unlockSuccessMessage)
                                         }
                                     }
                                     viewModel.resetAdFailureCount()
@@ -412,24 +427,16 @@ private fun BackgroundsGrid(
     unlockedItems: Set<String>,
     purchaseState: PurchaseState,
     onSelect: (String) -> Unit,
-    onUnlockRequest: (String) -> Unit,
-    onNavigateBack: () -> Unit
+    onUnlockRequest: (String) -> Unit
 ) {
-    val navigationBarPadding = WindowInsets.navigationBars.asPaddingValues()
-
     LazyVerticalGrid(
         modifier = Modifier.fillMaxSize(),
         columns = GridCells.Fixed(2),
-        contentPadding = PaddingValues(
-            start = 12.dp,
-            end = 12.dp,
-            top = 12.dp,
-            bottom = navigationBarPadding.calculateBottomPadding() + 12.dp
-        ),
+        contentPadding = PaddingValues(16.dp),
         horizontalArrangement = Arrangement.spacedBy(12.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
-        items(allBackgrounds, key = { it.first }) { (name, resource) ->
+        itemsIndexed(allBackgrounds, key = { _, item -> item.first }) { index, (name, resource) ->
             val isSelected = selectedBackgroundName == name
             val isUnlocked = unlockedItems.contains("$UNLOCK_TYPE_BACKGROUND-$name") ||
                     defaultUnlockedBackgrounds.contains(name) ||
@@ -453,27 +460,27 @@ private fun BackgroundsGrid(
                 Modifier
             }
 
+            val stateText = when {
+                isSelected -> stringResource(Res.string.theme_preview_state_selected)
+                !isUnlocked -> stringResource(Res.string.theme_preview_state_locked)
+                else -> ""
+            }
+            val description = stringResource(Res.string.theme_preview_background_desc, index + 1, stateText)
+
             Box(
-                modifier = baseModifier.pointerInput(isUnlocked, isSelected) {
-                    detectTapGestures(
-                        onTap = {
-                            if (isUnlocked) {
-                                if (isSelected) {
-                                    onNavigateBack()
-                                } else {
-                                    onSelect(name)
-                                }
-                            } else {
-                                onUnlockRequest(name)
-                            }
+                modifier = baseModifier
+                    .clickable {
+                        if (isUnlocked) {
+                            onSelect(name)
+                        } else {
+                            onUnlockRequest(name)
                         }
-                    )
-                }
+                    }
+                    .semantics { contentDescription = description }
             ) {
                 BackgroundPreview(
                     backgroundResource = resource,
-                    isLocked = !isUnlocked,
-                    isSelected = isSelected
+                    isLocked = !isUnlocked
                 )
             }
         }
@@ -487,24 +494,16 @@ private fun DisplayThemesGrid(
     unlockedItems: Set<String>,
     purchaseState: PurchaseState,
     onSelect: (String) -> Unit,
-    onUnlockRequest: (String) -> Unit,
-    onNavigateBack: () -> Unit
+    onUnlockRequest: (String) -> Unit
 ) {
-    val navigationBarPadding = WindowInsets.navigationBars.asPaddingValues()
-
     LazyVerticalGrid(
         modifier = Modifier.fillMaxSize(),
         columns = GridCells.Fixed(2),
-        contentPadding = PaddingValues(
-            start = 12.dp,
-            end = 12.dp,
-            top = 12.dp,
-            bottom = navigationBarPadding.calculateBottomPadding() + 12.dp
-        ),
+        contentPadding = PaddingValues(16.dp),
         horizontalArrangement = Arrangement.spacedBy(12.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp),
     ) {
-        items(allThemes, key = { it.name }) { theme ->
+        itemsIndexed(allThemes, key = { _, theme -> theme.name }) { index, theme ->
             val isSelected = selectedThemeName == theme.name
             val isUnlocked = unlockedItems.contains("$UNLOCK_TYPE_THEME-${theme.name}") ||
                     defaultUnlockedThemes.contains(theme.name) ||
@@ -521,22 +520,23 @@ private fun DisplayThemesGrid(
                 Modifier
             }
 
+            val stateText = when {
+                isSelected -> stringResource(Res.string.theme_preview_state_selected)
+                !isUnlocked -> stringResource(Res.string.theme_preview_state_locked)
+                else -> ""
+            }
+            val description = stringResource(Res.string.theme_preview_theme_desc, index + 1, stateText)
+
             Box(
-                modifier = baseModifier.pointerInput(isUnlocked, isSelected) {
-                    detectTapGestures(
-                        onTap = {
-                            if (isUnlocked) {
-                                if (isSelected) {
-                                    onNavigateBack()
-                                } else {
-                                    onSelect(theme.name)
-                                }
-                            } else {
-                                onUnlockRequest(theme.name)
-                            }
+                modifier = baseModifier
+                    .clickable {
+                        if (isUnlocked) {
+                            onSelect(theme.name)
+                        } else {
+                            onUnlockRequest(theme.name)
                         }
-                    )
-                }
+                    }
+                    .semantics { contentDescription = description }
             ) {
                 LayeredThemePreview(
                     primaryColor = theme.primary,
@@ -552,8 +552,7 @@ private fun DisplayThemesGrid(
 private fun BackgroundPreview(
     modifier: Modifier = Modifier,
     backgroundResource: DrawableResource,
-    isLocked: Boolean,
-    isSelected: Boolean
+    isLocked: Boolean
 ) {
     Box(
         modifier = modifier
@@ -577,7 +576,7 @@ private fun BackgroundPreview(
             ) {
                 Image(
                     painter = painterResource(Res.drawable.lock),
-                    contentDescription = stringResource(Res.string.content_desc_locked_item),
+                    contentDescription = null,
                     modifier = Modifier.size(20.dp),
                     colorFilter = ColorFilter.tint(Color.White)
                 )
@@ -615,13 +614,13 @@ private fun LayeredThemePreview(
         ) {
             Image(
                 painter = painterResource(Res.drawable.vitrual_back),
-                contentDescription = stringResource(Res.string.content_desc_theme_preview_background),
+                contentDescription = null,
                 modifier = Modifier.fillMaxSize(),
                 colorFilter = ColorFilter.tint(primaryColor)
             )
             Image(
                 painter = painterResource(Res.drawable.vitrual_front),
-                contentDescription = stringResource(Res.string.content_desc_theme_preview_overlay),
+                contentDescription = null,
                 modifier = Modifier.fillMaxSize()
             )
         }
@@ -636,7 +635,7 @@ private fun LayeredThemePreview(
             ) {
                 Image(
                     painter = painterResource(Res.drawable.lock),
-                    contentDescription = "Locked",
+                    contentDescription = null,
                     modifier = Modifier.size(20.dp),
                     colorFilter = ColorFilter.tint(Color.White)
                 )
@@ -645,10 +644,12 @@ private fun LayeredThemePreview(
     }
 }
 
+// HATA DÜZELTMESİ: Gereksiz @Composable etiketi kaldırıldı.
 fun findBackgroundResource(name: String): DrawableResource {
     return getBackgroundResources().find { it.first == name }?.second ?: Res.drawable.background_2
 }
 
+// HATA DÜZELTMESİ: Gereksiz @Composable etiketi kaldırıldı.
 private fun getBackgroundResources(): List<Pair<String, DrawableResource>> {
     return listOf(
         "background_1" to Res.drawable.background_1,

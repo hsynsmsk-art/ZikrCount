@@ -8,27 +8,29 @@ import com.hgtcsmsk.zikrcount.data.UpdateService
 import com.hgtcsmsk.zikrcount.data.UpdateState
 import com.hgtcsmsk.zikrcount.data.createSettings
 import com.hgtcsmsk.zikrcount.platform.BillingService
-import com.hgtcsmsk.zikrcount.platform.PlatformActionHandler
 import com.hgtcsmsk.zikrcount.platform.PurchaseState
-import com.hgtcsmsk.zikrcount.platform.SoundPlayer
+import com.hgtcsmsk.zikrcount.platform.RestoreResult
 import com.hgtcsmsk.zikrcount.platform.TtsEngineInfo
 import com.hgtcsmsk.zikrcount.platform.TtsManager
 import com.hgtcsmsk.zikrcount.platform.createBillingService
 import com.hgtcsmsk.zikrcount.platform.getAppLanguageCode
 import com.hgtcsmsk.zikrcount.platform.getAppVersionCode
 import com.hgtcsmsk.zikrcount.platform.getTtsEngines
+import com.hgtcsmsk.zikrcount.platform.isAccessibilityServiceEnabled
 import com.hgtcsmsk.zikrcount.platform.isInternetAvailable
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlinx.datetime.Clock
+// org.jetbrains.compose.resources.stringResource BU IMPORT ARTIK GEREKLİ DEĞİL
 
 class AppViewModel : ViewModel() {
 
@@ -128,6 +130,18 @@ class AppViewModel : ViewModel() {
     private val _isLanguageLoading = MutableStateFlow(false)
     val isLanguageLoading = _isLanguageLoading.asStateFlow()
 
+    private val _shouldShowTalkbackPrompt = MutableStateFlow(false)
+    val shouldShowTalkbackPrompt = _shouldShowTalkbackPrompt.asStateFlow()
+
+    sealed class UiEvent {
+        data class ShowSnackbar(val message: String) : UiEvent()
+    }
+    private val _eventFlow = MutableSharedFlow<UiEvent>()
+    val eventFlow = _eventFlow.asSharedFlow()
+
+    private val _isRestoringPurchases = MutableStateFlow(false)
+    val isRestoringPurchases = _isRestoringPurchases.asStateFlow()
+
     val purchaseState = billingService.purchaseState
     val productPrice = billingService.productPrice
 
@@ -160,17 +174,13 @@ class AppViewModel : ViewModel() {
             .launchIn(viewModelScope)
 
         purchaseState.onEach { state ->
-            if (state is PurchaseState.Purchased) {
-                storage.saveAdsRemoved(true)
-            } else {
-                storage.saveAdsRemoved(false)
-            }
+            storage.saveAdsRemoved(state is PurchaseState.Purchased)
         }.launchIn(viewModelScope)
 
         viewModelScope.launch {
             try {
                 withContext(Dispatchers.IO) {
-                    billingService.restorePurchases()
+                    launch { billingService.restorePurchases() }
                     _counters.value = reorderCounters(storage.getCounters())
                     _lastSelectedCounterId.value = storage.getLastSelectedCounterId()
                     _soundEnabled.value = storage.getSoundSetting()
@@ -206,6 +216,12 @@ class AppViewModel : ViewModel() {
                     val launchCount = storage.getAppLaunchCount() + 1
                     storage.saveAppLaunchCount(launchCount)
                     handleReviewLogic(launchCount)
+
+                    val talkbackEnabled = isAccessibilityServiceEnabled()
+                    val promptShown = storage.getIsTalkbackPromptShown()
+                    if (talkbackEnabled && !promptShown) {
+                        _shouldShowTalkbackPrompt.value = true
+                    }
                 }
             } catch (e: Exception) {
                 e.printStackTrace()
@@ -216,49 +232,65 @@ class AppViewModel : ViewModel() {
         }
     }
 
+    fun checkAccessibilityStatusOnResume() {
+        viewModelScope.launch {
+            val talkbackEnabled = withContext(Dispatchers.IO) { isAccessibilityServiceEnabled() }
+            val promptShown = storage.getIsTalkbackPromptShown()
+            if (talkbackEnabled && !promptShown && !_shouldShowTalkbackPrompt.value) {
+                _shouldShowTalkbackPrompt.value = true
+            }
+        }
+    }
+
+    fun onTalkbackPromptResult(isAccepted: Boolean) {
+        if (isAccepted) {
+            setCounterReadingEnabled(true)
+        }
+        storage.saveIsTalkbackPromptShown(true)
+        _shouldShowTalkbackPrompt.value = false
+    }
+
     fun purchaseRemoveAds(activity: Any) {
         billingService.purchaseRemoveAds(activity)
     }
 
-    fun restorePurchases() {
-        billingService.restorePurchases()
+    fun restorePurchases(noPurchaseMessage: String, errorMessage: String) {
+        viewModelScope.launch {
+            _isRestoringPurchases.value = true
+            when (billingService.restorePurchases()) {
+                RestoreResult.Success -> {
+                }
+                RestoreResult.NoPurchasesFound -> {
+                    _eventFlow.emit(UiEvent.ShowSnackbar(noPurchaseMessage))
+                }
+                RestoreResult.Error -> {
+                    _eventFlow.emit(UiEvent.ShowSnackbar(errorMessage))
+                }
+            }
+            _isRestoringPurchases.value = false
+        }
     }
 
     fun checkForUpdates() {
         viewModelScope.launch(Dispatchers.IO) {
             val currentTime = Clock.System.now().toEpochMilliseconds()
             val lastCheck = storage.getLastUpdateCheckTimestamp()
-            val checkInterval = 0L
+            val checkInterval = 0L // Check every time for debugging, change for production
 
             if (currentTime - lastCheck < checkInterval || !_isNetworkAvailable.value) {
                 return@launch
             }
 
-            val remoteUpdateInfo = updateService.getUpdateInfo()
-            if (remoteUpdateInfo == null) {
-                println("DEBUG: Güncelleme JSON'u çekilemedi!")
-                return@launch
-            }
+            val remoteUpdateInfo = updateService.getUpdateInfo() ?: return@launch
 
             val currentVersionCode = getAppVersionCode()
             val newState = when {
-                currentVersionCode < remoteUpdateInfo.minimumRequiredVersionCode -> {
-                    UpdateState.Mandatory(remoteUpdateInfo)
-                }
-                currentVersionCode < remoteUpdateInfo.latestVersionCode -> {
-                    UpdateState.Optional(remoteUpdateInfo)
-                }
-                else -> {
-                    UpdateState.NoUpdate
-                }
+                currentVersionCode < remoteUpdateInfo.minimumRequiredVersionCode -> UpdateState.Mandatory(remoteUpdateInfo)
+                currentVersionCode < remoteUpdateInfo.latestVersionCode -> UpdateState.Optional(remoteUpdateInfo)
+                else -> UpdateState.NoUpdate
             }
 
-            if (newState is UpdateState.Optional) {
-                _showUpdateBadge.value = true
-            } else {
-                _showUpdateBadge.value = false
-            }
-
+            _showUpdateBadge.value = newState is UpdateState.Optional
             _updateState.value = newState
             storage.saveLastUpdateCheckTimestamp(currentTime)
         }
@@ -301,10 +333,8 @@ class AppViewModel : ViewModel() {
 
     fun onRateDialogDismissed(isLater: Boolean) {
         val currentStatus = storage.getReviewStatus()
-        if (isLater) {
-            if (currentStatus == 0) {
-                storage.saveReviewStatus(1)
-            }
+        if (isLater && currentStatus == 0) {
+            storage.saveReviewStatus(1)
         } else {
             storage.saveReviewStatus(-1)
         }
@@ -321,8 +351,6 @@ class AppViewModel : ViewModel() {
         return listOfNotNull(defaultCounter, tasbihCounter) + pinnedCounters + remainingCounters
     }
 
-    // --- DEĞİŞİKLİK 1: YENİ, DAHA ESNEK TTS FONKSİYONU ---
-    // Hem sayıları hem de özel anonsları okuyabilen daha esnek fonksiyon.
     private fun speakAnnouncement(text: String) {
         viewModelScope.launch {
             if (_isCounterReadingEnabled.value) {
@@ -339,7 +367,11 @@ class AppViewModel : ViewModel() {
         _flashEffectEvent.value = null
     }
 
-    fun incrementSelectedCounter(isFullScreenTap: Boolean = false) {
+    // DÜZELTME: Fonksiyon artık formatlanmış 'tourCompletedText' string'ini alıyor.
+    fun incrementSelectedCounter(
+        isFullScreenTap: Boolean = false,
+        tourCompletedText: String // Önceden formatlanmış metin buraya gelecek
+    ) {
         if (isFullScreenTap) _flashEffectEvent.value = Unit
         val selectedId = _lastSelectedCounterId.value
 
@@ -347,53 +379,30 @@ class AppViewModel : ViewModel() {
             currentCounters.map { counter ->
                 if (counter.id == selectedId) {
                     val newCount = counter.count + 1
-                    var newCounter: Counter // Değişkeni burada tanımlıyoruz
+                    var newCounter: Counter
 
-                    // --- YENİ MANTIK YAPISI ---
                     if (counter.id == NAMAZ_TESBIHATI_COUNTER.id) {
-                        // === SADECE NAMAZ TESBİHATI İÇİN ÖZEL MANTIK ===
-
-                        // 99'a (hedefe) ulaşıldığında veya geçildiğinde...
-                        if (newCount >= counter.target) {
+                        val newTur = newCount / 33
+                        if (newTur > counter.tur) {
                             _turCompletedEvent.value = Unit
-                            val newTur = counter.tur + 1
-                            // Sayacı sıfırla ve turu artır.
-                            newCounter = counter.copy(count = 0, tur = newTur)
-
-                            // Anonsu "33" diyerek ve turu bildirerek yap.
-                            val announcement = "33, ${newTur}. tur tamamlandı"
-                            speakAnnouncement(announcement)
+                            speakAnnouncement("${(newTur) * 33}")
                         } else {
-                            // 99'a henüz ulaşılmadıysa...
-                            newCounter = counter.copy(count = newCount)
-                            val displayCount = newCount % 33
-
-                            // Ekranda 0 gösterilecekse (yani sayı 33 veya 66 ise) "33" de.
-                            if (displayCount == 0) {
-                                speakAnnouncement("33")
-                            } else {
-                                // Diğer durumlarda ekranda görünen sayıyı oku (1, 2, 3...).
-                                speakAnnouncement(displayCount.toString())
-                            }
+                            speakAnnouncement(newCount.toString())
                         }
-
+                        newCounter = counter.copy(count = newCount, tur = newTur)
                     } else {
-                        // === DİĞER TÜM SAYAÇLAR İÇİN GENEL MANTIK ===
-                        newCounter = counter.copy(count = newCount) // Önce sayacı güncelle
+                        newCounter = counter.copy(count = newCount)
                         if (counter.target > 0 && newCount >= counter.target) {
                             _turCompletedEvent.value = Unit
                             val newTur = counter.tur + 1
-                            newCounter = counter.copy(count = 0, tur = newTur) // Sonra sıfırla
-
-                            val announcement = "${counter.target}, ${newTur}. tur tamamlandı"
-                            speakAnnouncement(announcement)
+                            newCounter = counter.copy(count = 0, tur = newTur)
+                            // DÜZELTME: Önceden formatlanmış metni doğrudan kullanıyoruz.
+                            speakAnnouncement(tourCompletedText)
                         } else {
                             speakAnnouncement(newCount.toString())
                         }
                     }
-
-                    newCounter // Güncellenmiş sayacı döndür
-
+                    newCounter
                 } else {
                     counter
                 }
@@ -408,13 +417,23 @@ class AppViewModel : ViewModel() {
             _counters.update { currentCounters ->
                 currentCounters.map { counter ->
                     if (counter.id == selectedId) {
-                        val currentTotal = (counter.tur * counter.target.coerceAtLeast(1)) + counter.count
-                        if (currentTotal <= 0) return@map counter // Zaten 0 ise bir şey yapma
+                        val currentTotal = if (counter.id == NAMAZ_TESBIHATI_COUNTER.id) {
+                            counter.count
+                        } else {
+                            (counter.tur * counter.target.coerceAtLeast(1)) + counter.count
+                        }
 
+                        if (currentTotal <= 0) return@map counter
                         val newTotal = currentTotal - 1
+
+                        if (counter.id == NAMAZ_TESBIHATI_COUNTER.id) {
+                            val newTur = newTotal / 33
+                            speakAnnouncement(newTotal.toString())
+                            return@map counter.copy(count = newTotal, tur = newTur)
+                        }
+
                         val newTur: Int
                         val newCount: Int
-
                         if (counter.target > 0) {
                             newTur = newTotal / counter.target
                             newCount = newTotal % counter.target
@@ -422,37 +441,7 @@ class AppViewModel : ViewModel() {
                             newTur = 0
                             newCount = newTotal
                         }
-
-                        // --- NİHAİ TTS MANTIĞI ---
-                        // Turun tamamlandığı anı kontrol et (yeni sayı 0 olduğunda).
-                        if (newCount == 0 && counter.target > 0) {
-
-                            // Eğer sayaç Namaz Tesbihatı ise, anonsu "33" ile yap.
-                            if(counter.id == NAMAZ_TESBIHATI_COUNTER.id) {
-                                val announcement = "33, ${counter.tur}. tur tamamlandı"
-                                speakAnnouncement(announcement)
-                            } else {
-                                // Diğer tüm sayaçlar için kendi hedefini kullan.
-                                val announcement = "${counter.target}, ${counter.tur}. tur tamamlandı"
-                                speakAnnouncement(announcement)
-                            }
-
-                        } else {
-                            // Tur tamamlanmadıysa, normal şekilde yeni sayıyı oku.
-                            if (counter.id == NAMAZ_TESBIHATI_COUNTER.id) {
-                                val displayCount = newCount % 33
-                                // Geri sayarken 34'ten 33'e düşerken "33" denmesini sağla
-                                if (displayCount == 0 && newCount > 0) {
-                                    speakAnnouncement("33")
-                                } else {
-                                    speakAnnouncement(displayCount.toString())
-                                }
-                            } else {
-                                speakAnnouncement(newCount.toString())
-                            }
-                        }
-                        // --- NİHAİ MANTIK SONU ---
-
+                        speakAnnouncement(newCount.toString())
                         counter.copy(count = newCount, tur = newTur)
                     } else {
                         counter
@@ -463,7 +452,7 @@ class AppViewModel : ViewModel() {
         }
     }
 
-    fun resetSelectedCounter() {
+    fun resetSelectedCounter(message: String) {
         viewModelScope.launch {
             val selectedId = _lastSelectedCounterId.value
             _counters.update { currentCounters ->
@@ -476,6 +465,7 @@ class AppViewModel : ViewModel() {
                 }
             }
             storage.saveCounters(_counters.value)
+            _eventFlow.emit(UiEvent.ShowSnackbar(message))
         }
     }
 
@@ -539,8 +529,7 @@ class AppViewModel : ViewModel() {
             _counters.update { currentCounters ->
                 val updatedCounters = currentCounters.map { counter ->
                     if (counter.id == counterId) {
-                        val newPinTimestamp = if (counter.pinTimestamp > 0L) 0L else Clock.System.now().toEpochMilliseconds()
-                        counter.copy(pinTimestamp = newPinTimestamp)
+                        counter.copy(pinTimestamp = if (counter.pinTimestamp > 0L) 0L else Clock.System.now().toEpochMilliseconds())
                     } else { counter }
                 }
                 reorderCounters(updatedCounters)
@@ -553,9 +542,8 @@ class AppViewModel : ViewModel() {
         viewModelScope.launch {
             val newCounter = Counter(name = name, target = targetStr.toIntOrNull() ?: 0)
             _counters.update { currentCounters -> reorderCounters(currentCounters + newCounter) }
-            val newSlotCount = _freeSlotsUsed.value + 1
-            _freeSlotsUsed.value = newSlotCount
-            storage.saveFreeSlotsUsed(newSlotCount)
+            _freeSlotsUsed.update { it + 1 }
+            storage.saveFreeSlotsUsed(_freeSlotsUsed.value)
             selectCounter(newCounter)
             storage.saveCounters(_counters.value)
         }
@@ -580,18 +568,13 @@ class AppViewModel : ViewModel() {
                 val updatedCounters = currentCounters.map { counter ->
                     if (counter.id == id) {
                         val newTarget = newTargetStr.toIntOrNull() ?: 0
-                        if (newTarget == counter.target) {
-                            return@map counter.copy(name = newName)
-                        }
+                        if (newTarget == counter.target) return@map counter.copy(name = newName)
+
                         val totalCount = (counter.tur * counter.target.coerceAtLeast(1)) + counter.count
-                        val finalCount: Int
-                        val finalTur: Int
-                        if (newTarget > 0) {
-                            finalTur = totalCount / newTarget
-                            finalCount = totalCount % newTarget
+                        val (finalTur, finalCount) = if (newTarget > 0) {
+                            (totalCount / newTarget) to (totalCount % newTarget)
                         } else {
-                            finalTur = 0
-                            finalCount = totalCount
+                            0 to totalCount
                         }
                         counter.copy(name = newName, target = newTarget, count = finalCount, tur = finalTur)
                     } else {
@@ -612,9 +595,10 @@ class AppViewModel : ViewModel() {
                         if (counter.target > 0) {
                             val initialTotalCount = (counter.tur * counter.target) + counter.count
                             val prospectiveTotalCount = (initialTotalCount + amount).coerceAtLeast(0)
-                            val finalTur = prospectiveTotalCount / counter.target
-                            val finalCount = prospectiveTotalCount % counter.target
-                            counter.copy(count = finalCount, tur = finalTur)
+                            counter.copy(
+                                count = prospectiveTotalCount % counter.target,
+                                tur = prospectiveTotalCount / counter.target
+                            )
                         } else {
                             counter.copy(count = (counter.count + amount).coerceAtLeast(0))
                         }
@@ -628,30 +612,26 @@ class AppViewModel : ViewModel() {
     }
 
     fun unlockItem(itemName: String) {
-        val updatedSet = _unlockedItems.value.toMutableSet()
-        updatedSet.add(itemName)
-        _unlockedItems.value = updatedSet
-        storage.saveUnlockedItems(updatedSet)
+        _unlockedItems.update { it + itemName }
+        storage.saveUnlockedItems(_unlockedItems.value)
     }
 
     fun canAttemptAdLoad(): Boolean {
         val currentTime = Clock.System.now().toEpochMilliseconds()
-        if (currentTime - lastAdLoadAttemptTimestamp < 15000) { return false }
-        lastAdLoadAttemptTimestamp = currentTime
-        return true
+        return (currentTime - lastAdLoadAttemptTimestamp > 15000).also {
+            if (it) lastAdLoadAttemptTimestamp = currentTime
+        }
     }
 
     fun canGrantGift(): Boolean {
         val lastGiftTime = storage.getLastGiftTimestamp()
         if (lastGiftTime == 0L) return true
         val currentTime = Clock.System.now().toEpochMilliseconds()
-        val twentyFourHoursInMillis = 24 * 60 * 60 * 1000
-        return currentTime - lastGiftTime > twentyFourHoursInMillis
+        return currentTime - lastGiftTime > (24 * 60 * 60 * 1000)
     }
 
     fun recordGiftGranted() {
-        val currentTime = Clock.System.now().toEpochMilliseconds()
-        storage.saveLastGiftTimestamp(currentTime)
+        storage.saveLastGiftTimestamp(Clock.System.now().toEpochMilliseconds())
     }
 
     fun setAdPlayingState(isPlaying: Boolean) {
@@ -676,31 +656,7 @@ class AppViewModel : ViewModel() {
 
     fun loadTtsEngines() {
         viewModelScope.launch {
-            _ttsEngines.value = withContext(Dispatchers.IO) {
-                getTtsEngines()
-            }
-        }
-    }
-
-    fun ensureTtsDefaults() {
-        val engines = _ttsEngines.value
-        val langs = _availableTtsLanguages.value
-
-        if (_selectedTtsEngine.value.isEmpty() && engines.isNotEmpty()) {
-            val googleEngine = engines.find { it.name.contains("google", ignoreCase = true) }
-            val selected = googleEngine ?: engines.firstOrNull()
-            selected?.let {
-                setSelectedTtsEngine(it.name)
-            }
-        }
-        if (_selectedTtsLanguage.value.isEmpty() && langs.isNotEmpty()) {
-            val appLang = getAppLanguageCode()
-            val appLangSupported = langs.find { it.first.startsWith(appLang, ignoreCase = true) }
-            val enSupported = langs.find { it.first.startsWith("en", ignoreCase = true) }
-            val defaultLang = appLangSupported ?: enSupported ?: langs.firstOrNull()
-            defaultLang?.let {
-                setSelectedTtsLanguage(it.first)
-            }
+            _ttsEngines.value = withContext(Dispatchers.IO) { getTtsEngines() }
         }
     }
 
@@ -710,15 +666,11 @@ class AppViewModel : ViewModel() {
         _isCounterReadingEnabled.value = isEnabled
         storage.saveCounterReadingSetting(isEnabled)
 
-        if (isEnabled) {
-            if (_selectedTtsEngine.value.isNotEmpty()) {
-                TtsManager.reconfigure(_selectedTtsEngine.value, _selectedTtsLanguage.value)
-            } else if (_ttsEngines.value.isNotEmpty()){
-                val engines = _ttsEngines.value
-                val googleEngine = engines.find { it.name.contains("google", ignoreCase = true) }
-                val defaultEngine = googleEngine ?: engines.first()
-                setSelectedTtsEngine(defaultEngine.name)
-            }
+        if (isEnabled && _selectedTtsEngine.value.isEmpty() && _ttsEngines.value.isNotEmpty()) {
+            val engines = _ttsEngines.value
+            val googleEngine = engines.find { it.name.contains("google", ignoreCase = true) }
+            val defaultEngine = googleEngine ?: engines.first()
+            setSelectedTtsEngine(defaultEngine.name)
         }
     }
 
@@ -733,24 +685,22 @@ class AppViewModel : ViewModel() {
             storage.saveTtsEngine(engineName)
             _isLanguageLoading.value = true
             setSelectedTtsLanguage("")
+            TtsManager.reconfigure(engineName, "")
         }
     }
 
     fun setSelectedTtsLanguage(language: String) {
         _selectedTtsLanguage.value = language
         storage.saveTtsLanguage(language)
-        if (language.isNotEmpty()) {
-            _isLanguageLoading.value = false
-        }
         TtsManager.reconfigure(_selectedTtsEngine.value.ifEmpty { null }, language)
     }
 
-    fun speakTestSound() {
-        TtsManager.speak("33", _ttsSpeechRate.value)
+    fun speakTestSound(text: String) {
+        TtsManager.speak(text, _ttsSpeechRate.value)
     }
 
     companion object {
-        val DEFAULT_COUNTER = Counter(id = -1, name = "Varsayılan Sayaç", target = 0)
-        val NAMAZ_TESBIHATI_COUNTER = Counter(id = -2, name = "Namaz Tesbihatı", target = 99)
+        val DEFAULT_COUNTER = Counter(id = -1, name = "", target = 0)
+        val NAMAZ_TESBIHATI_COUNTER = Counter(id = -2, name = "", target = 99)
     }
 }

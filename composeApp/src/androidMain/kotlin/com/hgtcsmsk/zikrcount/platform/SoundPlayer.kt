@@ -44,7 +44,6 @@ actual class SoundPlayer {
     }
 
     fun loadSounds() {
-        // DEĞİŞİKLİK: Kaynaklar artık 'Res' yerine Android'in yerel 'R' sınıfından çağrılıyor.
         soundMap["audio_click"] = soundPool?.load(appContext, R.raw.audio_click, 1) ?: 0
         soundMap["mini_click"] = soundPool?.load(appContext, R.raw.mini_click, 1) ?: 0
         soundMap["target"] = soundPool?.load(appContext, R.raw.target, 1) ?: 0

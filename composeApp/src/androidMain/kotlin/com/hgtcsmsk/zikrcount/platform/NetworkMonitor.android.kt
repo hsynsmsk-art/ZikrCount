@@ -12,7 +12,6 @@ class NetworkMonitor(
     private val onNetworkLost: () -> Unit
 ) {
     private val connectivityManager =
-        // DÜZELTME: Hatalı olan 'SERVICE_WOOFER' ifadesi 'CONNECTIVITY_SERVICE' olarak değiştirildi.
         appContext.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
 
     private val networkCallback = object : ConnectivityManager.NetworkCallback() {
@@ -20,7 +19,6 @@ class NetworkMonitor(
             super.onAvailable(network)
             onNetworkAvailable()
         }
-
         override fun onLost(network: Network) {
             super.onLost(network)
             onNetworkLost()
@@ -34,7 +32,6 @@ class NetworkMonitor(
         try {
             connectivityManager.registerNetworkCallback(networkRequest, networkCallback)
         } catch (e: Exception) {
-            // Hataları yoksay
         }
     }
 
@@ -42,7 +39,6 @@ class NetworkMonitor(
         try {
             connectivityManager.unregisterNetworkCallback(networkCallback)
         } catch (e: Exception) {
-            // Hataları yoksay
         }
     }
 }

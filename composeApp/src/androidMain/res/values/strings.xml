@@ -1,3 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Dhikr Counter</string>
+
+    <string name="error_no_share_app">No app found to handle sharing.</string>
+    <string name="error_no_store_or_browser">Google Play Store or web browser not found.</string>
+    <string name="error_cannot_open_settings">Could not open settings.</string>
+    <string name="error_cannot_open_link_app">No app found to open this link.</string>
+    <string name="error_cannot_open_link">Could not open link.</string>
+    <string name="error_no_email_app">No app found to send email.</string>
+    <string name="error_cannot_send_email">Could not send email.</string>
+
 </resources>

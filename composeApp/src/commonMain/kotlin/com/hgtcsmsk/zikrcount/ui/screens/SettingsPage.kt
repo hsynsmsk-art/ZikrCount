@@ -1,3 +1,5 @@
+// SettingsPage.kt
+
 package com.hgtcsmsk.zikrcount.ui.screens
 
 import androidx.compose.foundation.Image
@@ -18,6 +20,9 @@ import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.role
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -76,16 +81,18 @@ fun SettingsPage(
     var showTtsLangDialog by remember { mutableStateOf(false) }
     var showNoTtsEngineDialog by remember { mutableStateOf(false) }
     val isHuaweiEngine = selectedTtsEngine.contains("huawei", ignoreCase = true)
-
+    val ttsTestText = stringResource(Res.string.tts_test_sound)
 
     Scaffold(
+        contentWindowInsets = WindowInsets.safeDrawing,
         containerColor = Color.Transparent,
         modifier = Modifier.fillMaxSize()
     ) { innerPadding ->
         Box(modifier = Modifier.fillMaxSize()) {
             Image(
                 painter = painterResource(findBackgroundResource(selectedBackground)),
-                contentDescription = "Ayarlar Arka Planı",
+                // DEĞİŞİKLİK 1: Dekoratif arka plan resmi TalkBack tarafından okunmamalı.
+                contentDescription = null,
                 modifier = Modifier.fillMaxSize(),
                 contentScale = ContentScale.Crop
             )
@@ -134,11 +141,11 @@ fun SettingsPage(
 
                 LazyColumn(
                     modifier = Modifier.fillMaxSize(),
-                    contentPadding = PaddingValues(12.dp),
+                    contentPadding = PaddingValues(start = 12.dp, end = 12.dp, top = 12.dp, bottom = 12.dp),
                     verticalArrangement = Arrangement.spacedBy(16.dp)
                 ) {
-                    item(key = "update_banner") {
-                        if (showUpdateBadge && updateState is UpdateState.Optional) {
+                    if (showUpdateBadge && updateState is UpdateState.Optional) {
+                        item(key = "update_banner") {
                             UpdateAvailableBanner(
                                 onClick = {
                                     viewModel.onUpdateBannerClicked()
@@ -149,18 +156,18 @@ fun SettingsPage(
                     }
 
                     item(key = "ads_card") {
-                        SettingsCard(title = "Reklamlar") {
+                        SettingsCard(title = stringResource(Res.string.settings_category_ads)) {
                             val isPurchased = purchaseState is PurchaseState.Purchased
                             if (isPurchased) {
                                 SettingsRowInfo(
                                     icon = Res.drawable.no_ads,
-                                    text = "Reklamlar Kaldırıldı",
-                                    subText = "Uygulamayı reklamsız kullanıyorsunuz."
+                                    text = stringResource(Res.string.settings_ads_removed_title),
+                                    subText = stringResource(Res.string.settings_ads_removed_subtitle)
                                 )
                             } else {
                                 SettingsRowClickable(
                                     icon = Res.drawable.no_ads,
-                                    text = "Reklamları Kaldır",
+                                    text = stringResource(Res.string.settings_remove_ads_title),
                                     onClick = onNavigateToPremium
                                 )
                             }
@@ -168,7 +175,7 @@ fun SettingsPage(
                     }
 
                     item(key = "general_settings_card") {
-                        SettingsCard(title = "Genel Ayarlar") {
+                        SettingsCard(title = stringResource(Res.string.settings_category_general)) {
                             SettingsRowSwitch(
                                 icon = Res.drawable.audio,
                                 text = stringResource(Res.string.settings_sound),
@@ -201,10 +208,11 @@ fun SettingsPage(
                     }
 
                     item(key = "accessibility_card") {
-                        SettingsCard(title = "Erişilebilirlik") {
+                        SettingsCard(title = stringResource(Res.string.settings_category_accessibility)) {
                             SettingsRowSwitch(
                                 icon = Res.drawable.ic_read_aloud,
-                                text = "Sayaç Okuma",
+                                text = stringResource(Res.string.settings_counter_reading_title),
+                                subText = stringResource(Res.string.settings_counter_reading_subtitle),
                                 checked = isCounterReadingEnabled,
                                 isNightMode = isNightModeEnabled,
                                 onCheckedChange = { checked ->
@@ -226,9 +234,9 @@ fun SettingsPage(
                                     verticalArrangement = Arrangement.spacedBy(16.dp)
                                 ) {
                                     val selectedEngineLabel = ttsEngines.find { it.name == selectedTtsEngine }?.label
-                                        ?: if (hasTtsEngines && selectedTtsEngine.isNotEmpty()) selectedTtsEngine else "Yükleniyor..."
+                                        ?: if (hasTtsEngines && selectedTtsEngine.isNotEmpty()) selectedTtsEngine else stringResource(Res.string.settings_tts_language_loading)
                                     Text(
-                                        text = "Tercih Edilen Motor",
+                                        text = stringResource(Res.string.settings_tts_engine_title),
                                         color = ZikrTheme.colors.primary,
                                         style = MaterialTheme.typography.labelMedium.copy(fontWeight = FontWeight.Bold),
                                         modifier = Modifier
@@ -242,10 +250,10 @@ fun SettingsPage(
                                     )
 
                                     val currentLanguageLabel = availableLanguages.find { it.first == selectedTtsLanguage }?.second
-                                        ?: if (isLanguageLoading) "Yükleniyor..." else "Dil Seçin"
+                                        ?: if (isLanguageLoading) stringResource(Res.string.settings_tts_language_loading) else stringResource(Res.string.settings_tts_language_select)
 
                                     Text(
-                                        text = "Tercih Edilen Dil",
+                                        text = stringResource(Res.string.settings_tts_language_title),
                                         color = ZikrTheme.colors.primary,
                                         style = MaterialTheme.typography.labelMedium.copy(fontWeight = FontWeight.Bold),
                                         modifier = Modifier
@@ -262,7 +270,7 @@ fun SettingsPage(
                                         modifier = Modifier.fillMaxWidth()
                                     ) {
                                         Text(
-                                            text = "Konuşma Hızı",
+                                            text = stringResource(Res.string.settings_tts_speech_rate_title),
                                             color = ZikrTheme.colors.primary,
                                             style = MaterialTheme.typography.labelMedium.copy(fontWeight = FontWeight.Bold),
                                             modifier = Modifier
@@ -274,13 +282,13 @@ fun SettingsPage(
                                             modifier = Modifier.fillMaxWidth(),
                                             horizontalArrangement = Arrangement.SpaceBetween
                                         ) {
-                                            Text("Yavaş", color = ZikrTheme.colors.secondary, style = MaterialTheme.typography.labelSmall)
-                                            Text("Hızlı", color = ZikrTheme.colors.secondary, style = MaterialTheme.typography.labelSmall)
+                                            Text(stringResource(Res.string.settings_tts_speech_rate_slow), color = ZikrTheme.colors.secondary, style = MaterialTheme.typography.labelSmall)
+                                            Text(stringResource(Res.string.settings_tts_speech_rate_fast), color = ZikrTheme.colors.secondary, style = MaterialTheme.typography.labelSmall)
                                         }
                                         Slider(
                                             value = ttsSpeechRate,
                                             onValueChange = { viewModel.setTtsSpeechRate(it) },
-                                            onValueChangeFinished = { viewModel.speakTestSound() },
+                                            onValueChangeFinished = { viewModel.speakTestSound(ttsTestText) },
                                             valueRange = 1.0f..2.5f,
                                             enabled = !isHuaweiEngine,
                                             steps = 5,
@@ -310,7 +318,7 @@ fun SettingsPage(
                                         )
                                         if (isHuaweiEngine) {
                                             Text(
-                                                text = "Bu TTS motoru konuşma hızını desteklememektedir.",
+                                                text = stringResource(Res.string.settings_tts_huawei_warning),
                                                 color = ZikrTheme.colors.secondary,
                                                 style = MaterialTheme.typography.labelSmall,
                                                 textAlign = TextAlign.Center,
@@ -324,7 +332,7 @@ fun SettingsPage(
                     }
 
                     item(key = "app_settings_card") {
-                        SettingsCard(title = "Uygulama") {
+                        SettingsCard(title = stringResource(Res.string.settings_category_app)) {
                             SettingsRowSwitch(
                                 icon = Res.drawable.cloud_sync,
                                 text = stringResource(Res.string.settings_backup),
@@ -344,22 +352,24 @@ fun SettingsPage(
                             )
 
                             val emailSubject = stringResource(Res.string.contact_email_subject)
-
+                            val contactEmailAddress = stringResource(Res.string.contact_email_address)
                             SettingsRowClickable(
                                 icon = Res.drawable.contact,
                                 text = stringResource(Res.string.settings_contact_us),
                                 onClick = {
                                     platformActionHandler.sendEmail(
-                                        address = "hgtcsmsk@gmail.com",
+                                        address = contactEmailAddress,
                                         subject = emailSubject
                                     )
                                 }
                             )
+
+                            val privacyPolicyUrl = stringResource(Res.string.privacy_policy_url)
                             SettingsRowClickable(
                                 icon = Res.drawable.privacy,
                                 text = stringResource(Res.string.settings_privacy_policy),
                                 onClick = {
-                                    platformActionHandler.openUrl("https://hsynsmsk-art.github.io/privacy-policy-zikr-count")
+                                    platformActionHandler.openUrl(privacyPolicyUrl)
                                 }
                             )
                         }
@@ -380,7 +390,7 @@ fun SettingsPage(
 
             if (showTtsEngineDialog) {
                 TtsSelectionDialog(
-                    title = "Tercih Edilen Motor",
+                    title = stringResource(Res.string.settings_tts_engine_title),
                     options = ttsEngines.map { it.label to it.name },
                     selectedValue = selectedTtsEngine,
                     onSelect = {
@@ -392,7 +402,7 @@ fun SettingsPage(
             }
             if (showTtsLangDialog) {
                 TtsSelectionDialog(
-                    title = "Tercih Edilen Dil",
+                    title = stringResource(Res.string.settings_tts_language_title),
                     options = availableLanguages.map { it.second to it.first },
                     selectedValue = selectedTtsLanguage,
                     onSelect = {
@@ -404,9 +414,9 @@ fun SettingsPage(
             }
             if (showNoTtsEngineDialog) {
                 ConfirmationDialog(
-                    title = "Kullanılamıyor",
-                    question = "Telefonunuzda bir TTS (Yazıdan Sese) motoru bulunmadığı için Sayaç Okuma özelliği kullanılamıyor.",
-                    confirmButtonText = "Tamam",
+                    title = stringResource(Res.string.dialog_error_tts_title),
+                    question = stringResource(Res.string.dialog_error_tts_message),
+                    confirmButtonText = stringResource(Res.string.common_ok),
                     onDismiss = { showNoTtsEngineDialog = false },
                     onConfirm = { showNoTtsEngineDialog = false }
                 )
@@ -443,7 +453,7 @@ private fun UpdateAvailableBanner(onClick: () -> Unit) {
         horizontalArrangement = Arrangement.Center
     ) {
         Text(
-            text = "Yeni sürüm mevcut",
+            text = stringResource(Res.string.settings_update_banner),
             color = Color.White,
             style = MaterialTheme.typography.titleSmall,
             fontWeight = FontWeight.Bold
@@ -482,14 +492,17 @@ private fun SettingsRowInfo(
     subText: String
 ) {
     Row(
+        // DEĞİŞİKLİK 2: Bütün satırı tek bir mantıksal parça yapmak için semantics eklendi.
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = 12.dp),
+            .padding(vertical = 12.dp)
+            .semantics(mergeDescendants = true) {},
         verticalAlignment = Alignment.CenterVertically
     ) {
         Image(
             painter = painterResource(icon),
-            contentDescription = text,
+            // DEĞİŞİKLİK 3: İkon açıklaması artık gereksiz, çünkü tüm satır okunuyor.
+            contentDescription = null,
             modifier = Modifier.size(24.dp),
             colorFilter = ColorFilter.tint(ZikrTheme.colors.primary)
         )
@@ -517,6 +530,7 @@ private fun SettingsRowInfo(
 private fun SettingsRowSwitch(
     icon: DrawableResource,
     text: String,
+    subText: String? = null,
     checked: Boolean,
     isNightMode: Boolean,
     onCheckedChange: (Boolean) -> Unit,
@@ -527,32 +541,46 @@ private fun SettingsRowSwitch(
         uncheckedThumbColor = Color.Gray,
         uncheckedTrackColor = Color.DarkGray,
         checkedTrackColor = if (isNightMode) {
-            Color(0xFF212121) // Gece Modu: Çok Koyu Gri
+            Color(0xFF212121)
         } else {
-            Color.White       // Gündüz Modu: Beyaz
+            Color.White
         }
     )
 
     Row(
+        // DEĞİŞİKLİK 2: Bütün satırı tek bir mantıksal parça yapmak için semantics eklendi.
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = 8.dp),
+            .padding(vertical = 8.dp)
+            .semantics(mergeDescendants = true) {},
         verticalAlignment = Alignment.CenterVertically
     ) {
         Image(
             painter = painterResource(icon),
-            contentDescription = text,
+            // DEĞİŞİKLİK 3: İkon açıklaması artık gereksiz, çünkü tüm satır okunuyor.
+            contentDescription = null,
             modifier = Modifier.size(24.dp),
             colorFilter = ColorFilter.tint(ZikrTheme.colors.primary)
         )
-        Text(
-            text = text,
-            color = Color.White,
-            style = MaterialTheme.typography.bodySmall,
+        Column(
             modifier = Modifier
                 .padding(start = 16.dp)
                 .weight(1f)
-        )
+        ) {
+            Text(
+                text = text,
+                color = Color.White,
+                style = MaterialTheme.typography.bodySmall
+            )
+            if (subText != null) {
+                Text(
+                    text = subText,
+                    color = Color.White.copy(alpha = 0.7f),
+                    style = MaterialTheme.typography.labelSmall,
+                    modifier = Modifier.padding(top = 2.dp)
+                )
+            }
+        }
         Switch(
             checked = checked,
             onCheckedChange = onCheckedChange,
@@ -574,12 +602,15 @@ private fun SettingsRowClickable(
             .fillMaxWidth()
             .clip(RoundedCornerShape(12.dp))
             .clickable(onClick = onClick)
-            .padding(vertical = 12.dp),
+            .padding(vertical = 12.dp)
+            // DEĞİŞİKLİK 2: Bütün satırı tek bir mantıksal parça yapmak için semantics eklendi.
+            .semantics(mergeDescendants = true) {},
         verticalAlignment = Alignment.CenterVertically
     ) {
         Image(
             painter = painterResource(icon),
-            contentDescription = text,
+            // DEĞİŞİKLİK 3: İkon açıklaması artık gereksiz, çünkü tüm satır okunuyor.
+            contentDescription = null,
             modifier = Modifier.size(24.dp),
             colorFilter = ColorFilter.tint(ZikrTheme.colors.primary)
         )
@@ -606,6 +637,8 @@ private fun SettingsDialogDropdownButton(
             .background(Color.Black.copy(alpha = 0.25f))
             .clickable { onClick() }
             .padding(12.dp)
+            // DEĞİŞİKLİK 4: TalkBack'in bunun bir buton olduğunu anlamasını sağlayan rol eklendi.
+            .semantics { role = Role.Button }
     ) {
         Text(
             text = selectedLabel,
