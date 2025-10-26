@@ -56,10 +56,10 @@ kotlin {
 
         // Flavor kaynak setlerini Android kaynak hiyerarşisine yerleştiriyoruz.
         val gmsMain by creating {
-            dependsOn(androidMain) // Android'e özel kodu miras almak için androidMain'e bağlı
+            dependsOn(commonMain)
         }
         val hmsMain by creating {
-            dependsOn(androidMain) // Android'e özel kodu miras almak için androidMain'e bağlı
+            dependsOn(commonMain)
         }
 
         // Android Gradle plugin'in varyant kaynak setlerini oluşturabilmesi için ara düğümler.
