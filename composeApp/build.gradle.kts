@@ -54,12 +54,16 @@ kotlin {
         }
         val androidUnitTest by getting
 
-        // DEĞİŞİKLİK: gmsMain/hmsMain tanımlandı VE commonMain'e bağlandı.
-        val gmsMain by creating {
-            dependsOn(commonMain) // Expect'ler için commonMain'e bağlı
+        // Android'e özel kodu flavor'larla paylaşmak için ara bir kaynak seti oluşturuyoruz.
+        val androidFlavorMain by creating {
+            dependsOn(androidMain)
         }
-        val hmsMain by creating {
-            dependsOn(commonMain) // Expect'ler için commonMain'e bağlı
+
+        val gmsMain by getting {
+            dependsOn(androidFlavorMain)
+        }
+        val hmsMain by getting {
+            dependsOn(androidFlavorMain)
         }
     }
 }
