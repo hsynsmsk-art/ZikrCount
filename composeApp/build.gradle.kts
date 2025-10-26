@@ -54,33 +54,16 @@ kotlin {
         }
         val androidUnitTest by getting
 
-        // Flavor kaynak setlerini Android kaynak hiyerarşisine yerleştiriyoruz.
-        val gmsMain by creating {
-            dependsOn(androidMain)
-        }
-        val hmsMain by creating {
+        // Android'e özel kodu flavor'larla paylaşmak için ara bir kaynak seti oluşturuyoruz.
+        val androidFlavorMain by creating {
             dependsOn(androidMain)
         }
 
-        // Android Gradle plugin'in varyant kaynak setlerini oluşturabilmesi için ara düğümler.
-        val androidGms by creating {
-            dependsOn(gmsMain)
+        val gmsMain by getting {
+            dependsOn(androidFlavorMain)
         }
-        val androidHms by creating {
-            dependsOn(hmsMain)
-        }
-
-        val androidGmsDebug by creating {
-            dependsOn(androidGms)
-        }
-        val androidGmsRelease by creating {
-            dependsOn(androidGms)
-        }
-        val androidHmsDebug by creating {
-            dependsOn(androidHms)
-        }
-        val androidHmsRelease by creating {
-            dependsOn(androidHms)
+        val hmsMain by getting {
+            dependsOn(androidFlavorMain)
         }
     }
 }
