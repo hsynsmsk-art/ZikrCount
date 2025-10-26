@@ -1,5 +1,3 @@
-// composeApp/src/commonMain/kotlin/com/hgtcsmsk/zikrcount/ui/screens/CountersPage.kt
-
 package com.hgtcsmsk.zikrcount.ui.screens
 
 import androidx.compose.animation.core.animateFloatAsState
@@ -40,7 +38,7 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import com.hgtcsmsk.zikrcount.AppViewModel
 import com.hgtcsmsk.zikrcount.data.Counter
-import com.hgtcsmsk.zikrcount.platform.PurchaseState // <-- DÜZELTME: Eksik import eklendi
+import com.hgtcsmsk.zikrcount.platform.PurchaseState
 import com.hgtcsmsk.zikrcount.platform.RewardedAdState
 import com.hgtcsmsk.zikrcount.platform.ShowAdResult
 import com.hgtcsmsk.zikrcount.platform.SoundPlayer
@@ -55,9 +53,6 @@ import com.hgtcsmsk.zikrcount.ui.utils.autoMirror
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withTimeoutOrNull
-import kotlinx.datetime.Instant
-import kotlinx.datetime.TimeZone
-import kotlinx.datetime.toLocalDateTime
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import zikrcount.composeapp.generated.resources.*
@@ -90,7 +85,6 @@ fun CountersPage(
     val deletedMessage = stringResource(Res.string.snackbar_counter_deleted)
     val savedMessage = stringResource(Res.string.snackbar_counter_saved)
 
-    // --- State Management ---
     var showAddDialog by remember { mutableStateOf(false) }
     var showAdDialog by remember { mutableStateOf(false) }
     var showNoInternetDialog by remember { mutableStateOf(false) }
@@ -263,10 +257,8 @@ fun CountersPage(
                         modifier = Modifier
                             .clip(CircleShape)
                             .fillMaxSize(0.9f)
-                            // --- DEĞİŞİKLİK BURADA BAŞLIYOR ---
-                            .semantics { role = Role.Button } // Bu satırı ekleyin
+                            .semantics { role = Role.Button }
                             .clickable(
-                                // --- DEĞİŞİKLİK BURADA BİTİYOR ---
                                 interactionSource = interactionSource,
                                 indication = null,
                                 onClick = {
@@ -289,7 +281,6 @@ fun CountersPage(
             if (isShowingAdLoadingIndicator) {
                 val loadingMessage = stringResource(Res.string.dialog_ad_loading_video)
                 Box(
-                    // <-- DEĞİŞİKLİK BURADA BAŞLIYOR -->
                     modifier = Modifier
                         .fillMaxSize()
                         .background(Color.Black.copy(alpha = 0.5f))
@@ -297,7 +288,6 @@ fun CountersPage(
                         .semantics(mergeDescendants = true) {
                             contentDescription = loadingMessage
                         },
-                    // <-- DEĞİŞİKLİK BİTİYOR -->
                     contentAlignment = Alignment.Center
                 ) {
                     CircularProgressIndicator(color = ZikrTheme.colors.primary)
@@ -439,7 +429,7 @@ fun CounterCard(
 
     val displayName = when (counter.id) {
         AppViewModel.DEFAULT_COUNTER.id -> stringResource(Res.string.default_counter_name)
-        AppViewModel.NAMAZ_TESBIHATI_COUNTER.id -> stringResource(Res.string.prayer_tasbih_counter_name)
+        AppViewModel.NAMAZ_HABILITATES_COUNTER.id -> stringResource(Res.string.prayer_tasbih_counter_name)
         else -> counter.name
     }
 
@@ -493,7 +483,7 @@ fun CounterCard(
                     overflow = TextOverflow.Ellipsis,
                     maxLines = 1
                 )
-                if (counter.id != AppViewModel.DEFAULT_COUNTER.id && counter.id != AppViewModel.NAMAZ_TESBIHATI_COUNTER.id) {
+                if (counter.id != AppViewModel.DEFAULT_COUNTER.id && counter.id != AppViewModel.NAMAZ_HABILITATES_COUNTER.id) {
                     Box {
                         Image(
                             painter = painterResource(Res.drawable.ellipsis),
@@ -593,7 +583,7 @@ fun CounterCard(
                     textAlign = TextAlign.Start,
                 )
             }
-            if (counter.id != AppViewModel.DEFAULT_COUNTER.id && counter.id != AppViewModel.NAMAZ_TESBIHATI_COUNTER.id) {
+            if (counter.id != AppViewModel.DEFAULT_COUNTER.id && counter.id != AppViewModel.NAMAZ_HABILITATES_COUNTER.id) {
                 Row(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
@@ -660,11 +650,7 @@ fun CounterCard(
 @Composable
 private fun rememberFormattedDateTime(timestamp: Long): String {
     val unknownDateText = stringResource(Res.string.common_unknown_date)
-
-    // remember bloğu, gereksiz yeniden hesaplamayı önlemek için kalabilir.
     return remember(timestamp, unknownDateText) {
-        // Artık platforma özel, yerelleştirilmiş fonksiyonu çağırıyoruz.
-        // Hata kontrolü ve formatlama 'actual' tarafta yapılır.
         formatTimestampToLocalDateTime(timestamp, unknownDateText)
     }
 }
@@ -677,7 +663,6 @@ fun ModifyCountDialog(
     onDismiss: () -> Unit,
     onConfirm: (amount: Int) -> Unit
 ) {
-    // ... fonksiyonun başındaki mantık aynı ...
     var amountString by remember { mutableStateOf("") }
     val amountInt = amountString.toIntOrNull() ?: 0
     val target = counter.target
@@ -720,7 +705,6 @@ fun ModifyCountDialog(
                 .background(ZikrTheme.colors.surface),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-            // ... Başlık Row'u aynı ...
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -754,7 +738,6 @@ fun ModifyCountDialog(
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.Center
                 ) {
-                    // ... OutlinedTextField aynı ...
                     OutlinedTextField(
                         value = amountString,
                         onValueChange = { amountString = it.filter { char -> char.isDigit() } },
@@ -787,14 +770,12 @@ fun ModifyCountDialog(
                             text = stringResource(Res.string.common_preview),
                             style = MaterialTheme.typography.labelMedium,
                             color = ZikrTheme.colors.textOnPrimary,
-                            // --- DEĞİŞİKLİK ---
                             modifier = Modifier.clearAndSetSemantics { }
                         )
                         Text(
                             text = finalCount.toString(),
                             color = ZikrTheme.colors.textOnPrimary,
                             textAlign = TextAlign.Center, fontSize = 50.sp,
-                            // --- DEĞİŞİKLİK ---
                             modifier = Modifier.clearAndSetSemantics { }
                         )
                         Row(
@@ -806,20 +787,17 @@ fun ModifyCountDialog(
                                 text = stringResource(Res.string.home_display_target, target),
                                 style = MaterialTheme.typography.labelMedium,
                                 color = ZikrTheme.colors.textOnPrimary,
-                                // --- DEĞİŞİKLİK ---
                                 modifier = Modifier.clearAndSetSemantics { }
                             )
                             Text(
                                 text = stringResource(Res.string.home_display_round, finalTur),
                                 style = MaterialTheme.typography.labelMedium,
                                 color = ZikrTheme.colors.textOnPrimary,
-                                // --- DEĞİŞİKLİK ---
                                 modifier = Modifier.clearAndSetSemantics { }
                             )
                         }
                     }
                 }
-                // ... DialogButtons aynı ...
                 DialogButtons(
                     onConfirm = {
                         val finalAmount = if (isAdding) amountInt else -amountInt

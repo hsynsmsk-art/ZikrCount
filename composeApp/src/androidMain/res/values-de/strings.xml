@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string name="app_name">Dhikr Zähler</string> <string name="error_no_share_app">Keine App zum Teilen gefunden.</string>
+  <string name="app_name">Dhikr Zähler</string>
+  <string name="error_no_share_app">Keine App zum Teilen gefunden.</string>
   <string name="error_no_store_or_browser">Google Play Store oder Webbrowser nicht gefunden.</string>
   <string name="error_cannot_open_settings">Einstellungen konnten nicht geöffnet werden.</string>
   <string name="error_cannot_open_link_app">Keine App zum Öffnen dieses Links gefunden.</string>
   <string name="error_cannot_open_link">Link konnte nicht geöffnet werden.</string>
   <string name="error_no_email_app">Keine App zum Senden von E-Mails gefunden.</string>
   <string name="error_cannot_send_email">E-Mail konnte nicht gesendet werden.</string>
+
+  <string name="accessibility_tour_completed">%1$s,، %2$s. runde abgeschlossen</string>
 
 </resources>

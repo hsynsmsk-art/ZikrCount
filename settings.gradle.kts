@@ -1,22 +1,20 @@
-rootProject.name = "ZikrCount"
-enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
-
 pluginManagement {
     repositories {
         google()
         mavenCentral()
         gradlePluginPortal()
+        maven { url = uri("https://developer.huawei.com/repo/") }
     }
 }
 
 dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {
         google()
         mavenCentral()
-        // BÜTÜN SORUNUN KAYNAĞI BU EKSİK SATIRDI.
-        // Bu adres, Compose Multiplatform kütüphanelerinin bulunduğu yerdir.
-        maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
+        maven { url = uri("https://developer.huawei.com/repo/") }
     }
 }
 
+rootProject.name = "ZikrCount"
 include(":composeApp")

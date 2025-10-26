@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string name="app_name">Penghitung Dzikir</string> <string name="error_no_share_app">Tidak ada aplikasi yang ditemukan untuk menangani berbagi.</string>
+  <string name="app_name">Penghitung Dzikir</string>
+  <string name="error_no_share_app">Tidak ada aplikasi yang ditemukan untuk menangani berbagi.</string>
   <string name="error_no_store_or_browser">Google Play Store atau peramban web tidak ditemukan.</string>
   <string name="error_cannot_open_settings">Tidak dapat membuka pengaturan.</string>
   <string name="error_cannot_open_link_app">Tidak ada aplikasi yang ditemukan untuk membuka tautan ini.</string>
   <string name="error_cannot_open_link">Tidak dapat membuka tautan.</string>
   <string name="error_no_email_app">Tidak ada aplikasi yang ditemukan untuk mengirim email.</string>
   <string name="error_cannot_send_email">Tidak dapat mengirim email.</string>
+
+  <string name="accessibility_tour_completed">%1$s,، %2$s. putaran selesai</string>
 
 </resources>

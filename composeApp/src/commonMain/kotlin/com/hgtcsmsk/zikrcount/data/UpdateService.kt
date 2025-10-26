@@ -10,12 +10,15 @@ import kotlinx.datetime.Clock
 import kotlinx.serialization.json.Json
 
 class UpdateService {
+
+    private val json = Json {
+        ignoreUnknownKeys = true
+        useAlternativeNames = false
+    }
+
     private val client = HttpClient {
         install(ContentNegotiation) {
-            json(Json {
-                ignoreUnknownKeys = true
-                useAlternativeNames = false
-            })
+            json(json)
         }
     }
 
@@ -28,15 +31,12 @@ class UpdateService {
             val urlWithCacheBuster = "$updateJsonUrl?t=$timestamp"
 
             println("DEBUG: Making update request: $urlWithCacheBuster")
-
             val responseText = client.get(urlWithCacheBuster) {
                 header("Cache-Control", "no-cache")
                 header("Pragma", "no-cache")
             }.bodyAsText()
-
             println("DEBUG: JSON response from server: $responseText")
-
-            Json { ignoreUnknownKeys = true }.decodeFromString<UpdateInfo>(responseText)
+            json.decodeFromString<UpdateInfo>(responseText)
 
         } catch (e: Exception) {
             println("ERROR: Failed to retrieve update info - ${e.message}")

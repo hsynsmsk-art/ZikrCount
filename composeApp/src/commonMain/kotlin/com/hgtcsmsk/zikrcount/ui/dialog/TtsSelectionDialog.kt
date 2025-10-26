@@ -1,6 +1,6 @@
 package com.hgtcsmsk.zikrcount.ui.dialog
 
-import androidx.compose.foundation.Image // Image import'u düzeltildi
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -17,18 +17,18 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign // TextAlign import'u düzeltildi
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import com.hgtcsmsk.zikrcount.ui.theme.ZikrTheme
 import org.jetbrains.compose.resources.painterResource
-import org.jetbrains.compose.resources.stringResource // stringResource import'u eklendi
+import org.jetbrains.compose.resources.stringResource
 import zikrcount.composeapp.generated.resources.*
 
 @Composable
 fun TtsSelectionDialog(
-    title: String, // Başlık dışarıdan geldiği için stringResource kullanmıyoruz
+    title: String,
     options: List<Pair<String, String>>,
     selectedValue: String,
     onSelect: (String) -> Unit,
@@ -51,7 +51,6 @@ fun TtsSelectionDialog(
                     .background(Color.White, RoundedCornerShape(16.dp)),
                 horizontalAlignment = Alignment.Start
             ) {
-                // Üst Bar
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -59,32 +58,30 @@ fun TtsSelectionDialog(
                         .padding(12.dp),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    // Kapatma butonuyla aynı genişlikte boş bir alan ekleyerek başlığı ortalıyoruz.
                     Spacer(modifier = Modifier.size(24.dp))
                     Text(
-                        text = title, // Başlık dışarıdan geliyor
+                        text = title,
                         style = MaterialTheme.typography.bodyLarge,
                         color = Color.Black,
                         fontWeight = FontWeight.Bold,
                         modifier = Modifier.weight(1f),
-                        textAlign = TextAlign.Center, // TextAlign import'u kullanıldı
+                        textAlign = TextAlign.Center,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis
                     )
-                    Image( // androidx.compose.foundation.Image kullanıldı
+                    Image(
                         painter = painterResource(Res.drawable.action_delete),
-                        contentDescription = stringResource(Res.string.action_close), // Metin string.xml'den alındı
+                        contentDescription = stringResource(Res.string.action_close),
                         modifier = Modifier
                             .size(24.dp)
                             .clickable { onDismiss() }
                     )
                 }
-                // İçerik
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(16.dp)
-                        .defaultMinSize(minHeight = minHeight - 56.dp) // 56dp başlık bar tahmini yüksekliği
+                        .defaultMinSize(minHeight = minHeight - 56.dp)
                         .verticalScroll(rememberScrollState()),
                     contentAlignment = Alignment.Center
                 ) {
@@ -99,8 +96,8 @@ fun TtsSelectionDialog(
                                 modifier = Modifier
                                     .fillMaxWidth()
                                     .clickable {
-                                        onDismiss()           // ÖNCE dialogu kapat
-                                        onSelect(value)       // SONRA state güncelle
+                                        onDismiss()
+                                        onSelect(value)
                                     }
                                     .padding(vertical = 8.dp),
                                 verticalAlignment = Alignment.CenterVertically

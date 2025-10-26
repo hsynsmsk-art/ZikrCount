@@ -34,7 +34,7 @@ enum class Screen {
 
 @Composable
 fun App(windowSizeClass: WindowSizeClass, viewModel: AppViewModel) {
-    var currentScreen by remember { mutableStateOf<Screen>(Screen.Home) }
+    var currentScreen by remember { mutableStateOf(Screen.Home) }
     val navigateTo = { nextScreen: Screen -> currentScreen = nextScreen }
 
     val platformActionHandler = rememberPlatformActionHandler()
@@ -135,7 +135,6 @@ fun App(windowSizeClass: WindowSizeClass, viewModel: AppViewModel) {
                             platformActionHandler.openAppStore()
                         },
                         onDismiss = {
-                            // Mandatory update cannot be dismissed.
                         }
                     )
                 }

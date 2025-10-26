@@ -1,10 +1,7 @@
-// SettingsPage.kt
-
 package com.hgtcsmsk.zikrcount.ui.screens
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
@@ -81,7 +78,6 @@ fun SettingsPage(
     var showTtsLangDialog by remember { mutableStateOf(false) }
     var showNoTtsEngineDialog by remember { mutableStateOf(false) }
     val isHuaweiEngine = selectedTtsEngine.contains("huawei", ignoreCase = true)
-    val ttsTestText = stringResource(Res.string.tts_test_sound)
 
     Scaffold(
         contentWindowInsets = WindowInsets.safeDrawing,
@@ -91,7 +87,6 @@ fun SettingsPage(
         Box(modifier = Modifier.fillMaxSize()) {
             Image(
                 painter = painterResource(findBackgroundResource(selectedBackground)),
-                // DEĞİŞİKLİK 1: Dekoratif arka plan resmi TalkBack tarafından okunmamalı.
                 contentDescription = null,
                 modifier = Modifier.fillMaxSize(),
                 contentScale = ContentScale.Crop
@@ -288,7 +283,7 @@ fun SettingsPage(
                                         Slider(
                                             value = ttsSpeechRate,
                                             onValueChange = { viewModel.setTtsSpeechRate(it) },
-                                            onValueChangeFinished = { viewModel.speakTestSound(ttsTestText) },
+                                            onValueChangeFinished = { viewModel.speakTestSound() },
                                             valueRange = 1.0f..2.5f,
                                             enabled = !isHuaweiEngine,
                                             steps = 5,
@@ -492,7 +487,6 @@ private fun SettingsRowInfo(
     subText: String
 ) {
     Row(
-        // DEĞİŞİKLİK 2: Bütün satırı tek bir mantıksal parça yapmak için semantics eklendi.
         modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = 12.dp)
@@ -501,7 +495,6 @@ private fun SettingsRowInfo(
     ) {
         Image(
             painter = painterResource(icon),
-            // DEĞİŞİKLİK 3: İkon açıklaması artık gereksiz, çünkü tüm satır okunuyor.
             contentDescription = null,
             modifier = Modifier.size(24.dp),
             colorFilter = ColorFilter.tint(ZikrTheme.colors.primary)
@@ -548,7 +541,6 @@ private fun SettingsRowSwitch(
     )
 
     Row(
-        // DEĞİŞİKLİK 2: Bütün satırı tek bir mantıksal parça yapmak için semantics eklendi.
         modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = 8.dp)
@@ -557,7 +549,6 @@ private fun SettingsRowSwitch(
     ) {
         Image(
             painter = painterResource(icon),
-            // DEĞİŞİKLİK 3: İkon açıklaması artık gereksiz, çünkü tüm satır okunuyor.
             contentDescription = null,
             modifier = Modifier.size(24.dp),
             colorFilter = ColorFilter.tint(ZikrTheme.colors.primary)
@@ -603,13 +594,11 @@ private fun SettingsRowClickable(
             .clip(RoundedCornerShape(12.dp))
             .clickable(onClick = onClick)
             .padding(vertical = 12.dp)
-            // DEĞİŞİKLİK 2: Bütün satırı tek bir mantıksal parça yapmak için semantics eklendi.
             .semantics(mergeDescendants = true) {},
         verticalAlignment = Alignment.CenterVertically
     ) {
         Image(
             painter = painterResource(icon),
-            // DEĞİŞİKLİK 3: İkon açıklaması artık gereksiz, çünkü tüm satır okunuyor.
             contentDescription = null,
             modifier = Modifier.size(24.dp),
             colorFilter = ColorFilter.tint(ZikrTheme.colors.primary)
@@ -637,7 +626,6 @@ private fun SettingsDialogDropdownButton(
             .background(Color.Black.copy(alpha = 0.25f))
             .clickable { onClick() }
             .padding(12.dp)
-            // DEĞİŞİKLİK 4: TalkBack'in bunun bir buton olduğunu anlamasını sağlayan rol eklendi.
             .semantics { role = Role.Button }
     ) {
         Text(

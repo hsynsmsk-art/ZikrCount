@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string name="app_name">Pembilang Zikir</string> <string name="error_no_share_app">Tiada aplikasi ditemui untuk mengendalikan perkongsian.</string>
+  <string name="app_name">Pembilang Zikir</string>
+  <string name="error_no_share_app">Tiada aplikasi ditemui untuk mengendalikan perkongsian.</string>
   <string name="error_no_store_or_browser">Gedung Google Play atau pelayar web tidak ditemui.</string>
   <string name="error_cannot_open_settings">Tidak dapat membuka tetapan.</string>
   <string name="error_cannot_open_link_app">Tiada aplikasi ditemui untuk membuka pautan ini.</string>
   <string name="error_cannot_open_link">Tidak dapat membuka pautan.</string>
   <string name="error_no_email_app">Tiada aplikasi ditemui untuk menghantar e-mel.</string>
   <string name="error_cannot_send_email">Tidak dapat menghantar e-mel.</string>
+
+  <string name="accessibility_tour_completed">%1$s,، %2$s. pusingan selesai</string>
 
 </resources>

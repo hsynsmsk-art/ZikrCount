@@ -1,5 +1,3 @@
-// composeApp/src/commonMain/kotlin/com/hgtcsmsk/zikrcount/ui/dialog/ConfirmationDialog.kt
-
 package com.hgtcsmsk.zikrcount.ui.dialog
 
 import androidx.compose.foundation.Image
@@ -58,7 +56,6 @@ fun ConfirmationDialog(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.SpaceBetween
             ) {
-                // BAŞLIK
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -82,8 +79,6 @@ fun ConfirmationDialog(
                             .clickable { onDismiss() }
                     )
                 }
-
-                // İÇERİK
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -97,8 +92,6 @@ fun ConfirmationDialog(
                         textAlign = TextAlign.Center
                     )
                 }
-
-                // BUTONLAR
                 DialogButtons(
                     onConfirm = onConfirm,
                     onDismiss = onDismiss,

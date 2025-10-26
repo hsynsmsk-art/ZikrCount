@@ -10,4 +10,6 @@
     <string name="error_no_email_app">No app found to send email.</string>
     <string name="error_cannot_send_email">Could not send email.</string>
 
+    <string name="accessibility_tour_completed">%1$s,، %2$s. round completed</string>
+
 </resources>

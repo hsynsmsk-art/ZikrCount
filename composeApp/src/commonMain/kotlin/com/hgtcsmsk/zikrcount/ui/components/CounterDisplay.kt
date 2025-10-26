@@ -1,6 +1,3 @@
-// İSTENEN 3 FARKLI SAYAÇ TÜRÜNE GÖRE TALKBACK ANONSUNU DÜZENLEYEN NİHAİ KOD
-// Dosya: composeApp/src/commonMain/kotlin/com/hgtcsmsk/zikrcount/ui/components/CounterDisplay.kt
-
 package com.hgtcsmsk.zikrcount.ui.components
 
 import androidx.compose.foundation.Image
@@ -41,68 +38,57 @@ fun CounterDisplay(
     isLandscape: Boolean = false,
     isTablet: Boolean = false
 ) {
-    val isNamazTesbihati = counter.id == AppViewModel.NAMAZ_TESBIHATI_COUNTER.id
+    val isNamazHabilitates = counter.id == AppViewModel.NAMAZ_HABILITATES_COUNTER.id
     val isDefaultCounter = counter.id == AppViewModel.DEFAULT_COUNTER.id
     val isPhoneLandscape = isLandscape && !isTablet
 
-    val displayCount = if (isNamazTesbihati) {
-        // Namaz tesbihatında ekranda görünen değer 33'lük döngüdür.
+    val displayCount = if (isNamazHabilitates) {
         counter.count % 33
     } else {
         counter.count
     }
 
     val aspectRatio = if (isLandscape) 2.9f else 1.55f
-
-    // --- DEĞİŞİKLİK BURADA BAŞLIYOR ---
-    // TalkBack metinlerini string.xml'den alıyoruz
     val valueText = stringResource(Res.string.accessibility_value)
     val targetTextPrefix = stringResource(Res.string.accessibility_target)
     val dividerText = stringResource(Res.string.accessibility_divider)
     val roundTextPrefix = stringResource(Res.string.accessibility_round)
-
-    // TalkBack anonsu, sayaç türüne göre farklı formatlarda oluşturuluyor.
     val accessibilityText = buildString {
-        append(countName) // Her zaman önce sayaç adı okunur.
-
+        append(countName)
         when {
-            // 1. Kural: Sonsuz Sayaç ise sadece değeri oku.
             isDefaultCounter -> {
-                append(", ") // Virgül ve boşluk
-                append(valueText) // "Değer "
+                append(", ")
+                append(valueText)
                 append(displayCount)
             }
-            // 2. Kural: Namaz Tesbihatı ise hedefi "X bölü Y" formatında oku.
-            isNamazTesbihati -> {
-                append(", ") // Virgül ve boşluk
-                append(targetTextPrefix) // "Hedef "
-                append(counter.count) // Toplam ilerlemeyi oku (örn: 37)
-                append(dividerText) // " bölü "
-                append(counter.target) // Toplam hedefi oku (örn: 99)
-                append(", ") // Virgül ve boşluk
-                append(roundTextPrefix) // "Tur "
+            isNamazHabilitates -> {
+                append(", ")
+                append(targetTextPrefix)
+                append(counter.count)
+                append(dividerText)
+                append(counter.target)
+                append(", ")
+                append(roundTextPrefix)
                 append(counter.tur)
-                append(", ") // Virgül ve boşluk
-                append(valueText) // "Değer "
-                append(displayCount) // Ekranda görünen 33'lük değeri oku (örn: 4)
+                append(", ")
+                append(valueText)
+                append(displayCount)
             }
-            // 3. Kural: Diğer tüm kullanıcı sayaçları için standart formatı koru.
             else -> {
                 if (counter.target > 0) {
-                    append(", ") // Virgül ve boşluk
-                    append(targetTextPrefix) // "Hedef "
+                    append(", ")
+                    append(targetTextPrefix)
                     append(counter.target)
                 }
-                append(", ") // Virgül ve boşluk
-                append(roundTextPrefix) // "Tur "
+                append(", ")
+                append(roundTextPrefix)
                 append(counter.tur)
-                append(", ") // Virgül ve boşluk
-                append(valueText) // "Değer "
+                append(", ")
+                append(valueText)
                 append(displayCount)
             }
         }
     }
-    // --- DEĞİŞİKLİK BURADA BİTİYOR ---
 
     Box(
         modifier = modifier
@@ -124,7 +110,7 @@ fun CounterDisplay(
                 .clearAndSetSemantics { }
         )
 
-        val icKutuOrani = when {
+        val icyKutuOrania = when {
             isTablet && isLandscape -> 2.4f
             isPhoneLandscape -> 2f
             else -> 1.3f
@@ -133,7 +119,7 @@ fun CounterDisplay(
         Box(
             modifier = Modifier
                 .fillMaxWidth(0.85f)
-                .aspectRatio(icKutuOrani),
+                .aspectRatio(icyKutuOrania),
             contentAlignment = Alignment.Center
         )  {
             Box(
@@ -187,9 +173,8 @@ fun CounterDisplay(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         val titleMediumFontSize = MaterialTheme.typography.titleMedium.fontSize.value
-                        // Görseldeki hedef metni, Namaz Tesbihatı için özel formatı koruyor.
                         val targetText = when {
-                            isNamazTesbihati -> stringResource(Res.string.home_display_target, counter.count) + "/" + counter.target // Özel format
+                            isNamazHabilitates -> stringResource(Res.string.home_display_target, counter.count) + "/" + counter.target
                             isDefaultCounter || counter.target <= 0 -> stringResource(Res.string.home_display_target, 0)
                             else -> stringResource(Res.string.home_display_target, counter.target)
                         }

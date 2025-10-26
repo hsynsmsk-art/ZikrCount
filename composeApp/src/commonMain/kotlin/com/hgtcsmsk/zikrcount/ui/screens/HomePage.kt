@@ -1,5 +1,3 @@
-// HomePage.kt
-
 package com.hgtcsmsk.zikrcount.ui.screens
 
 import androidx.compose.animation.ExperimentalAnimationApi
@@ -13,13 +11,13 @@ import androidx.compose.animation.core.updateTransition
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.awaitFirstDown
 import androidx.compose.foundation.gestures.waitForUpOrCancellation
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
-import androidx.compose.material3.windowsizeclass.WindowHeightSizeClass
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -66,8 +64,6 @@ fun HomePage(
     soundPlayer: SoundPlayer,
     windowSizeClass: WindowSizeClass
 ) {
-    val isLandscape = windowSizeClass.heightSizeClass == WindowHeightSizeClass.Compact
-
     val counters by viewModel.counters.collectAsState()
     val selectedId by viewModel.lastSelectedCounterId.collectAsState()
     val selectedCounter: Counter? = counters.find { it.id == selectedId }
@@ -87,7 +83,7 @@ fun HomePage(
     val zikirName = when (selectedCounter?.id) {
         null -> ""
         AppViewModel.DEFAULT_COUNTER.id -> stringResource(Res.string.default_counter_name)
-        AppViewModel.NAMAZ_TESBIHATI_COUNTER.id -> {
+        AppViewModel.NAMAZ_HABILITATES_COUNTER.id -> {
             selectedCounter.let { counter ->
                 when (counter.count) {
                     in 0..32 -> stringResource(Res.string.prayer_tasbih_part1)
@@ -106,6 +102,8 @@ fun HomePage(
     val scope = rememberCoroutineScope()
     val snackBarHostState = remember { SnackbarHostState() }
     val resetMessage = stringResource(Res.string.snackbar_counter_reset)
+    val resetAnnouncementTemplate = stringResource(Res.string.snackbar_counter_reset)
+
 
     LaunchedEffect(key1 = Unit) {
         viewModel.eventFlow.collect { event ->
@@ -148,16 +146,11 @@ fun HomePage(
         }
     }
 
-    // HATA DÜZELTMESİ: Eksik metin parametresi eklendi
-    val tourCompletedText = stringResource(Res.string.accessibility_tour_completed)
 
     val performIncrementAction = { isFullScreen: Boolean ->
         scope.launch {
             if (isMenuExpanded) isMenuExpanded = false
-            viewModel.incrementSelectedCounter(
-                isFullScreenTap = isFullScreen,
-                tourCompletedText = tourCompletedText
-            )
+            viewModel.incrementSelectedCounter(isFullScreenTap = isFullScreen)
             if (vibrationEnabled) {
                 platformActionHandler.performCustomVibration()
             }
@@ -192,7 +185,7 @@ fun HomePage(
         Image(
             painter = painterResource(findBackgroundResource(selectedBackground)),
             modifier = Modifier.fillMaxSize(),
-            contentDescription = null,
+            contentDescription = stringResource(Res.string.content_desc_app_background),
             contentScale = ContentScale.Crop
         )
 
@@ -225,43 +218,35 @@ fun HomePage(
                     modifier = Modifier
                         .fillMaxWidth(0.98f)
                         .weight(10f),
-                    horizontalArrangement = Arrangement.SpaceBetween
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
                     TopActionButton(
                         iconResource = Res.drawable.brush,
                         contentDescription = stringResource(Res.string.content_desc_theme_button),
                         onClick = {
-                            if (soundEnabled) {
-                                soundPlayer.play("mini_click")
-                            }
+                            if (soundEnabled) soundPlayer.play("mini_click")
                             isMenuExpanded = false
                             onNavigateToTheme()
                         }
                     )
 
                     Box(contentAlignment = Alignment.TopEnd) {
-                        // <-- DEĞİŞİKLİK BURADA BAŞLIYOR -->
-                        // TalkBack için dinamik bir içerik açıklaması oluşturuyoruz.
                         val settingsContentDesc = if (showUpdateBadge) {
-                            stringResource(Res.string.content_desc_settings_button) + updateBadgeText
+                            stringResource(Res.string.content_desc_settings_button) + ", " + updateBadgeText
                         } else {
                             stringResource(Res.string.content_desc_settings_button)
                         }
 
                         TopActionButton(
                             iconResource = Res.drawable.setting,
-                            // Dinamik açıklamayı burada kullanıyoruz.
                             contentDescription = settingsContentDesc,
                             onClick = {
-                                if (soundEnabled) {
-                                    soundPlayer.play("mini_click")
-                                }
+                                if (soundEnabled) soundPlayer.play("mini_click")
                                 isMenuExpanded = false
                                 onNavigateToSettings()
                             }
                         )
-                        // <-- DEĞİŞİKLİK BİTİYOR -->
-
                         if (showUpdateBadge) {
                             Box(
                                 modifier = Modifier
@@ -309,9 +294,7 @@ fun HomePage(
                         iconResource = listButtonResource,
                         contentDescription = stringResource(Res.string.content_desc_counters_list_button),
                         onClick = {
-                            if (soundEnabled) {
-                                soundPlayer.play("mini_click")
-                            }
+                            if (soundEnabled) soundPlayer.play("mini_click")
                             isMenuExpanded = false
                             onNavigateToCounters()
                         }
@@ -336,23 +319,20 @@ fun HomePage(
                         .aspectRatio(1f)
                         .clip(CircleShape)
                         .background(color = ZikrTheme.colors.primary)
-                        // <-- DEĞİŞİKLİK: Ana artırma düğmesi için de düzeltme yapıldı -->
                         .semantics {
                             contentDescription = incrementDescription
                             role = Role.Button
                         }
-                        .pointerInput(isFullScreenTouchEnabled) {
-                            if (!isFullScreenTouchEnabled) {
-                                awaitPointerEventScope {
-                                    while (true) {
-                                        awaitFirstDown(requireUnconsumed = false)
-                                        scope.launch {
-                                            scale.animateTo(0.93f, tween(15))
-                                            scale.animateTo(1.0f, tween(30))
-                                        }
-                                        performIncrementAction(false)
-                                        waitForUpOrCancellation()
+                        .pointerInput(Unit) {
+                            awaitPointerEventScope {
+                                while (true) {
+                                    awaitFirstDown(requireUnconsumed = false)
+                                    scope.launch {
+                                        scale.animateTo(0.93f, tween(15))
+                                        scale.animateTo(1.0f, tween(30))
                                     }
+                                    performIncrementAction(false)
+                                    waitForUpOrCancellation()
                                 }
                             }
                         },
@@ -365,7 +345,7 @@ fun HomePage(
                     }
                     Image(
                         painter = painterResource(buttonResource),
-                        contentDescription = null, // Açıklama dış Box'a taşındı
+                        contentDescription = null,
                         modifier = Modifier
                             .fillMaxSize(0.97f)
                             .graphicsLayer {
@@ -410,13 +390,11 @@ fun HomePage(
         }
     }
 
-    // ... Diyalog kodlarında değişiklik yok ...
-
     if (shouldShowRateDialog) {
         ConfirmationDialog(
             title = stringResource(Res.string.dialog_rate_title),
             question = stringResource(Res.string.dialog_rate_message),
-            confirmButtonText = stringResource(Res.string.action_rate_app),
+            confirmButtonText = stringResource(Res.string.settings_rate),
             onDismiss = { viewModel.onRateDialogDismissed(isLater = true) },
             onConfirm = {
                 platformActionHandler.launchInAppReview()
@@ -449,11 +427,12 @@ fun HomePage(
             confirmButtonText = stringResource(Res.string.action_reset),
             onDismiss = { showResetDialog = false },
             onConfirm = {
-                if (soundEnabled) {
-                    soundPlayer.play("mini_click")
-                }
-                viewModel.resetSelectedCounter(resetMessage)
+                if (soundEnabled) soundPlayer.play("mini_click")
+                viewModel.resetSelectedCounter(resetAnnouncementTemplate)
                 showResetDialog = false
+                scope.launch {
+                    snackBarHostState.showSnackbar(resetMessage)
+                }
             }
         )
     }
@@ -470,6 +449,7 @@ fun ExpandingMenu(
     onShowResetDialog: () -> Unit,
     onDecrement: () -> Unit
 ) {
+
     val transition = updateTransition(targetState = isExpanded, label = "menu_transition")
 
     val subButtonAlpha by transition.animateFloat(
@@ -510,36 +490,47 @@ fun ExpandingMenu(
     val collapsedStateText = stringResource(Res.string.content_desc_counter_actions_collapsed)
 
     Box(contentAlignment = Alignment.Center) {
-        // "Sıfırla" ve "Azalt" butonları, düzelttiğimiz SmallActionButton'ı kullandığı için
-        // artık otomatik olarak erişilebilir olacak.
-        SmallActionButton(
+        Box(
             modifier = Modifier
                 .size(40.dp)
                 .offset(x = refreshButtonOffsetX, y = refreshButtonOffsetY)
-                .graphicsLayer { alpha = subButtonAlpha },
-            iconResource = Res.drawable.small_refresh,
-            contentDescription = stringResource(Res.string.content_desc_reset_button),
-            applyManualStroke = true,
-            onClick = {
-                if (soundEnabled) soundPlayer.play("mini_click")
-                onShowResetDialog()
-                onToggle()
-            }
-        )
-        SmallActionButton(
+                .graphicsLayer { alpha = subButtonAlpha }
+                .clickable(enabled = isExpanded) {}
+        ) {
+            SmallActionButton(
+                modifier = Modifier.matchParentSize(),
+                iconResource = Res.drawable.small_refresh,
+                contentDescription = stringResource(Res.string.content_desc_reset_button),
+                applyManualStroke = true,
+                onClick = {
+                    if (isExpanded) {
+                        if (soundEnabled) soundPlayer.play("mini_click")
+                        onShowResetDialog()
+                        onToggle()
+                    }
+                }
+            )
+        }
+
+        Box(
             modifier = Modifier
                 .size(40.dp)
                 .offset(x = decreaseButtonOffsetX, y = decreaseButtonOffsetY)
-                .graphicsLayer { alpha = subButtonAlpha },
-            iconResource = Res.drawable.small_decrease,
-            contentDescription = stringResource(Res.string.content_desc_decrement_button),
-            applyManualStroke = true,
-            onClick = {
-                onDecrement()
-            }
-        )
+                .graphicsLayer { alpha = subButtonAlpha }
+                .clickable(enabled = isExpanded) {}
+        ) {
+            SmallActionButton(
+                modifier = Modifier.matchParentSize(),
+                iconResource = Res.drawable.small_decrease,
+                contentDescription = stringResource(Res.string.content_desc_decrement_button),
+                applyManualStroke = true,
+                onClick = {
+                    if(isExpanded) { onDecrement() }
+                }
+            )
+        }
 
-        // Ana Buton
+
         val setButtonResource = if (isNightModeEnabled) Res.drawable.small_set_dark else Res.drawable.small_set_light
         SmallActionButton(
             iconResource = setButtonResource,
@@ -548,8 +539,6 @@ fun ExpandingMenu(
                 if (soundEnabled) soundPlayer.play("mini_click")
                 onToggle()
             },
-            // Bu modifier, düzelttiğimiz SmallActionButton'ın kendi semantics'i ile birleşecek
-            // ve artık doğru şekilde çalışacaktır.
             modifier = Modifier.semantics {
                 stateDescription = if (isExpanded) expandedStateText else collapsedStateText
             }

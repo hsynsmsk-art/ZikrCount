@@ -11,7 +11,5 @@ data class Counter(
     val tur: Int = 0,
     val target: Int,
     val creationTimestamp: Long = id,
-    // DEĞİŞİKLİK: isPinned: Boolean yerine pinTimestamp: Long kullanacağız.
-    // 0: Sabitli değil, >0: Sabitlendiği zaman.
     val pinTimestamp: Long = 0L
 )

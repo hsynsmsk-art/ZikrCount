@@ -32,7 +32,6 @@ import com.hgtcsmsk.zikrcount.ui.theme.ZikrTheme
 import com.hgtcsmsk.zikrcount.ui.utils.autoMirror
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import zikrcount.composeapp.generated.resources.*
@@ -51,8 +50,6 @@ fun PremiumPage(
 
     val snackbarHostState = remember { SnackbarHostState() }
     val scope = rememberCoroutineScope()
-
-    // HATA DÜZELTMESİ: Snackbar mesajlarını string.xml'den al
     val noPurchaseMessage = stringResource(Res.string.snackbar_restore_no_purchase)
     val errorMessage = stringResource(Res.string.snackbar_restore_error)
 
@@ -82,7 +79,6 @@ fun PremiumPage(
         ) {
             Image(
                 painter = painterResource(findBackgroundResource(selectedBackground)),
-                // DEĞİŞİKLİK 1: Dekoratif arka plan resmi TalkBack tarafından okunmamalı.
                 contentDescription = null,
                 modifier = Modifier.fillMaxSize(),
                 contentScale = ContentScale.Crop
@@ -146,7 +142,6 @@ fun PremiumPage(
                             productPrice = productPrice,
                             isRestoring = isRestoring,
                             onPurchaseClick = { activity -> viewModel.purchaseRemoveAds(activity) },
-                            // HATA DÜZELTMESİ: Eksik parametreleri viewModel'e yolla
                             onRestoreClick = { viewModel.restorePurchases(noPurchaseMessage, errorMessage) }
                         )
                     }
@@ -168,7 +163,6 @@ private fun NotPurchasedUserContent(
 
     Image(
         painter = painterResource(Res.drawable.no_ads_new),
-        // DEĞİŞİKLİK 2: "Reklam Yok" ikonu dekoratif olduğu için okunmamalı. Anlamı aşağıdaki başlıkta zaten var.
         contentDescription = null,
         modifier = Modifier.size(100.dp)
     )
@@ -230,14 +224,11 @@ private fun NotPurchasedUserContent(
             modifier = Modifier.padding(top = 8.dp)
         )
     }
-
-    // DEĞİŞİKLİK 3: Yükleme durumunu TalkBack'e bildirmek için Box'a semantics eklendi.
     val restoreStatusText = if (isRestoring) stringResource(Res.string.premium_restore_loading) else ""
     Box(
         modifier = Modifier
             .padding(top = 8.dp)
             .semantics(mergeDescendants = true) {
-                // Eğer yükleniyorsa, kutunun açıklaması bu metin olacak.
                 if (isRestoring) contentDescription = restoreStatusText
             },
         contentAlignment = Alignment.Center
@@ -262,7 +253,6 @@ private fun NotPurchasedUserContent(
 private fun PurchasedUserContent() {
     Image(
         painter = painterResource(Res.drawable.success_check),
-        // DEĞİŞİKLİK 2: "Onay" ikonu dekoratif olduğu için okunmamalı. Anlamı aşağıdaki başlıkta zaten var.
         contentDescription = null,
         modifier = Modifier.size(100.dp),
         colorFilter = ColorFilter.tint(ZikrTheme.colors.primary)

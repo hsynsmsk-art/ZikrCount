@@ -2,14 +2,14 @@
 <resources>
 
     <string name="action_save">सहेजें</string>
-    <string name="action_delete">मिटाएं</string>
+    <string name="action_delete">हटाएं</string>
     <string name="action_cancel">रद्द करें</string>
     <string name="action_back">वापस</string>
     <string name="action_close">बंद करें</string>
     <string name="action_edit">संपादित करें</string>
     <string name="action_reset">रीसेट करें</string>
-    <string name="action_confirm">अनुमति दें</string>
-    <string name="action_watch_ad">विज्ञापन देखें</string>
+    <string name="action_confirm">पुष्टि करें</string>
+    <string name="action_watch_ad">देखें</string>
     <string name="action_get_reward">इनाम पाएं</string>
     <string name="action_rate_app">ऐप को रेट करें</string>
     <string name="action_no_thanks">नहीं, धन्यवाद</string>
@@ -17,18 +17,18 @@
     <string name="action_update">अपडेट करें</string>
     <string name="action_later">बाद में</string>
 
-    <string name="common_success">सफलतापूर्वक</string>
+    <string name="common_success">सफलता</string>
     <string name="common_ok">ठीक है</string>
     <string name="common_preview">पूर्वावलोकन</string>
     <string name="common_google">Google</string>
     <string name="common_unknown_date">अज्ञात तिथि</string>
-    <string name="common_loading">लोड हो रहा है...</string>
+    <string name="common_loading">लोड हो रहा है…</string>
 
-    <string name="home_display_round">दौर: %1$d</string>
+    <string name="home_display_round">राउंड: %1$d</string>
     <string name="home_display_target">लक्ष्य: %1$d</string>
-    <string name="default_counter_name">अनंत काउंटर</string>
-    <string name="prayer_tasbih_counter_name">नमाज़ की तस्बीह</string>
-    <string name="prayer_tasbih_part1">सुब्हानल्लाह</string>
+    <string name="default_counter_name">अंतहीन काउंटर</string>
+    <string name="prayer_tasbih_counter_name">नमाज़ की तस्बीह</string>
+    <string name="prayer_tasbih_part1">सुब्हानअल्लाह</string>
     <string name="prayer_tasbih_part2">अल्हम्दुलिल्लाह</string>
     <string name="prayer_tasbih_part3">अल्लाहु अकबर</string>
     <string name="home_update_available">अपडेट उपलब्ध है</string>
@@ -38,135 +38,134 @@
     <string name="counter_card_count">गिनती: %1$d</string>
     <string name="counter_card_creation_date">बनाया गया: %1$s</string>
     <string name="counter_card_pin">शीर्ष पर पिन करें</string>
-    <string name="counter_card_unpin">पिन हटाएं</string>
+    <string name="counter_card_unpin">अनपिन करें</string>
     <string name="counter_card_add_count">गिनती जोड़ें</string>
     <string name="counter_card_options">काउंटर विकल्प</string>
     <string name="dialog_add_counter_title">काउंटर जोड़ें</string>
     <string name="dialog_edit_counter_title">काउंटर संपादित करें</string>
     <string name="dialog_counter_name_label">काउंटर का नाम</string>
     <string name="dialog_counter_target_label">लक्ष्य</string>
-    <string name="dialog_counter_add_count_label">जोड़ने के लिए संख्या</string>
-    <string name="dialog_counter_decrease_count">घटाने के लिए संख्या</string>
-    <string name="dialog_delete_counter_title">काउंटर मिटाएं</string>
-    <string name="dialog_delete_counter_message">क्या आप वाकई काउंटर "%1$s" को मिटाना चाहते हैं?</string>
+    <string name="dialog_counter_add_count_label">जोड़ने के लिए मान</string>
+    <string name="dialog_counter_decrease_count">घटाने के लिए मान</string>
+    <string name="dialog_delete_counter_title">काउंटर हटाएं</string>
+    <string name="dialog_delete_counter_message">क्या आप वाकई %1$s काउंटर को हटाना चाहते हैं?</string>
     <string name="dialog_reset_counter_title">काउंटर रीसेट करें</string>
-    <string name="dialog_reset_counter_message">क्या आप वाकई काउंटर "%1$s" को रीसेट करना चाहते हैं?</string>
+    <string name="dialog_reset_counter_message">क्या आप वाकई %1$s काउंटर को रीसेट करना चाहते हैं?</string>
 
-    <string name="theme_page_title">थीम्स</string>
+    <string name="theme_page_title">थीम</string>
     <string name="theme_page_tab_background">पृष्ठभूमि</string>
     <string name="theme_page_tab_display">थीम</string>
     <string name="theme_page_default_theme_name">डिफ़ॉल्ट</string>
-    <string name="theme_page_unlock_success">सफलतापूर्वक अनलॉक और चयनित किया गया!</string>
-    <string name="theme_page_loading_ad">विज्ञापन लोड हो रहा है, कृपया प्रतीक्षा करें</string>
-    <string name="theme_preview_background_desc">पृष्ठभूमि %1$d%2$s</string>
-    <string name="theme_preview_theme_desc">रंग थीम %1$d%2$s</string>
+    <string name="theme_page_unlock_success">सफलतापूर्वक अनलॉक किया गया</string>
+    <string name="theme_page_loading_ad">विज्ञापन लोड हो रहा है…</string>
+    <string name="theme_preview_background_desc">पृष्ठभूमि %1$d %2$s</string>
+    <string name="theme_preview_theme_desc">रंग थीम %1$d %2$s</string>
     <string name="theme_preview_state_selected">, चयनित</string>
-    <string name="theme_preview_state_locked">, लॉक है</string>
+    <string name="theme_preview_state_locked">, लॉक किया गया</string>
 
     <string name="settings_title">सेटिंग्स</string>
     <string name="settings_category_ads">विज्ञापन</string>
     <string name="settings_ads_removed_title">विज्ञापन हटा दिए गए</string>
     <string name="settings_ads_removed_subtitle">आप विज्ञापन-मुक्त संस्करण का उपयोग कर रहे हैं।</string>
     <string name="settings_remove_ads_title">विज्ञापन हटाएं</string>
-    <string name="settings_category_general">सामान्य सेटिंग्स</string>
+    <string name="settings_category_general">सामान्य</string>
     <string name="settings_sound">ध्वनि</string>
     <string name="settings_vibration">कंपन</string>
     <string name="settings_night_mode">नाइट मोड</string>
-    <string name="settings_fullscreen_touch">फुल स्क्रीन टच</string>
-    <string name="settings_category_accessibility">सरल उपयोग</string>
+    <string name="settings_fullscreen_touch">फुलस्क्रीन टच</string>
+    <string name="settings_category_accessibility">अभिगम्यता</string>
     <string name="settings_counter_reading_title">काउंटर रीडिंग</string>
     <string name="settings_counter_reading_subtitle">सक्षम होने पर, काउंटर मान ज़ोर से पढ़ा जाता है।</string>
     <string name="settings_tts_engine_title">पसंदीदा इंजन</string>
     <string name="settings_tts_language_title">पसंदीदा भाषा</string>
-    <string name="settings_tts_language_loading">लोड हो रहा है...</string>
+    <string name="settings_tts_language_loading">लोड हो रहा है…</string>
     <string name="settings_tts_language_select">भाषा चुनें</string>
     <string name="settings_tts_speech_rate_title">बोलने की गति</string>
     <string name="settings_tts_speech_rate_slow">धीमा</string>
     <string name="settings_tts_speech_rate_fast">तेज़</string>
-    <string name="settings_tts_huawei_warning">यह टीटीएस इंजन बोलने की गति समायोजन का समर्थन नहीं करता है।</string>
+    <string name="settings_tts_huawei_warning">यह TTS इंजन बोलने की गति का समर्थन नहीं करता है।</string>
     <string name="settings_category_app">एप्लिकेशन</string>
     <string name="settings_backup">ऑटो बैकअप</string>
     <string name="settings_share">शेयर करें</string>
-    <string name="settings_rate">हमें रेट करें</string>
+    <string name="settings_rate">रेट करें</string>
     <string name="settings_privacy_policy">गोपनीयता नीति</string>
-    <string name="settings_contact_us">हमसे संपर्क करें</string>
+    <string name="settings_contact_us">संपर्क करें</string>
     <string name="settings_update_banner">नया संस्करण उपलब्ध है</string>
 
     <string name="tts_test_sound">33</string>
 
     <string name="premium_page_title">विज्ञापन हटाएं</string>
-    <string name="premium_title">विज्ञापन-मुक्त बनें</string>
-    <string name="premium_description">एक बार के भुगतान के साथ, सभी विज्ञापन हटाएं और सभी सुविधाएँ अनलॉक करें।</string>
-    <string name="premium_purchase_button_loading">लोड हो रहा है...</string>
+    <string name="premium_title">विज्ञापन-मुक्त अनुभव</string>
+    <string name="premium_description">एकमुश्त भुगतान के साथ विज्ञापन हटाएं और सभी सुविधाएं अनलॉक करें।</string>
+    <string name="premium_purchase_button_loading">लोड हो रहा है…</string>
     <string name="premium_purchase_button_price">%1$s के साथ अपग्रेड करें</string>
     <string name="premium_purchase_button_default">खरीदें</string>
-    <string name="premium_purchase_pending">आपका भुगतान पुष्टि की प्रतीक्षा कर रहा है...</string>
+    <string name="premium_purchase_pending">भुगतान लंबित है…</string>
     <string name="premium_restore_button">खरीदारी बहाल करें</string>
-    <string name="premium_restore_loading">बहाल किया जा रहा है...</string>
+    <string name="premium_restore_loading">बहाल किया जा रहा है…</string>
     <string name="premium_already_purchased_title">विज्ञापन हटा दिए गए</string>
-    <string name="premium_already_purchased_description">आप विज्ञापन-मुक्त संस्करण और सभी सुविधाओं का आनंद ले रहे हैं। आपके समर्थन के लिए धन्यवाद!</string>
+    <string name="premium_already_purchased_description">आप विज्ञापन-मुक्त संस्करण का उपयोग कर रहे हैं। धन्यवाद!</string>
 
-    <string name="dialog_ad_unlock_item_message">इस सामग्री को अनलॉक करने के लिए, आपको पहले एक छोटा विज्ञापन देखना होगा।</string>
-    <string name="dialog_ad_add_counter_message">नया काउंटर जोड़ने के लिए, आपको पहले एक छोटा विज्ञापन देखना होगा।</string>
-    <string name="dialog_ad_loading_video">वीडियो विज्ञापन लोड हो रहा है, कृपया प्रतीक्षा करें</string>
+    <string name="dialog_ad_unlock_item_message">इस सामग्री को अनलॉक करने के लिए एक छोटा विज्ञापन देखें।</string>
+    <string name="dialog_ad_add_counter_message">नया काउंटर जोड़ने के लिए एक छोटा विज्ञापन देखें।</string>
+    <string name="dialog_ad_loading_video">विज्ञापन लोड हो रहा है…</string>
     <string name="dialog_gift_title">एक उपहार</string>
-    <string name="dialog_gift_message">विज्ञापन अस्थायी रूप से अनुपलब्ध हैं। हमने आपके लिए आपका इनाम सक्रिय कर दिया है।</string>
+    <string name="dialog_gift_message">विज्ञापन अस्थायी रूप से अनुपलब्ध हैं। आपके लिए इनाम सक्षम कर दिया गया है।</string>
     <string name="dialog_backup_title">ऑटो बैकअप</string>
-    <string name="dialog_backup_message">जब आप अनुमति देते हैं, तो आपके काउंटर और सेटिंग्स स्वचालित रूप से आपके मुख्य %1$s खाते में बैकअप हो जाएंगे। यह आपको फ़ोन बदलने पर आसानी से अपना डेटा पुनर्स्थापित करने की अनुमति देता है।</string>
+    <string name="dialog_backup_message">जब आप अनुमति देते हैं, तो आपके काउंटर और सेटिंग्स का स्वचालित रूप से आपके खाते में बैकअप ले लिया जाएगा।</string>
     <string name="dialog_rate_title">हमारा समर्थन करें</string>
-    <string name="dialog_rate_message">आपकी प्रतिक्रिया हमारे लिए बहुत मूल्यवान है। क्या आप हमारे ऐप को रेट करने और हमारा समर्थन करने के लिए कुछ सेकंड का समय निकालेंगे?</string>
+    <string name="dialog_rate_message">क्या आप हमारे ऐप को रेट करने के लिए कुछ समय निकाल सकते हैं? आपके समर्थन के लिए धन्यवाद!</string>
     <string name="dialog_error_connection_title">कनेक्शन त्रुटि</string>
-    <string name="dialog_error_connection_message">विज्ञापन लोड नहीं हो सका। कृपया अपना इंटरनेट कनेक्शन जांचें और पुनः प्रयास करें।</string>
-    <string name="dialog_error_ad_load_title">विज्ञापन लोड करने में विफल</string>
-    <string name="dialog_error_ad_load_message">अभी दिखाने के लिए कोई विज्ञापन उपलब्ध नहीं है। कृपया बाद में पुनः प्रयास करें।</string>
-    <string name="dialog_talkback_title">सरल उपयोग सहायता</string>
-    <string name="dialog_talkback_message">ऐसा लगता है कि आप टॉकबैक का उपयोग कर रहे हैं। क्या आप चाहेंगे कि हर गिनती पर काउंटर ज़ोर से पढ़ा जाए?</string>
-    <string name="dialog_error_tts_title">अनुपलब्ध</string>
-    <string name="dialog_error_tts_message">काउंटर रीडिंग सुविधा अनुपलब्ध है क्योंकि आपके फ़ोन पर कोई टीटीएस (टेक्स्ट-टू-स्पीच) इंजन नहीं मिला।</string>
+    <string name="dialog_error_connection_message">विज्ञापन लोड नहीं हो सका। कृपया अपना इंटरनेट कनेक्शन जांचें।</string>
+    <string name="dialog_error_ad_load_title">विज्ञापन लोड नहीं हुआ</string>
+    <string name="dialog_error_ad_load_message">फिलहाल कोई विज्ञापन उपलब्ध नहीं है। कृपया बाद में पुनः प्रयास करें।</string>
+    <string name="dialog_talkback_title">अभिगम्यता सहायता</string>
+    <string name="dialog_talkback_message">आप TalkBack का उपयोग कर रहे हैं। क्या आप चाहेंगे कि प्रत्येक गिनती के साथ काउंटर ज़ोर से पढ़ा जाए?</string>
+    <string name="dialog_error_tts_title">उपलब्ध नहीं है</string>
+    <string name="dialog_error_tts_message">वॉयस रीडिंग उपलब्ध नहीं है क्योंकि आपके डिवाइस पर कोई TTS इंजन नहीं है।</string>
 
     <string name="dialog_update_mandatory_title">अपडेट आवश्यक है</string>
     <string name="dialog_update_optional_title">नया संस्करण उपलब्ध है</string>
-    <string name="dialog_update_mandatory_message">ऐप का उपयोग जारी रखने के लिए, कृपया नवीनतम संस्करण में अपडेट करें।</string>
-    <string name="dialog_update_optional_message">ऐप का नया संस्करण बेहतर अनुभव प्रदान करता है। क्या आप अपडेट करना चाहेंगे?</string>
+    <string name="dialog_update_mandatory_message">कृपया इसका उपयोग जारी रखने के लिए एप्लिकेशन को अपडेट करें।</string>
+    <string name="dialog_update_optional_message">एक नया संस्करण तैयार है। क्या आप अपडेट करना चाहेंगे?</string>
     <string name="dialog_update_whats_new">नया क्या है:</string>
 
-    <string name="snackbar_counter_reset">काउंटर सफलतापूर्वक रीसेट हो गया!</string>
-    <string name="snackbar_counter_deleted">काउंटर सफलतापूर्वक मिटा दिया गया!</string>
-    <string name="snackbar_counter_saved">काउंटर सफलतापूर्वक सहेजा गया!</string>
-    <string name="snackbar_item_unlocked">सफलतापूर्वक अनलॉक किया गया!</string>
-    <string name="snackbar_restore_no_purchase">बहाल करने के लिए कोई सक्रिय खरीदारी नहीं मिली।</string>
-    <string name="snackbar_restore_error">एक त्रुटि हुई। कृपया अपना इंटरनेट कनेक्शन जांचें और पुनः प्रयास करें।</string>
+    <string name="snackbar_counter_reset">काउंटर सफलतापूर्वक रीसेट किया गया</string>
+    <string name="snackbar_counter_deleted">काउंटर सफलतापूर्वक हटा दिया गया</string>
+    <string name="snackbar_counter_saved">काउंटर सहेजा गया</string>
+    <string name="snackbar_item_unlocked">अनलॉक किया गया</string>
+    <string name="snackbar_restore_no_purchase">कोई सक्रिय खरीदारी नहीं मिली।</string>
+    <string name="snackbar_restore_error">एक त्रुटि हुई। कृपया अपना कनेक्शन जांचें।</string>
 
     <string name="content_desc_main_display">काउंटर डिस्प्ले</string>
-    <string name="content_desc_app_background">ऐप पृष्ठभूमि</string>
+    <string name="content_desc_app_background">पृष्ठभूमि</string>
     <string name="content_desc_increment_button">काउंटर बढ़ाएं</string>
-    <string name="content_desc_decrement_button">घटाएं</string>
+    <string name="content_desc_decrement_button">काउंटर घटाएं</string>
     <string name="content_desc_reset_button">काउंटर रीसेट करें</string>
     <string name="content_desc_settings_button">सेटिंग्स</string>
     <string name="content_desc_counters_list_button">काउंटर सूची</string>
     <string name="content_desc_theme_button">थीम बदलें</string>
     <string name="content_desc_settings_menu_button">सेटिंग्स मेनू खोलें</string>
-    <string name="content_desc_toggle_panels_button">पैनल दिखाएं/छुपाएं</string>
-    <string name="content_desc_locked_item">लॉक है</string>
+    <string name="content_desc_toggle_panels_button">पैनल दिखाएं / छिपाएं</string>
+    <string name="content_desc_locked_item">लॉक किया गया</string>
     <string name="content_desc_theme_page_background">पेज पृष्ठभूमि</string>
-    <string name="content_desc_theme_preview_background">थीम पृष्ठभूमि रंग</string>
-    <string name="content_desc_theme_preview_overlay">थीम यूआई परत</string>
+    <string name="content_desc_theme_preview_background">थीम पृष्ठभूमि</string>
+    <string name="content_desc_theme_preview_overlay">थीम ओवरले</string>
     <string name="content_desc_counter_actions">काउंटर क्रियाएं</string>
     <string name="content_desc_counter_actions_expanded">विस्तारित</string>
     <string name="content_desc_counter_actions_collapsed">संक्षिप्त</string>
 
-    <string name="accessibility_value">मान </string>
-    <string name="accessibility_target">लक्ष्य </string>
-    <string name="accessibility_divider"> का </string>
-    <string name="accessibility_round">दौर </string>
-    <string name="accessibility_tour_completed">%1$s, दौर %2$s पूरा हुआ</string>
-    <string name="accessibility_update_available">, अपडेट उपलब्ध है</string>
+    <string name="accessibility_value">मान</string>
+    <string name="accessibility_target">लक्ष्य</string>
+    <string name="accessibility_divider">का</string>
+    <string name="accessibility_round">राउंड</string>
+    <string name="accessibility_update_available">अपडेट उपलब्ध है</string>
 
     <string name="contact_email_subject">ज़िक्र काउंटर फीडबैक</string>
     <string name="contact_email_address" translatable="false">appfabrictr@gmail.com</string>
     <string name="privacy_policy_url" translatable="false">https://zikirmatik-sayac-ec148.web.app/privacy.html</string>
 
     <string name="share_title">ऐप शेयर करें</string>
-    <string name="share_text">आपको यह शानदार ज़िक्र काउंटर ऐप आज़माना चाहिए! https://play.google.com/store/apps/details?id=%1$s</string>
+    <string name="share_text">अपने दैनिक ज़िक्र पर आसानी से नज़र रखने के लिए इस ऐप को आज़माएँ: https://play.google.com/store/apps/details?id=%1$s</string>
 
 </resources>

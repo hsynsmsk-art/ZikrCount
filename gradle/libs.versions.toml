@@ -27,6 +27,8 @@ googleServices = "4.4.3"
 firebaseBom = "34.3.0"
 firebase-crashlytics-gradle = "3.0.1"
 firebase-crashlytics-version = "19.0.2"
+huawei-ads = "13.4.78.302"
+huawei-iap = "6.16.6.301"
 
 [libraries]
 androidx-core-splashscreen = { module = "androidx.core:core-splashscreen", version.ref = "coreSplashscreen" }
@@ -59,7 +61,8 @@ play-billing = { module = "com.android.billingclient:billing-ktx", version.ref =
 firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.ref = "firebaseBom" }
 firebase-analytics = { group = "com.google.firebase", name = "firebase-analytics" }
 firebase-crashlytics = { group = "com.google.firebase", name = "firebase-crashlytics-ktx", version.ref = "firebase-crashlytics-version" }
-
+huawei-ads-lite = { group = "com.huawei.hms", name = "ads-lite", version.ref = "huawei-ads" }
+huawei-iap = { group = "com.huawei.hms", name = "iap", version.ref = "huawei-iap" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
@@ -70,3 +73,4 @@ kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref =
 kotlinSerialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlinSerialization" }
 googleServices = { id = "com.google.gms.google-services", version.ref = "googleServices" }
 firebase-crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "firebase-crashlytics-gradle" }
+huawei-agconnect = { id = "com.huawei.agconnect", version = "1.9.1.300" }

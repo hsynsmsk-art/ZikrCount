@@ -1,5 +1,3 @@
-// TabletComposables.kt
-
 package com.hgtcsmsk.zikrcount.ui.screens
 
 import androidx.compose.animation.core.Animatable
@@ -37,7 +35,6 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.hgtcsmsk.zikrcount.AppViewModel
-import com.hgtcsmsk.zikrcount.platform.PlatformActionHandler
 import com.hgtcsmsk.zikrcount.platform.PurchaseState
 import com.hgtcsmsk.zikrcount.platform.RewardedAdState
 import com.hgtcsmsk.zikrcount.platform.ShowAdResult
@@ -46,7 +43,6 @@ import com.hgtcsmsk.zikrcount.platform.rememberAdController
 import com.hgtcsmsk.zikrcount.ui.components.CounterDisplay
 import com.hgtcsmsk.zikrcount.ui.dialog.ConfirmationDialog
 import com.hgtcsmsk.zikrcount.ui.theme.ZikrTheme
-import com.hgtcsmsk.zikrcount.ui.utils.pressable
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withTimeoutOrNull
@@ -55,7 +51,9 @@ import org.jetbrains.compose.resources.stringResource
 import zikrcount.composeapp.generated.resources.*
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
+import com.hgtcsmsk.zikrcount.platform.PlatformActionHandler
 import org.jetbrains.compose.resources.DrawableResource
+
 
 @Composable
 fun TabletCountersPageContent(
@@ -64,7 +62,6 @@ fun TabletCountersPageContent(
     snackBarHostState: SnackbarHostState,
     isLandscape: Boolean
 ) {
-    // ... Bu fonksiyonun içeriğinde değişiklik yok ...
     DisposableEffect(Unit) {
         onDispose {
             viewModel.resetAdFailureCount()
@@ -180,7 +177,6 @@ fun TabletCountersPageContent(
                         .padding(16.dp),
                 ) {
                     val fabSize = if (isLandscape) 44.dp else 50.dp
-                    // <-- DEĞİŞİKLİK 2: Sayaç Ekleme Düğmesi Düzeltildi -->
                     val addCounterDescription = stringResource(Res.string.counters_page_add_button)
                     Box(
                         modifier = Modifier
@@ -199,7 +195,6 @@ fun TabletCountersPageContent(
                                     }
                                 }
                             }
-                            // Anlamlı açıklamayı ve rolü tıklanabilir olan Box'a ekliyoruz.
                             .semantics {
                                 contentDescription = addCounterDescription
                                 role = Role.Button
@@ -209,7 +204,6 @@ fun TabletCountersPageContent(
                         val addButtonResource = if (isNightModeEnabled) Res.drawable.add_dark else Res.drawable.add_light
                         Image(
                             painter = painterResource(addButtonResource),
-                            // İçerideki resmi dekoratif olarak işaretliyoruz.
                             contentDescription = null,
                             modifier = Modifier.fillMaxSize(0.9f)
                         )
@@ -231,8 +225,6 @@ fun TabletCountersPageContent(
             }
         }
     }
-
-    // ... Bu fonksiyonun geri kalan diyalog kısımlarında değişiklik yok ...
     if (showAddDialog) {
         CounterUpsertDialog(
             onDismiss = { showAddDialog = false },
@@ -262,18 +254,15 @@ fun TabletCountersPageContent(
                                 }
                             }
                             is ShowAdResult.Failed -> {
-                                if (adFailureCount >= 1) {
-                                    if (viewModel.canGrantGift()) {
-                                        showGiftDialog = true
-                                    } else {
-                                        showAdLoadErrorDialog = true
-                                    }
+                                if (adFailureCount >= 1 && viewModel.canGrantGift()) {
+                                    showGiftDialog = true
                                 } else {
-                                    viewModel.recordAdFailure()
                                     showAdLoadErrorDialog = true
                                 }
+                                if (adFailureCount < 1) viewModel.recordAdFailure()
+
                             }
-                            else -> {}
+                            ShowAdResult.Shown -> {}
                         }
                     }
 
@@ -361,14 +350,12 @@ fun TabletHomePageContent(
     isLandscape: Boolean,
     isTablet: Boolean
 ) {
-    // ... Bu fonksiyonun üst kısmındaki state tanımlamaları aynı ...
     val haptic = LocalHapticFeedback.current
     val scope = rememberCoroutineScope()
     val counters by viewModel.counters.collectAsState()
     val selectedId by viewModel.lastSelectedCounterId.collectAsState()
     val selectedCounter = counters.find { it.id == selectedId }
     val soundEnabled by viewModel.soundEnabled.collectAsState()
-    val vibrationEnabled by viewModel.vibrationEnabled.collectAsState()
     val isFullScreenTouchEnabled by viewModel.isFullScreenTouchEnabled.collectAsState()
     val turCompletedEvent by viewModel.turCompletedEvent.collectAsState()
     val flashEffectEvent by viewModel.flashEffectEvent.collectAsState()
@@ -387,6 +374,9 @@ fun TabletHomePageContent(
     val updateBadgeText = stringResource(Res.string.accessibility_update_available)
 
     val isPhoneLandscape = isLandscape && !isTablet
+
+    val resetAnnouncementTemplate = stringResource(Res.string.snackbar_counter_reset)
+
 
     LaunchedEffect(flashEffectEvent) {
         if (flashEffectEvent != null) {
@@ -410,19 +400,14 @@ fun TabletHomePageContent(
     val zikirName = when (selectedCounter?.id) {
         null -> ""
         AppViewModel.DEFAULT_COUNTER.id -> stringResource(Res.string.default_counter_name)
-        AppViewModel.NAMAZ_TESBIHATI_COUNTER.id -> stringResource(Res.string.prayer_tasbih_counter_name)
+        AppViewModel.NAMAZ_HABILITATES_COUNTER.id -> stringResource(Res.string.prayer_tasbih_counter_name)
         else -> selectedCounter.name
     }
 
-    // HATA DÜZELTMESİ: Eksik metin parametresi eklendi
-    val tourCompletedText = stringResource(Res.string.accessibility_tour_completed)
 
     val performIncrementAction = { isFullScreen: Boolean ->
         scope.launch {
-            viewModel.incrementSelectedCounter(
-                isFullScreenTap = isFullScreen,
-                tourCompletedText = tourCompletedText
-            )
+            viewModel.incrementSelectedCounter(isFullScreenTap = isFullScreen)
             haptic.performHapticFeedback(HapticFeedbackType.LongPress)
             if (soundEnabled) soundPlayer.play("audio_click", volume = 0.6f)
         }
@@ -477,17 +462,14 @@ fun TabletHomePageContent(
                         iconResource = Res.drawable.brush,
                         contentDescription = stringResource(Res.string.content_desc_theme_button),
                         onClick = {
-                            if (soundEnabled) {
-                                soundPlayer.play("mini_click")
-                            }
+                            if (soundEnabled) soundPlayer.play("mini_click")
                             onNavigateToTheme()
                         },
                         modifier = Modifier.size(topButtonSize).then(buttonGlowModifier)
                     )
                     Box(contentAlignment = Alignment.TopEnd) {
-                        // <-- DEĞİŞİKLİK 4: Ayarlar Butonu Güncelleme Anonsu -->
                         val settingsDescription = if (showUpdateBadge) {
-                            stringResource(Res.string.content_desc_settings_button) + updateBadgeText
+                            stringResource(Res.string.content_desc_settings_button) + ", " + updateBadgeText
                         } else {
                             stringResource(Res.string.content_desc_settings_button)
                         }
@@ -495,9 +477,7 @@ fun TabletHomePageContent(
                             iconResource = Res.drawable.setting,
                             contentDescription = settingsDescription,
                             onClick = {
-                                if (soundEnabled) {
-                                    soundPlayer.play("mini_click")
-                                }
+                                if (soundEnabled) soundPlayer.play("mini_click")
                                 onNavigateToSettings()
                             },
                             modifier = Modifier.size(topButtonSize).then(buttonGlowModifier)
@@ -555,7 +535,6 @@ fun TabletHomePageContent(
 
                 val incrementButtonWeight = if (isPhoneLandscape) 0.8f else if (isLandscape) 1.0f else 1.6f
                 val scale = remember { Animatable(1.0f) }
-                // <-- DEĞİŞİKLİK 1: Ana Artırma Düğmesi Düzeltildi -->
                 val incrementDescription = stringResource(Res.string.content_desc_increment_button)
                 Box(
                     modifier = Modifier
@@ -563,7 +542,6 @@ fun TabletHomePageContent(
                         .aspectRatio(1f)
                         .clip(CircleShape)
                         .background(color = ZikrTheme.colors.primary)
-                        // Tıklama olayını ve anlamlı açıklamayı bu Box'a taşıyoruz.
                         .pointerInput(isFullScreenTouchEnabled) {
                             if (!isFullScreenTouchEnabled) {
                                 awaitPointerEventScope {
@@ -585,7 +563,6 @@ fun TabletHomePageContent(
                     val buttonResource = if (isNightModeEnabled) Res.drawable.big_button_dark else Res.drawable.big_button_light
                     Image(
                         painter = painterResource(buttonResource),
-                        // İçerideki resmi dekoratif olarak işaretliyoruz.
                         contentDescription = null,
                         modifier = Modifier
                             .fillMaxSize(0.97f)
@@ -600,7 +577,10 @@ fun TabletHomePageContent(
                         iconResource = resetButtonResource,
                         contentDescription = stringResource(Res.string.content_desc_reset_button),
                         tintIcon = false,
-                        onClick = { if (soundEnabled) soundPlayer.play("mini_click", volume = 0.6f); showResetDialog = true }
+                        onClick = {
+                            if (soundEnabled) soundPlayer.play("mini_click", volume = 0.6f)
+                            showResetDialog = true
+                        }
                     )
                 }
             }
@@ -620,18 +600,15 @@ fun TabletHomePageContent(
             confirmButtonText = stringResource(Res.string.action_reset),
             onDismiss = { showResetDialog = false },
             onConfirm = {
-                if (soundEnabled) {
-                    soundPlayer.play("mini_click")
-                }
-                viewModel.resetSelectedCounter(resetMessage)
+                if (soundEnabled) soundPlayer.play("mini_click")
+                viewModel.resetSelectedCounter(resetAnnouncementTemplate)
                 showResetDialog = false
+                scope.launch { snackBarHostState.showSnackbar(resetMessage) }
             }
         )
     }
 }
 
-
-// <-- DEĞİŞİKLİK 3: TabletActionButton Bileşeni İyileştirildi -->
 @Composable
 private fun TabletActionButton(
     iconResource: DrawableResource,
@@ -646,7 +623,6 @@ private fun TabletActionButton(
             .background(color = Color.White.copy(alpha = 0.2f))
             .border(1.dp, Color.White.copy(alpha = 0.3f), CircleShape)
             .clickable { onClick() }
-            // Tıklanabilir olan Box'a anlamlı açıklamayı ve rolü ekliyoruz.
             .semantics {
                 this.contentDescription = contentDescription
                 this.role = Role.Button
@@ -656,7 +632,6 @@ private fun TabletActionButton(
         val colorFilter = if (tintIcon) ColorFilter.tint(Color.White) else null
         Image(
             painter = painterResource(iconResource),
-            // İçerideki resmi dekoratif olarak işaretliyoruz.
             contentDescription = null,
             colorFilter = colorFilter,
             modifier = Modifier.fillMaxSize(0.7f)

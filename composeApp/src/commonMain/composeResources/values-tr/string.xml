@@ -8,12 +8,12 @@
   <string name="action_close">Kapat</string>
   <string name="action_edit">Düzenle</string>
   <string name="action_reset">Sıfırla</string>
-  <string name="action_confirm">İzin Ver</string>
-  <string name="action_watch_ad">Reklam İzle</string>
-  <string name="action_get_reward">Ödülü Al</string>
-  <string name="action_rate_app">Oy Ver</string>
+  <string name="action_confirm">Onayla</string>
+  <string name="action_watch_ad">İzle</string>
+  <string name="action_get_reward">Ödül Al</string>
+  <string name="action_rate_app">Uygulamayı Oyla</string>
   <string name="action_no_thanks">Hayır, Teşekkürler</string>
-  <string name="action_yes_enable">Evet</string>
+  <string name="action_yes_enable">Evet, Etkinleştir</string>
   <string name="action_update">Güncelle</string>
   <string name="action_later">Sonra</string>
 
@@ -22,7 +22,7 @@
   <string name="common_preview">Önizleme</string>
   <string name="common_google">Google</string>
   <string name="common_unknown_date">Bilinmeyen Tarih</string>
-  <string name="common_loading">Yükleniyor...</string>
+  <string name="common_loading">Yükleniyor…</string>
 
   <string name="home_display_round">Tur: %1$d</string>
   <string name="home_display_target">Hedef: %1$d</string>
@@ -31,7 +31,7 @@
   <string name="prayer_tasbih_part1">Subhanallah</string>
   <string name="prayer_tasbih_part2">Elhamdülillah</string>
   <string name="prayer_tasbih_part3">Allahu Ekber</string>
-  <string name="home_update_available">güncelleme mevcut</string>
+  <string name="home_update_available">Güncelleme Mevcut</string>
 
   <string name="counters_page_title">Sayaçlarım</string>
   <string name="counters_page_add_button">Sayaç Ekle</string>
@@ -40,7 +40,7 @@
   <string name="counter_card_pin">Üste Sabitle</string>
   <string name="counter_card_unpin">Sabitlemeyi Kaldır</string>
   <string name="counter_card_add_count">Sayı Ekle</string>
-  <string name="counter_card_options">Sayaç seçenekleri</string>
+  <string name="counter_card_options">Sayaç Seçenekleri</string>
   <string name="dialog_add_counter_title">Sayaç Ekle</string>
   <string name="dialog_edit_counter_title">Sayacı Düzenle</string>
   <string name="dialog_counter_name_label">Sayaç Adı</string>
@@ -49,17 +49,17 @@
   <string name="dialog_counter_decrease_count">Azaltılacak Sayı</string>
   <string name="dialog_delete_counter_title">Sayacı Sil</string>
   <string name="dialog_delete_counter_message">%1$s sayacını silmek istediğinizden emin misiniz?</string>
-  <string name="dialog_reset_counter_title">Sayaç Sıfırlanacak</string>
+  <string name="dialog_reset_counter_title">Sayacı Sıfırla</string>
   <string name="dialog_reset_counter_message">%1$s sayacını sıfırlamak istediğinize emin misiniz?</string>
 
   <string name="theme_page_title">Temalar</string>
   <string name="theme_page_tab_background">Arka Plan</string>
   <string name="theme_page_tab_display">Tema</string>
   <string name="theme_page_default_theme_name">Varsayılan</string>
-  <string name="theme_page_unlock_success">Başarıyla açıldı ve seçildi!</string>
-  <string name="theme_page_loading_ad">Reklam yükleniyor, lütfen bekleyin</string>
-  <string name="theme_preview_background_desc">Arka Plan %1$d%2$s</string>
-  <string name="theme_preview_theme_desc">Renk Teması %1$d%2$s</string>
+  <string name="theme_page_unlock_success">Başarıyla Açıldı</string>
+  <string name="theme_page_loading_ad">Reklam Yükleniyor…</string>
+  <string name="theme_preview_background_desc">Arka Plan %1$d %2$s</string>
+  <string name="theme_preview_theme_desc">Renk Teması %1$d %2$s</string>
   <string name="theme_preview_state_selected">, Seçili</string>
   <string name="theme_preview_state_locked">, Kilitli</string>
 
@@ -75,98 +75,97 @@
   <string name="settings_fullscreen_touch">Tam Ekran Dokunuş</string>
   <string name="settings_category_accessibility">Erişilebilirlik</string>
   <string name="settings_counter_reading_title">Sayaç Okuma</string>
-  <string name="settings_counter_reading_subtitle">Aktif edildiğinde, sayaç değeri sesli olarak okunur.</string>
+  <string name="settings_counter_reading_subtitle">Etkinleştirildiğinde sayaç değeri sesli okunur.</string>
   <string name="settings_tts_engine_title">Tercih Edilen Motor</string>
   <string name="settings_tts_language_title">Tercih Edilen Dil</string>
-  <string name="settings_tts_language_loading">Yükleniyor...</string>
-  <string name="settings_tts_language_select">Dil Seçin</string>
+  <string name="settings_tts_language_loading">Yükleniyor…</string>
+  <string name="settings_tts_language_select">Dil Seç</string>
   <string name="settings_tts_speech_rate_title">Konuşma Hızı</string>
   <string name="settings_tts_speech_rate_slow">Yavaş</string>
   <string name="settings_tts_speech_rate_fast">Hızlı</string>
-  <string name="settings_tts_huawei_warning">Bu TTS motoru konuşma hızını desteklememektedir.</string>
+  <string name="settings_tts_huawei_warning">Bu TTS motoru konuşma hızını desteklemiyor.</string>
   <string name="settings_category_app">Uygulama</string>
   <string name="settings_backup">Otomatik Yedekleme</string>
   <string name="settings_share">Paylaş</string>
-  <string name="settings_rate">Oy Ver</string>
+  <string name="settings_rate">Oyla</string>
   <string name="settings_privacy_policy">Gizlilik Politikası</string>
-  <string name="settings_contact_us">Bize Ulaşın</string>
-  <string name="settings_update_banner">Yeni sürüm mevcut</string>
+  <string name="settings_contact_us">İletişim</string>
+  <string name="settings_update_banner">Yeni Sürüm Mevcut</string>
 
   <string name="tts_test_sound">33</string>
 
   <string name="premium_page_title">Reklamları Kaldır</string>
-  <string name="premium_title">Reklamsız Deneyime Geçin</string>
-  <string name="premium_description">Tek seferlik bir ödeme ile reklamları tamamen kaldırın ve tüm kilitli özellikleri açın.</string>
-  <string name="premium_purchase_button_loading">Yükleniyor...</string>
-  <string name="premium_purchase_button_price">%1$s ile Yükselt</string>
+  <string name="premium_title">Reklamsız Deneyim</string>
+  <string name="premium_description">Tek seferlik ödeme ile reklamları kaldır ve tüm özellikleri aç.</string>
+  <string name="premium_purchase_button_loading">Yükleniyor…</string>
+  <string name="premium_purchase_button_price">%1$s İle Yükselt</string>
   <string name="premium_purchase_button_default">Satın Al</string>
-  <string name="premium_purchase_pending">Ödemeniz onay bekliyor...</string>
+  <string name="premium_purchase_pending">Ödeme Onay Bekliyor…</string>
   <string name="premium_restore_button">Satın Alımları Geri Yükle</string>
-  <string name="premium_restore_loading">Geri yükleniyor...</string>
+  <string name="premium_restore_loading">Geri Yükleniyor…</string>
   <string name="premium_already_purchased_title">Reklamlar Kaldırıldı</string>
-  <string name="premium_already_purchased_description">Uygulamanın reklamsız sürümünün ve tüm özelliklerinin keyfini çıkarıyorsunuz. Desteğiniz için teşekkür ederiz!</string>
+  <string name="premium_already_purchased_description">Reklamsız sürümü kullanıyorsun. Teşekkürler!</string>
 
-  <string name="dialog_ad_unlock_item_message">Bu içeriğin kilidini açmak için önce kısa bir reklam izlemelisiniz.</string>
-  <string name="dialog_ad_add_counter_message">Yeni bir sayaç ekleyebilmek için önce kısa bir reklam izlemelisiniz.</string>
-  <string name="dialog_ad_loading_video">Video reklam yükleniyor, lütfen bekleyin</string>
+  <string name="dialog_ad_unlock_item_message">Bu içeriği açmak için kısa bir reklam izle.</string>
+  <string name="dialog_ad_add_counter_message">Yeni sayaç eklemek için kısa bir reklam izle.</string>
+  <string name="dialog_ad_loading_video">Reklam Yükleniyor…</string>
   <string name="dialog_gift_title">Bir Hediye</string>
-  <string name="dialog_gift_message">Reklamlar geçici olarak kullanılamıyor. Ödülünüzü sizin için etkinleştirdik.</string>
+  <string name="dialog_gift_message">Reklamlar geçici olarak kullanılamıyor. Ödülün senin için etkinleştirildi.</string>
   <string name="dialog_backup_title">Otomatik Yedekleme</string>
-  <string name="dialog_backup_message">İzin verdiğinizde, sayaçlarınız ve ayarlarınız otomatik olarak ana %1$s hesabınıza yedeklenir. Böylece telefonunuzu değiştirdiğinizde verilerinizi kolayca geri yükleyebilirsiniz.</string>
+  <string name="dialog_backup_message">İzin verdiğinde sayaçların ve ayarların hesabına otomatik olarak yedeklenir.</string>
   <string name="dialog_rate_title">Destek Ol</string>
-  <string name="dialog_rate_message">Geri bildirimleriniz bizim için çok değerli. Bize destek olmak için birkaç saniyenizi ayırıp uygulamamızı oylar mısınız?</string>
+  <string name="dialog_rate_message">Bizi desteklemek için uygulamamızı oylamak ister misin?</string>
   <string name="dialog_error_connection_title">Bağlantı Hatası</string>
-  <string name="dialog_error_connection_message">Reklam yüklenemedi. Lütfen internet bağlantınızı kontrol edip tekrar deneyin.</string>
+  <string name="dialog_error_connection_message">Reklam yüklenemedi. İnternet bağlantını kontrol et.</string>
   <string name="dialog_error_ad_load_title">Reklam Yüklenemedi</string>
-  <string name="dialog_error_ad_load_message">Şu anda gösterilecek bir reklam bulunamadı. Lütfen daha sonra tekrar deneyin.</string>
+  <string name="dialog_error_ad_load_message">Şu anda reklam bulunamadı. Daha sonra tekrar dene.</string>
   <string name="dialog_talkback_title">Erişilebilirlik Yardımı</string>
-  <string name="dialog_talkback_message">TalkBack kullanıyorsunuz. Her sayımda sayacın sesli okunmasını ister misiniz?</string>
+  <string name="dialog_talkback_message">TalkBack kullanıyorsun. Her sayımda sayacın sesli okunmasını ister misin?</string>
   <string name="dialog_error_tts_title">Kullanılamıyor</string>
-  <string name="dialog_error_tts_message">Telefonunuzda bir TTS (Yazıdan Sese) motoru bulunmadığı için Sayaç Okuma özelliği kullanılamıyor.</string>
+  <string name="dialog_error_tts_message">Cihazında TTS motoru bulunmadığı için sesli okuma kullanılamıyor.</string>
 
-  <string name="dialog_update_mandatory_title">Güncelleme Gerekiyor</string>
+  <string name="dialog_update_mandatory_title">Güncelleme Gerekli</string>
   <string name="dialog_update_optional_title">Yeni Sürüm Mevcut</string>
-  <string name="dialog_update_mandatory_message">Uygulamayı kullanmaya devam etmek için lütfen son sürüme güncelleyin.</string>
-  <string name="dialog_update_optional_message">Uygulamanın yeni sürümü daha iyi bir deneyim sunuyor. Güncellemek ister misiniz?</string>
+  <string name="dialog_update_mandatory_message">Uygulamayı kullanmaya devam etmek için güncelle.</string>
+  <string name="dialog_update_optional_message">Yeni sürüm hazır. Güncellemek ister misin?</string>
   <string name="dialog_update_whats_new">Yenilikler:</string>
 
-  <string name="snackbar_counter_reset">Sayaç başarıyla sıfırlandı!</string>
-  <string name="snackbar_counter_deleted">Sayaç başarıyla silindi!</string>
-  <string name="snackbar_counter_saved">Sayaç başarıyla kaydedildi!</string>
-  <string name="snackbar_item_unlocked">Kilit başarıyla açıldı!</string>
-  <string name="snackbar_restore_no_purchase">Geri yüklenecek aktif bir satın alım bulunamadı.</string>
-  <string name="snackbar_restore_error">Bir hata oluştu. Lütfen internet bağlantınızı kontrol edip tekrar deneyin.</string>
+  <string name="snackbar_counter_reset">Sayaç Başarıyla Sıfırlandı</string>
+  <string name="snackbar_counter_deleted">Sayaç Başarıyla Silindi</string>
+  <string name="snackbar_counter_saved">Sayaç Kaydedildi</string>
+  <string name="snackbar_item_unlocked">Kilit Açıldı</string>
+  <string name="snackbar_restore_no_purchase">Etkin satın alım bulunamadı.</string>
+  <string name="snackbar_restore_error">Bir hata oluştu. Lütfen bağlantıyı kontrol et.</string>
 
   <string name="content_desc_main_display">Sayaç Ekranı</string>
-  <string name="content_desc_app_background">Uygulama arka planı</string>
+  <string name="content_desc_app_background">Arka Plan</string>
   <string name="content_desc_increment_button">Sayaç Artır</string>
-  <string name="content_desc_decrement_button">Azalt</string>
+  <string name="content_desc_decrement_button">Sayaç Azalt</string>
   <string name="content_desc_reset_button">Sayacı Sıfırla</string>
   <string name="content_desc_settings_button">Ayarlar</string>
   <string name="content_desc_counters_list_button">Sayaç Listesi</string>
-  <string name="content_desc_theme_button">Temayı Değiştir</string>
-  <string name="content_desc_settings_menu_button">Ayarlar menüsünü aç</string>
-  <string name="content_desc_toggle_panels_button">Panelleri Göster/Gizle</string>
+  <string name="content_desc_theme_button">Tema Değiştir</string>
+  <string name="content_desc_settings_menu_button">Ayarlar Menüsünü Aç</string>
+  <string name="content_desc_toggle_panels_button">Panelleri Göster / Gizle</string>
   <string name="content_desc_locked_item">Kilitli</string>
   <string name="content_desc_theme_page_background">Sayfa Arka Planı</string>
-  <string name="content_desc_theme_preview_background">Tema arka plan rengi</string>
-  <string name="content_desc_theme_preview_overlay">Tema arayüz katmanı</string>
+  <string name="content_desc_theme_preview_background">Tema Arka Planı</string>
+  <string name="content_desc_theme_preview_overlay">Tema Katmanı</string>
   <string name="content_desc_counter_actions">Sayaç Eylemleri</string>
   <string name="content_desc_counter_actions_expanded">Genişletildi</string>
   <string name="content_desc_counter_actions_collapsed">Daraltıldı</string>
 
-  <string name="accessibility_value">Değer </string>
-  <string name="accessibility_target">Hedef </string>
-  <string name="accessibility_divider"> bölü </string>
-  <string name="accessibility_round">Tur </string>
-  <string name="accessibility_tour_completed">%1$s, %2$s. tur tamamlandı</string>
-  <string name="accessibility_update_available">, güncelleme mevcut</string>
+  <string name="accessibility_value">Değer</string>
+  <string name="accessibility_target">Hedef</string>
+  <string name="accessibility_divider">/</string>
+  <string name="accessibility_round">Tur</string>
+  <string name="accessibility_update_available">Güncelleme Mevcut</string>
 
   <string name="contact_email_subject">Zikir Sayacı Geri Bildirim</string>
   <string name="contact_email_address" translatable="false">appfabrictr@gmail.com</string>
   <string name="privacy_policy_url" translatable="false">https://zikirmatik-sayac-ec148.web.app/privacy.html</string>
 
   <string name="share_title">Uygulamayı Paylaş</string>
-  <string name="share_text">Bu harika zikirmatik uygulamasını mutlaka deneyin! https://play.google.com/store/apps/details?id=%1$s</string>
+  <string name="share_text">Günlük zikrini kolayca takip etmek için bu uygulamayı dene: https://play.google.com/store/apps/details?id=%1$s</string>
 
 </resources>

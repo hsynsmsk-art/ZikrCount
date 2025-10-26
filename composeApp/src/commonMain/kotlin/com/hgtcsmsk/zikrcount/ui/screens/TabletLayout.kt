@@ -1,5 +1,3 @@
-// TabletLayout.kt
-
 package com.hgtcsmsk.zikrcount.ui.screens
 
 import androidx.compose.animation.core.animateDpAsState
@@ -29,7 +27,6 @@ import com.hgtcsmsk.zikrcount.platform.PlatformActionHandler
 import com.hgtcsmsk.zikrcount.platform.PurchaseState
 import com.hgtcsmsk.zikrcount.platform.SoundPlayer
 import com.hgtcsmsk.zikrcount.ui.components.SuccessSnackBar
-import com.hgtcsmsk.zikrcount.ui.theme.ZikrTheme
 import com.hgtcsmsk.zikrcount.ui.theme.withAdjustedFontSizes
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
@@ -91,36 +88,38 @@ fun TabletLayout(
             Scaffold(
                 containerColor = Color.Transparent,
                 snackbarHost = {
-                    SnackbarHost(hostState = snackBarHostState) { data ->
+                    SnackbarHost(
+                        hostState = snackBarHostState,
+                        modifier = Modifier.windowInsetsPadding(
+                            WindowInsets.navigationBars.only(WindowInsetsSides.Bottom + WindowInsetsSides.Horizontal)
+                        )
+                    ) { data ->
                         SuccessSnackBar(data = data)
                     }
                 },
                 bottomBar = {
-                    // Kapsayıcı, sistemin navigasyon çubuğu boşluklarını (sadece yatayda)
-                    // dikkate alarak kendi kendine boşluk bırakacak.
                     Box(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .windowInsetsPadding(WindowInsets.navigationBars.only(WindowInsetsSides.Horizontal)),
+                            .windowInsetsPadding(WindowInsets.navigationBars.only(WindowInsetsSides.Bottom + WindowInsetsSides.Horizontal)),
                         contentAlignment = Alignment.Center
                     ) {
                         if (isNetworkAvailable && purchaseState !is PurchaseState.Purchased) {
-                            val bannerHeight = if (isPhoneLandscape) 60.dp else 140.dp
+                            val bannerHeight = if (isPhoneLandscape) 60.dp else 90.dp
                             BannerAd(
                                 modifier = Modifier
                                     .fillMaxWidth()
                                     .height(bannerHeight),
                                 trigger = bannerAdTrigger
                             )
+                        } else {
+                            Spacer(Modifier.height(0.dp))
                         }
                     }
                 }
             ) { innerPadding ->
                 val layoutDirection = LocalLayoutDirection.current
-
-                // --- ANA İÇERİK ALANI İÇİN DEĞİŞİKLİK ---
                 val contentPadding = if (isLandscape && isPhoneLandscape) {
-                    // Telefon Yatay Modu için Simetrik İçerik Alanı
                     val startPadding = innerPadding.calculateStartPadding(layoutDirection)
                     val endPadding = innerPadding.calculateEndPadding(layoutDirection)
                     val maxHorizontalPadding = remember(startPadding, endPadding) { max(startPadding.value, endPadding.value) }.dp
@@ -129,26 +128,17 @@ fun TabletLayout(
                         top = innerPadding.calculateTopPadding(),
                         start = maxHorizontalPadding,
                         end = maxHorizontalPadding,
-                        bottom = innerPadding.calculateBottomPadding() + 8.dp
+                        bottom = innerPadding.calculateBottomPadding()
                     )
-                } else if (isLandscape) {
-                    // Tablet Yatay Modu (orijinal davranış)
+                } else {
                     PaddingValues(
                         top = innerPadding.calculateTopPadding(),
                         start = innerPadding.calculateStartPadding(layoutDirection),
                         end = innerPadding.calculateEndPadding(layoutDirection),
-                        bottom = innerPadding.calculateBottomPadding() + 8.dp
+                        bottom = innerPadding.calculateBottomPadding()
                     )
                 }
-                else {
-                    // Dikey Mod (orijinal davranış)
-                    PaddingValues(
-                        top = innerPadding.calculateTopPadding(),
-                        start = innerPadding.calculateStartPadding(layoutDirection),
-                        end = innerPadding.calculateEndPadding(layoutDirection),
-                        bottom = 0.dp
-                    )
-                }
+
 
                 BoxWithConstraints(
                     modifier = Modifier

@@ -17,11 +17,9 @@ fun ResponsiveText(
     style: TextStyle = MaterialTheme.typography.bodyMedium
 ) {
     var currentStyle by remember { mutableStateOf(style) }
-
     LaunchedEffect(text, style) {
         currentStyle = style
     }
-
     Text(
         text = text,
         color = color,

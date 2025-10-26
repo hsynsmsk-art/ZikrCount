@@ -8,4 +8,6 @@
   <string name="error_no_email_app">Hakuna programu iliyopatikana ya kutuma barua pepe.</string>
   <string name="error_cannot_send_email">Imeshindwa kutuma barua pepe.</string>
 
+  <string name="accessibility_tour_completed">%1$s,، %2$s. duru imekamilika</string>
+
 </resources>

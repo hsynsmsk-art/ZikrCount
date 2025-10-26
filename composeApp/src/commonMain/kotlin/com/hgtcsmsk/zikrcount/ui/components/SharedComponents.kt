@@ -60,20 +60,17 @@ fun SmallActionButton(
     onClick: () -> Unit = {}
 ) {
     Box(
-        // <-- DEĞİŞİKLİK BURADA BAŞLIYOR -->
         modifier = modifier
             .fillMaxHeight()
             .aspectRatio(1f)
             .clip(CircleShape)
             .background(color = Color.White.copy(alpha = 0.2f))
             .border(1.dp, Color.White.copy(alpha = 0.3f), CircleShape)
-            // Butonun anlamını ve rolünü, tıklanabilir olan bu dış katmana ekliyoruz.
             .semantics {
                 this.contentDescription = contentDescription
                 this.role = Role.Button
             }
             .pressable { onClick() },
-        // <-- DEĞİŞİKLİK BİTİYOR -->
         contentAlignment = Alignment.Center
     ) {
         Box(
@@ -87,12 +84,10 @@ fun SmallActionButton(
                 Image(painter = painterResource(iconResource), contentDescription = null, modifier = Modifier.offset(x = -strokeWidth), colorFilter = ColorFilter.tint(strokeColor))
                 Image(painter = painterResource(iconResource), contentDescription = null, modifier = Modifier.offset(y = strokeWidth), colorFilter = ColorFilter.tint(strokeColor))
                 Image(painter = painterResource(iconResource), contentDescription = null, modifier = Modifier.offset(y = -strokeWidth), colorFilter = ColorFilter.tint(strokeColor))
-                // <-- DEĞİŞİKLİK BURADA: İçerideki resmin açıklamasını null yapıyoruz. -->
                 Image(painter = painterResource(iconResource), contentDescription = null, colorFilter = ColorFilter.tint(Color.White))
             } else {
                 Image(
                     painter = painterResource(iconResource),
-                    // <-- DEĞİŞİKLİK BURADA: İçerideki resmin açıklamasını null yapıyoruz. -->
                     contentDescription = null
                 )
             }

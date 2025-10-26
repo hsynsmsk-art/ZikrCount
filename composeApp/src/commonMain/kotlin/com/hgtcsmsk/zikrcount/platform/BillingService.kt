@@ -2,7 +2,6 @@ package com.hgtcsmsk.zikrcount.platform
 
 import kotlinx.coroutines.flow.StateFlow
 
-
 sealed class RestoreResult {
     data object Success : RestoreResult()
     data object NoPurchasesFound : RestoreResult()
@@ -15,7 +14,6 @@ sealed class PurchaseState {
     data object Pending : PurchaseState()
     data object Loading : PurchaseState()
 }
-
 
 interface BillingService {
     val purchaseState: StateFlow<PurchaseState>

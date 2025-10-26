@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string name="app_name">Contador Dhikr</string> <string name="error_no_share_app">No se encontró ninguna aplicación para gestionar el uso compartido.</string>
+  <string name="app_name">Contador Dhikr</string>
+  <string name="error_no_share_app">No se encontró ninguna aplicación para gestionar el uso compartido.</string>
   <string name="error_no_store_or_browser">No se encontró Google Play Store ni navegador web.</string>
   <string name="error_cannot_open_settings">No se pudieron abrir los ajustes.</string>
   <string name="error_cannot_open_link_app">No se encontró ninguna aplicación para abrir este enlace.</string>
   <string name="error_cannot_open_link">No se pudo abrir el enlace.</string>
   <string name="error_no_email_app">No se encontró ninguna aplicación para enviar correo electrónico.</string>
   <string name="error_cannot_send_email">No se pudo enviar el correo electrónico.</string>
+
+  <string name="accessibility_tour_completed">%1$s,، %2$s. ronda completada</string>
 
 </resources>

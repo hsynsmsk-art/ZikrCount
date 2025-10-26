@@ -14,7 +14,7 @@ import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.unit.LayoutDirection
 
 
-fun Modifier.pressable(onClick: () -> Unit): Modifier = composed {  // Butonlarda hafif küçülme animasyonu
+fun Modifier.pressable(onClick: () -> Unit): Modifier = composed {
     val interactionSource = remember { MutableInteractionSource() }
     val isPressed by interactionSource.collectIsPressedAsState()
     val scale by animateFloatAsState(if (isPressed) 0.9f else 1f, label = "pressable-scale")
@@ -37,3 +37,5 @@ fun Modifier.autoMirror(): Modifier = composed {
         }
     }
 }
+
+expect fun String.format(vararg args: Any?): String

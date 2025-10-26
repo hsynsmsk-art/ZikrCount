@@ -1,5 +1,3 @@
-// DialogButtons.kt (EKRAN BOYUTUNA DUYARLI SON HALİ)
-
 package com.hgtcsmsk.zikrcount.ui.dialog
 
 import androidx.compose.foundation.layout.padding
@@ -57,43 +55,24 @@ fun DialogButtons(
         }
     ) { measurables, constraints ->
 
-        // --- ADAPTİF MANTIK ---
-
-        // 1. ADIM: Mevcut ekranın genişliğini al.
         val screenWidthDp = constraints.maxWidth / density
-
-        // 2. ADIM: Ekran genişliğine göre bir minimum buton genişliği belirle.
-        // Genişlik 500dp'den büyükse (tablet/yatay), daha geniş bir min. boyut kullan.
         val minButtonWidth = if (screenWidthDp > 500) 160.dp else 110.dp
         val minButtonWidthPx = minButtonWidth.roundToPx()
-
-        // 3. ADIM: Butonların ihtiyaç duyduğu en geniş "doğal" genişliği sorgula.
         val maxIntrinsicWidth = if (measurables.isNotEmpty()) {
             measurables.maxOf { it.maxIntrinsicWidth(constraints.maxHeight) }
-        } else {
-            0
-        }
+        } else { 0 }
 
-        // 4. ADIM: Nihai buton genişliğini hesapla:
-        // Doğal genişlik ve o anki ekran için belirlenen minimum genişlikten BÜYÜK olanı seç.
         val finalButtonWidth = max(maxIntrinsicWidth, minButtonWidthPx)
-
-        // 5. ADIM: Tüm butonları, bu nihai genişlikte TEK SEFERDE ölç.
-        val placeables = measurables.map {
-            it.measure(constraints.copy(minWidth = finalButtonWidth))
-        }
-
-        // 6. ADIM: Butonları ve boşlukları ekrana yerleştir.
-        val buttonCount = placeables.size
-        // Toplam buton genişliği, mevcut alandan büyükse taşmayı önle
+        val placeable = measurables.map { it.measure(constraints.copy(minWidth = finalButtonWidth)) }
+        val buttonCount = placeable.size
         val totalWidthOfButtons = (finalButtonWidth * buttonCount).coerceAtMost(constraints.maxWidth)
         val totalSpacing = (constraints.maxWidth - totalWidthOfButtons)
         val gapCount = buttonCount + 1
         val gapSize = if (gapCount > 0) totalSpacing / gapCount else 0
 
-        layout(constraints.maxWidth, placeables.maxOfOrNull { it.height } ?: 0) {
+        layout(constraints.maxWidth, placeable.maxOfOrNull { it.height } ?: 0) {
             var xPosition = gapSize
-            placeables.forEach { placeable ->
+            placeable.forEach { placeable ->
                 placeable.placeRelative(x = xPosition, y = 0)
                 xPosition += finalButtonWidth + gapSize
             }

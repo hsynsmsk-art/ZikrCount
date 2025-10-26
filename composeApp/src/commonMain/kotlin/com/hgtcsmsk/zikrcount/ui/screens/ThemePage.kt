@@ -1,5 +1,3 @@
-// composeApp/src/commonMain/kotlin/com/hgtcsmsk/zikrcount/ui/screens/ThemePage.kt
-
 package com.hgtcsmsk.zikrcount.ui.screens
 
 import androidx.compose.foundation.Image
@@ -68,8 +66,6 @@ private fun getColorThemes(): List<ColorTheme> {
         ColorTheme("cobaltSky",     primary = Color(0xFF94a6d4), secondary = Color(0xFFd0ddfd)),
     )
 }
-
-// HATA DÜZELTMESİ: Gereksiz @Composable etiketi kaldırıldı.
 fun findColorThemeByName(name: String): ColorTheme {
     return getColorThemes().find { it.name == name } ?: getColorThemes().first()
 }
@@ -95,9 +91,6 @@ fun ThemePage(viewModel: AppViewModel, onNavigateBack: () -> Unit) {
     val unlockedItems by viewModel.unlockedItems.collectAsState()
     val selectedColorTheme = findColorThemeByName(selectedThemeName)
     val purchaseState by viewModel.purchaseState.collectAsState()
-
-    // HATA DÜZELTMESİ: `remember` içinden çağrılacak `getBackgroundResources` fonksiyonu
-    // @Composable olmamalı, bu nedenle `remember` bloğu artık hata vermeyecek.
     val allBackgrounds = remember { getBackgroundResources() }
     val allColorThemes = remember { getColorThemes() }
 
@@ -141,7 +134,7 @@ fun ThemePage(viewModel: AppViewModel, onNavigateBack: () -> Unit) {
         Box(modifier = Modifier.fillMaxSize()) {
             Image(
                 painter = painterResource(findBackgroundResource(selectedBackgroundName)),
-                contentDescription = null, // Dekoratif resim, okunmamalı
+                contentDescription = null,
                 modifier = Modifier.fillMaxSize(),
                 contentScale = ContentScale.Crop
             )
@@ -255,7 +248,8 @@ fun ThemePage(viewModel: AppViewModel, onNavigateBack: () -> Unit) {
                                     itemToUnlock = Pair(UNLOCK_TYPE_THEME, themeName)
                                     showAdDialog = true
                                 }
-                            }
+                            },
+                            onNavigateBack = onNavigateBack
                         )
 
                         ThemeTab.Background -> BackgroundsGrid(
@@ -272,7 +266,8 @@ fun ThemePage(viewModel: AppViewModel, onNavigateBack: () -> Unit) {
                                     itemToUnlock = Pair(UNLOCK_TYPE_BACKGROUND, backgroundName)
                                     showAdDialog = true
                                 }
-                            }
+                            },
+                            onNavigateBack = onNavigateBack
                         )
                         null -> {}
                     }
@@ -427,7 +422,8 @@ private fun BackgroundsGrid(
     unlockedItems: Set<String>,
     purchaseState: PurchaseState,
     onSelect: (String) -> Unit,
-    onUnlockRequest: (String) -> Unit
+    onUnlockRequest: (String) -> Unit,
+    onNavigateBack: () -> Unit
 ) {
     LazyVerticalGrid(
         modifier = Modifier.fillMaxSize(),
@@ -470,7 +466,9 @@ private fun BackgroundsGrid(
             Box(
                 modifier = baseModifier
                     .clickable {
-                        if (isUnlocked) {
+                        if (isSelected) {
+                            onNavigateBack()
+                        } else if (isUnlocked) {
                             onSelect(name)
                         } else {
                             onUnlockRequest(name)
@@ -494,7 +492,8 @@ private fun DisplayThemesGrid(
     unlockedItems: Set<String>,
     purchaseState: PurchaseState,
     onSelect: (String) -> Unit,
-    onUnlockRequest: (String) -> Unit
+    onUnlockRequest: (String) -> Unit,
+    onNavigateBack: () -> Unit
 ) {
     LazyVerticalGrid(
         modifier = Modifier.fillMaxSize(),
@@ -530,7 +529,9 @@ private fun DisplayThemesGrid(
             Box(
                 modifier = baseModifier
                     .clickable {
-                        if (isUnlocked) {
+                        if (isSelected) {
+                            onNavigateBack()
+                        } else if (isUnlocked) {
                             onSelect(theme.name)
                         } else {
                             onUnlockRequest(theme.name)
@@ -644,12 +645,10 @@ private fun LayeredThemePreview(
     }
 }
 
-// HATA DÜZELTMESİ: Gereksiz @Composable etiketi kaldırıldı.
 fun findBackgroundResource(name: String): DrawableResource {
     return getBackgroundResources().find { it.first == name }?.second ?: Res.drawable.background_2
 }
 
-// HATA DÜZELTMESİ: Gereksiz @Composable etiketi kaldırıldı.
 private fun getBackgroundResources(): List<Pair<String, DrawableResource>> {
     return listOf(
         "background_1" to Res.drawable.background_1,

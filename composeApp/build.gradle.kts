@@ -1,10 +1,8 @@
-import org.jetbrains.compose.ExperimentalComposeLibrary
-import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
+    id("com.android.application")
     alias(libs.plugins.kotlinMultiplatform)
-    alias(libs.plugins.androidApplication)
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
     alias(libs.plugins.kotlinSerialization)
@@ -14,19 +12,12 @@ plugins {
 
 kotlin {
     androidTarget {
-        @OptIn(ExperimentalKotlinGradlePluginApi::class)
-        compilerOptions {
-            jvmTarget.set(JvmTarget.JVM_11)
-        }
-    }
-    listOf(
-        iosX64(),
-        iosArm64(),
-        iosSimulatorArm64()
-    ).forEach { iosTarget ->
-        iosTarget.binaries.framework {
-            baseName = "ComposeApp"
-            isStatic = true
+        compilations.configureEach {
+            compileTaskProvider.configure {
+                compilerOptions {
+                    jvmTarget.set(JvmTarget.JVM_17)
+                }
+            }
         }
     }
 
@@ -36,60 +27,39 @@ kotlin {
                 implementation(compose.runtime)
                 implementation(compose.foundation)
                 implementation(compose.material3)
-                @OptIn(ExperimentalComposeLibrary::class)
-                implementation(libs.compose.material3.windowsizeclass)
-                implementation(compose.ui)
                 implementation(compose.components.resources)
-                implementation(compose.components.uiToolingPreview)
-                implementation(libs.russhwolf.multiplatformSettings.noArg)
-                implementation(libs.kotlinx.serialization.json)
+                implementation(compose.materialIconsExtended)
+                implementation(libs.compose.material3.windowsizeclass)
                 implementation(libs.kotlinx.datetime)
+                implementation(libs.kotlinx.serialization.json)
                 implementation(libs.ktor.client.core)
                 implementation(libs.ktor.client.content.negotiation)
                 implementation(libs.ktor.serialization.kotlinx.json)
-            }
-        }
-
-        val androidMain by getting {
-            dependencies {
-                implementation(compose.preview)
-                implementation(libs.androidx.activity.compose)
-                implementation(libs.androidx.core.splashscreen)
-                implementation(libs.play.services.ads)
-                implementation(libs.google.android.material)
-                implementation(libs.androidx.lifecycle.viewmodel.compose)
+                implementation(libs.russhwolf.multiplatformSettings.noArg)
                 implementation(libs.androidx.lifecycle.viewmodel)
                 implementation(libs.androidx.lifecycle.runtimeCompose)
-                implementation(libs.androidx.lifecycle.viewmodel.ktx)
-                implementation(libs.play.review)
-                implementation(libs.play.billing)
-                implementation(libs.ktor.client.okhttp)
-                implementation(project.dependencies.platform(libs.firebase.bom))
-                implementation(libs.firebase.analytics)
-                implementation(libs.firebase.crashlytics)
             }
         }
-
-        val iosMain by creating {
-            dependsOn(commonMain)
-            dependencies {
-                implementation(libs.ktor.client.darwin)
-            }
-        }
-        val iosX64Main by getting {
-            dependsOn(iosMain)
-        }
-        val iosArm64Main by getting {
-            dependsOn(iosMain)
-        }
-        val iosSimulatorArm64Main by getting {
-            dependsOn(iosMain)
-        }
-
         val commonTest by getting {
             dependencies {
                 implementation(libs.kotlin.test)
             }
+        }
+        // androidMain örtük olarak commonMain'e bağlıdır
+        val androidMain by getting {
+            dependencies {
+                implementation(compose.uiTooling)
+                implementation(compose.preview)
+            }
+        }
+        val androidUnitTest by getting
+
+        // DEĞİŞİKLİK: gmsMain/hmsMain tanımlandı VE commonMain'e bağlandı.
+        val gmsMain by creating {
+            dependsOn(commonMain) // Expect'ler için commonMain'e bağlı
+        }
+        val hmsMain by creating {
+            dependsOn(commonMain) // Expect'ler için commonMain'e bağlı
         }
     }
 }
@@ -98,33 +68,92 @@ android {
     namespace = "com.hgtcsmsk.zikrcount"
     compileSdk = libs.versions.android.compileSdk.get().toInt()
 
+    flavorDimensions += "distribution"
+    productFlavors {
+        create("gms") {
+            dimension = "distribution"
+            manifestPlaceholders["appClass"] = ".GmsZikrApplication"
+        }
+        create("hms") {
+            dimension = "distribution"
+            manifestPlaceholders["appClass"] = ".HmsZikrApplication"
+        }
+    }
+
+    // Android plugin'ine flavor'ların Kotlin kaynak klasörleri bildiriliyor.
+    // BU BLOK ÖNEMLİ VE KALMALI.
+    sourceSets {
+        named("main") {
+            manifest.srcFile("src/androidMain/AndroidManifest.xml")
+            res.srcDirs("src/androidMain/res")
+            kotlin.srcDir("src/androidMain/kotlin")
+        }
+        named("gms") {
+            kotlin.srcDir("src/gmsMain/kotlin") // gms flavor'ının Kotlin kodu burada
+        }
+        named("hms") {
+            kotlin.srcDir("src/hmsMain/kotlin") // hms flavor'ının Kotlin kodu burada
+        }
+    }
+
+
     defaultConfig {
         applicationId = "com.hgtcsmsk.zikrcount"
         minSdk = libs.versions.android.minSdk.get().toInt()
         targetSdk = libs.versions.android.targetSdk.get().toInt()
-        versionCode = 21
-        versionName = "2.21"
+        versionCode = 87
+        versionName = "8.7"
     }
-    packaging {
-        resources {
-            excludes += "/META-INF/{AL2.0,LGPL2.1}"
-        }
-    }
+
     buildTypes {
         getByName("release") {
-            isMinifyEnabled = true
+            isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
         }
+        getByName("debug") {
+            isDebuggable = true
+        }
     }
+
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
+    }
+
+    buildFeatures {
+        compose = true
+    }
+
+    packaging {
+        resources.excludes += "/META-INF/{AL2.0,LGPL2.1}"
     }
 }
 
 dependencies {
-    debugImplementation(compose.uiTooling)
+    implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.appcompat)
+    implementation(libs.google.android.material)
+    implementation(libs.androidx.activity.compose)
+    implementation(libs.androidx.constraintlayout)
+    implementation(libs.androidx.core.splashscreen)
+    implementation(libs.androidx.lifecycle.viewmodel.ktx)
+    implementation(libs.androidx.lifecycle.runtimeCompose)
+    implementation(libs.androidx.lifecycle.viewmodel.compose)
+    implementation(libs.play.review)
+
+    implementation(libs.ktor.client.okhttp)
+
+    "gmsImplementation"(libs.play.services.ads)
+    "gmsImplementation"(libs.play.billing)
+    "gmsImplementation"(platform(libs.firebase.bom))
+    "gmsImplementation"(libs.firebase.analytics)
+    "gmsImplementation"(libs.firebase.crashlytics)
+
+    "hmsImplementation"(libs.huawei.ads.lite)
+    "hmsImplementation"(libs.huawei.iap)
+
+    testImplementation(libs.junit)
 }

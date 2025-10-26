@@ -34,13 +34,16 @@ fun UpdateDialog(
     onConfirm: () -> Unit,
     onDismiss: () -> Unit
 ) {
-    // Eğer güncelleme durumu NoUpdate ise diyaloğu hiç gösterme.
     if (updateState is UpdateState.NoUpdate) return
 
-    val isMandatory = updateState is UpdateState.Mandatory
-    val updateInfo = if (isMandatory) (updateState as UpdateState.Mandatory).info else (updateState as UpdateState.Optional).info
+    val updateInfo = when (updateState) {
+        is UpdateState.Mandatory -> updateState.info
+        is UpdateState.Optional -> updateState.info
+        is UpdateState.NoUpdate -> return
+    }
 
-    // Cihazın diline göre güncelleme notlarını al, bulamazsa İngilizce'yi kullan.
+    val isMandatory = updateState is UpdateState.Mandatory
+
     val notes = updateInfo.updateNotes[getAppLanguageCode()] ?: updateInfo.updateNotes["en"] ?: emptyList()
     val notesText = notes.joinToString(separator = "\n") { "• $it" }
 
@@ -59,7 +62,6 @@ fun UpdateDialog(
 
     Dialog(
         onDismissRequest = {
-            // Güncelleme zorunlu ise, diyalog dışına basarak kapatılamaz.
             if (!isMandatory) {
                 onDismiss()
             }
@@ -76,7 +78,6 @@ fun UpdateDialog(
                 .background(ZikrTheme.colors.surface),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            // Başlık Kısmı
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -92,8 +93,6 @@ fun UpdateDialog(
                     textAlign = TextAlign.Center
                 )
             }
-
-            // İçerik Kısmı
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -112,13 +111,10 @@ fun UpdateDialog(
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(text = notesText, style = MaterialTheme.typography.bodySmall, color = Color.DarkGray)
             }
-
-            // Butonlar Kısmı (YENİ VE MERKEZİ YAPI)
             DialogButtons(
                 onConfirm = onConfirm,
                 onDismiss = onDismiss,
                 confirmButtonText = updateButtonText,
-                // Zorunlu güncelleme ise "İptal" ("Sonra") butonunu gizle
                 showDismissButton = !isMandatory
             )
         }

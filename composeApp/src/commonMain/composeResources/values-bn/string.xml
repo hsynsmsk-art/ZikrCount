@@ -1,65 +1,65 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <resources>
 
-    <string name="action_save">সংরক্ষণ করুন</string>
-    <string name="action_delete">মুছে ফেলুন</string>
-    <string name="action_cancel"> বাতিল করুন</string>
+    <string name="action_save">সেভ করুন</string>
+    <string name="action_delete">মুছুন</string>
+    <string name="action_cancel">বাতিল করুন</string>
     <string name="action_back">ফিরে যান</string>
     <string name="action_close">বন্ধ করুন</string>
     <string name="action_edit">সম্পাদনা করুন</string>
     <string name="action_reset">রিসেট করুন</string>
-    <string name="action_confirm">অনুমতি দিন</string>
-    <string name="action_watch_ad">বিজ্ঞাপন দেখুন</string>
+    <string name="action_confirm">নিশ্চিত করুন</string>
+    <string name="action_watch_ad">দেখুন</string>
     <string name="action_get_reward">পুরস্কার নিন</string>
     <string name="action_rate_app">অ্যাপ রেট করুন</string>
     <string name="action_no_thanks">না, ধন্যবাদ</string>
-    <string name="action_yes_enable">হ্যাঁ, সক্ষম করুন</string>
+    <string name="action_yes_enable">হ্যাঁ, সক্রিয় করুন</string>
     <string name="action_update">আপডেট করুন</string>
     <string name="action_later">পরে</string>
 
-    <string name="common_success">সফল হয়েছে</string>
+    <string name="common_success">সফল</string>
     <string name="common_ok">ঠিক আছে</string>
     <string name="common_preview">প্রিভিউ</string>
     <string name="common_google">Google</string>
     <string name="common_unknown_date">অজানা তারিখ</string>
-    <string name="common_loading">লোড হচ্ছে...</string>
+    <string name="common_loading">লোড হচ্ছে…</string>
 
-    <string name="home_display_round">চক্কর: %1$d</string>
+    <string name="home_display_round">রাউন্ড: %1$d</string>
     <string name="home_display_target">লক্ষ্য: %1$d</string>
-    <string name="default_counter_name">অসীম কাউন্টার</string>
+    <string name="default_counter_name">অবিরাম কাউন্টার</string>
     <string name="prayer_tasbih_counter_name">নামাজের তাসবিহ</string>
     <string name="prayer_tasbih_part1">সুবহানাল্লাহ</string>
     <string name="prayer_tasbih_part2">আলহামদুলিল্লাহ</string>
     <string name="prayer_tasbih_part3">আল্লাহু আকবার</string>
     <string name="home_update_available">আপডেট উপলব্ধ</string>
 
-    <string name="counters_page_title">আমার কাউন্টারসমূহ</string>
+    <string name="counters_page_title">আমার কাউন্টার</string>
     <string name="counters_page_add_button">কাউন্টার যোগ করুন</string>
     <string name="counter_card_count">গণনা: %1$d</string>
-    <string name="counter_card_creation_date">তৈরির তারিখ: %1$s</string>
-    <string name="counter_card_pin">শীর্ষে পিন করুন</string>
+    <string name="counter_card_creation_date">তৈরি করা হয়েছে: %1$s</string>
+    <string name="counter_card_pin">উপরে পিন করুন</string>
     <string name="counter_card_unpin">পিন সরান</string>
-    <string name="counter_card_add_count">সংখ্যা যোগ করুন</string>
+    <string name="counter_card_add_count">গণনা যোগ করুন</string>
     <string name="counter_card_options">কাউন্টার বিকল্প</string>
     <string name="dialog_add_counter_title">কাউন্টার যোগ করুন</string>
     <string name="dialog_edit_counter_title">কাউন্টার সম্পাদনা করুন</string>
     <string name="dialog_counter_name_label">কাউন্টারের নাম</string>
     <string name="dialog_counter_target_label">লক্ষ্য</string>
-    <string name="dialog_counter_add_count_label">যোগ করার সংখ্যা</string>
-    <string name="dialog_counter_decrease_count">বিয়োগ করার সংখ্যা</string>
-    <string name="dialog_delete_counter_title">কাউন্টার মুছে ফেলুন</string>
-    <string name="dialog_delete_counter_message">আপনি কি "%1$s" কাউন্টারটি মুছে ফেলতে চান?</string>
+    <string name="dialog_counter_add_count_label">যোগ করার মান</string>
+    <string name="dialog_counter_decrease_count">কমানোর মান</string>
+    <string name="dialog_delete_counter_title">কাউন্টার মুছুন</string>
+    <string name="dialog_delete_counter_message">আপনি কি নিশ্চিত যে আপনি %1$s কাউন্টারটি মুছতে চান?</string>
     <string name="dialog_reset_counter_title">কাউন্টার রিসেট করুন</string>
-    <string name="dialog_reset_counter_message">আপনি কি "%1$s" কাউন্টারটি রিসেট করতে চান?</string>
+    <string name="dialog_reset_counter_message">আপনি কি নিশ্চিত যে আপনি %1$s কাউন্টারটি রিসেট করতে চান?</string>
 
     <string name="theme_page_title">থিম</string>
     <string name="theme_page_tab_background">পটভূমি</string>
     <string name="theme_page_tab_display">থিম</string>
     <string name="theme_page_default_theme_name">ডিফল্ট</string>
-    <string name="theme_page_unlock_success">সফলভাবে আনলক ও নির্বাচন করা হয়েছে!</string>
-    <string name="theme_page_loading_ad">বিজ্ঞাপন লোড হচ্ছে, অনুগ্রহ করে অপেক্ষা করুন</string>
-    <string name="theme_preview_background_desc">পটভূমি %1$d%2$s</string>
-    <string name="theme_preview_theme_desc">রঙিন থিম %1$d%2$s</string>
+    <string name="theme_page_unlock_success">সফলভাবে আনলক করা হয়েছে</string>
+    <string name="theme_page_loading_ad">বিজ্ঞাপন লোড হচ্ছে…</string>
+    <string name="theme_preview_background_desc">পটভূমি %1$d %2$s</string>
+    <string name="theme_preview_theme_desc">রঙিন থিম %1$d %2$s</string>
     <string name="theme_preview_state_selected">, নির্বাচিত</string>
     <string name="theme_preview_state_locked">, লক করা</string>
 
@@ -68,26 +68,26 @@
     <string name="settings_ads_removed_title">বিজ্ঞাপন সরানো হয়েছে</string>
     <string name="settings_ads_removed_subtitle">আপনি বিজ্ঞাপন-মুক্ত সংস্করণ ব্যবহার করছেন।</string>
     <string name="settings_remove_ads_title">বিজ্ঞাপন সরান</string>
-    <string name="settings_category_general">সাধারণ সেটিংস</string>
+    <string name="settings_category_general">সাধারণ</string>
     <string name="settings_sound">শব্দ</string>
     <string name="settings_vibration">কম্পন</string>
     <string name="settings_night_mode">নাইট মোড</string>
-    <string name="settings_fullscreen_touch">ফুল স্ক্রিন টাচ</string>
+    <string name="settings_fullscreen_touch">ফুলস্ক্রিন টাচ</string>
     <string name="settings_category_accessibility">অ্যাক্সেসিবিলিটি</string>
     <string name="settings_counter_reading_title">কাউন্টার রিডিং</string>
-    <string name="settings_counter_reading_subtitle">সক্ষম করা হলে, কাউন্টারের মান জোরে পড়া হবে।</string>
+    <string name="settings_counter_reading_subtitle">সক্ষম করা হলে, কাউন্টারের মান জোরে পড়া হয়।</string>
     <string name="settings_tts_engine_title">পছন্দের ইঞ্জিন</string>
     <string name="settings_tts_language_title">পছন্দের ভাষা</string>
-    <string name="settings_tts_language_loading">লোড হচ্ছে...</string>
+    <string name="settings_tts_language_loading">লোড হচ্ছে…</string>
     <string name="settings_tts_language_select">ভাষা নির্বাচন করুন</string>
     <string name="settings_tts_speech_rate_title">কথার গতি</string>
     <string name="settings_tts_speech_rate_slow">ধীর</string>
     <string name="settings_tts_speech_rate_fast">দ্রুত</string>
-    <string name="settings_tts_huawei_warning">এই TTS ইঞ্জিন কথার গতি সমন্বয় সমর্থন করে না।</string>
+    <string name="settings_tts_huawei_warning">এই TTS ইঞ্জিন কথার গতি সমর্থন করে না।</string>
     <string name="settings_category_app">অ্যাপ্লিকেশন</string>
-    <string name="settings_backup">স্বয়ংক্রিয় ব্যাকআপ</string>
+    <string name="settings_backup">অটো ব্যাকআপ</string>
     <string name="settings_share">শেয়ার করুন</string>
-    <string name="settings_rate">আমাদের রেট দিন</string>
+    <string name="settings_rate">রেট করুন</string>
     <string name="settings_privacy_policy">গোপনীয়তা নীতি</string>
     <string name="settings_contact_us">যোগাযোগ করুন</string>
     <string name="settings_update_banner">নতুন সংস্করণ উপলব্ধ</string>
@@ -95,52 +95,52 @@
     <string name="tts_test_sound">33</string>
 
     <string name="premium_page_title">বিজ্ঞাপন সরান</string>
-    <string name="premium_title">বিজ্ঞাপন-মুক্ত হোন</string>
-    <string name="premium_description">এককালীন অর্থপ্রদানের মাধ্যমে, সমস্ত বিজ্ঞাপন সরান এবং সমস্ত বৈশিষ্ট্য আনলক করুন।</string>
-    <string name="premium_purchase_button_loading">লোড হচ্ছে...</string>
-    <string name="premium_purchase_button_price">%1$s দিয়ে আপগ্রেড করুন</string>
+    <string name="premium_title">বিজ্ঞাপন-মুক্ত অভিজ্ঞতা</string>
+    <string name="premium_description">এককালীন অর্থপ্রদানের মাধ্যমে বিজ্ঞাপন সরান এবং সমস্ত বৈশিষ্ট্য আনলক করুন।</string>
+    <string name="premium_purchase_button_loading">লোড হচ্ছে…</string>
+    <string name="premium_purchase_button_price">%1$s দিয়ে আপগ্রেড করুন</string>
     <string name="premium_purchase_button_default">কিনুন</string>
-    <string name="premium_purchase_pending">আপনার অর্থপ্রদান নিশ্চিতকরণের অপেক্ষায় আছে...</string>
-    <string name="premium_restore_button">কেনা আইটেম পুনরুদ্ধার করুন</string>
-    <string name="premium_restore_loading">পুনরুদ্ধার করা হচ্ছে...</string>
+    <string name="premium_purchase_pending">অর্থপ্রদান বাকি…</string>
+    <string name="premium_restore_button">কেনা আইটেমগুলি পুনরুদ্ধার করুন</string>
+    <string name="premium_restore_loading">পুনরুদ্ধার করা হচ্ছে…</string>
     <string name="premium_already_purchased_title">বিজ্ঞাপন সরানো হয়েছে</string>
-    <string name="premium_already_purchased_description">আপনি বিজ্ঞাপন-মুক্ত সংস্করণ এবং সমস্ত বৈশিষ্ট্য উপভোগ করছেন। আপনার সমর্থনের জন্য ধন্যবাদ!</string>
+    <string name="premium_already_purchased_description">আপনি বিজ্ঞাপন-মুক্ত সংস্করণ ব্যবহার করছেন। ধন্যবাদ!</string>
 
-    <string name="dialog_ad_unlock_item_message">এই কন্টেন্টটি আনলক করতে, আপনাকে প্রথমে একটি ছোট বিজ্ঞাপন দেখতে হবে।</string>
-    <string name="dialog_ad_add_counter_message">একটি নতুন কাউন্টার যোগ করতে, আপনাকে প্রথমে একটি ছোট বিজ্ঞাপন দেখতে হবে।</string>
-    <string name="dialog_ad_loading_video">ভিডিও বিজ্ঞাপন লোড হচ্ছে, অনুগ্রহ করে অপেক্ষা করুন</string>
+    <string name="dialog_ad_unlock_item_message">এই কন্টেন্টটি আনলক করতে একটি ছোট বিজ্ঞাপন দেখুন।</string>
+    <string name="dialog_ad_add_counter_message">নতুন কাউন্টার যোগ করতে একটি ছোট বিজ্ঞাপন দেখুন।</string>
+    <string name="dialog_ad_loading_video">বিজ্ঞাপন লোড হচ্ছে…</string>
     <string name="dialog_gift_title">একটি উপহার</string>
-    <string name="dialog_gift_message">বিজ্ঞাপন সাময়িকভাবে অনুপলব্ধ। আমরা আপনার জন্য আপনার পুরস্কার সক্রিয় করেছি।</string>
-    <string name="dialog_backup_title">স্বয়ংক্রিয় ব্যাকআপ</string>
-    <string name="dialog_backup_message">আপনি অনুমতি দিলে, আপনার কাউন্টার এবং সেটিংস স্বয়ংক্রিয়ভাবে আপনার প্রধান %1$s অ্যাকাউন্টে ব্যাক আপ নেওয়া হবে। এটি আপনাকে ফোন পরিবর্তন করার সময় সহজেই আপনার ডেটা পুনরুদ্ধার করতে দেয়।</string>
+    <string name="dialog_gift_message">বিজ্ঞাপন সাময়িকভাবে অনুপলব্ধ, আপনার পুরস্কার সক্রিয় করা হয়েছে।</string>
+    <string name="dialog_backup_title">অটো ব্যাকআপ</string>
+    <string name="dialog_backup_message">আপনি অনুমতি দিলে, আপনার কাউন্টার এবং সেটিংস স্বয়ংক্রিয়ভাবে আপনার অ্যাকাউন্টে ব্যাক আপ হবে।</string>
     <string name="dialog_rate_title">আমাদের সমর্থন করুন</string>
-    <string name="dialog_rate_message">আপনার মতামত আমাদের কাছে খুবই মূল্যবান। আপনি কি আমাদের অ্যাপটিকে রেট দিতে এবং আমাদের সমর্থন করতে কয়েক সেকেন্ড সময় ব্যয় করবেন?</string>
+    <string name="dialog_rate_message">আমাদের অ্যাপটি রেট করতে এক মুহূর্ত সময় দিন। ধন্যবাদ!</string>
     <string name="dialog_error_connection_title">সংযোগ ত্রুটি</string>
-    <string name="dialog_error_connection_message">বিজ্ঞাপন লোড করা যায়নি। অনুগ্রহ করে আপনার ইন্টারনেট সংযোগ পরীক্ষা করুন এবং আবার চেষ্টা করুন।</string>
-    <string name="dialog_error_ad_load_title">বিজ্ঞাপন লোড হতে ব্যর্থ হয়েছে</string>
-    <string name="dialog_error_ad_load_message">এখন দেখানোর জন্য কোনও বিজ্ঞাপন উপলব্ধ নেই। অনুগ্রহ করে পরে আবার চেষ্টা করুন।</string>
+    <string name="dialog_error_connection_message">বিজ্ঞাপন লোড করা যায়নি। অনুগ্রহ করে আপনার ইন্টারনেট সংযোগ পরীক্ষা করুন।</string>
+    <string name="dialog_error_ad_load_title">বিজ্ঞাপন লোড হয়নি</string>
+    <string name="dialog_error_ad_load_message">এই মুহূর্তে কোনো বিজ্ঞাপন উপলব্ধ নেই। অনুগ্রহ করে পরে আবার চেষ্টা করুন।</string>
     <string name="dialog_talkback_title">অ্যাক্সেসিবিলিটি সহায়তা</string>
-    <string name="dialog_talkback_message">মনে হচ্ছে আপনি TalkBack ব্যবহার করছেন। আপনি কি চান যে প্রতিটি গণনার সময় কাউন্টারটি জোরে পড়া হোক?</string>
-    <string name="dialog_error_tts_title">অনুপলব্ধ</string>
-    <string name="dialog_error_tts_message">কাউন্টার রিডিং বৈশিষ্ট্যটি অনুপলব্ধ কারণ আপনার ফোনে কোনও TTS (টেক্সট-টু-স্পিচ) ইঞ্জিন পাওয়া যায়নি।</string>
+    <string name="dialog_talkback_message">আপনি TalkBack ব্যবহার করছেন। আপনি কি চান প্রতিটি গণনার সাথে কাউন্টারটি জোরে পড়া হোক?</string>
+    <string name="dialog_error_tts_title">উপলব্ধ নয়</string>
+    <string name="dialog_error_tts_message">আপনার ডিভাইসে TTS ইঞ্জিন না থাকায় ভয়েস রিডিং উপলব্ধ নয়।</string>
 
     <string name="dialog_update_mandatory_title">আপডেট প্রয়োজন</string>
     <string name="dialog_update_optional_title">নতুন সংস্করণ উপলব্ধ</string>
-    <string name="dialog_update_mandatory_message">অ্যাপটি ব্যবহার চালিয়ে যেতে, অনুগ্রহ করে সর্বশেষ সংস্করণে আপডেট করুন।</string>
-    <string name="dialog_update_optional_message">অ্যাপটির একটি নতুন সংস্করণ আরও ভাল অভিজ্ঞতা প্রদান করে। আপনি কি আপডেট করতে চান?</string>
+    <string name="dialog_update_mandatory_message">অ্যাপটি ব্যবহার চালিয়ে যেতে অনুগ্রহ করে আপডেট করুন।</string>
+    <string name="dialog_update_optional_message">একটি নতুন সংস্করণ প্রস্তুত। আপনি কি আপডেট করতে চান?</string>
     <string name="dialog_update_whats_new">নতুন কী আছে:</string>
 
-    <string name="snackbar_counter_reset">কাউন্টার সফলভাবে রিসেট করা হয়েছে!</string>
-    <string name="snackbar_counter_deleted">কাউন্টার সফলভাবে মুছে ফেলা হয়েছে!</string>
-    <string name="snackbar_counter_saved">কাউন্টার সফলভাবে সংরক্ষণ করা হয়েছে!</string>
-    <string name="snackbar_item_unlocked">সফলভাবে আনলক করা হয়েছে!</string>
-    <string name="snackbar_restore_no_purchase">পুনরুদ্ধার করার জন্য কোনও সক্রিয় কেনা আইটেম পাওয়া যায়নি।</string>
-    <string name="snackbar_restore_error">একটি ত্রুটি ঘটেছে। অনুগ্রহ করে আপনার ইন্টারনেট সংযোগ পরীক্ষা করুন এবং আবার চেষ্টা করুন।</string>
+    <string name="snackbar_counter_reset">কাউন্টার সফলভাবে রিসেট হয়েছে</string>
+    <string name="snackbar_counter_deleted">কাউন্টার সফলভাবে মোছা হয়েছে</string>
+    <string name="snackbar_counter_saved">কাউন্টার সেভ করা হয়েছে</string>
+    <string name="snackbar_item_unlocked">আনলক করা হয়েছে</string>
+    <string name="snackbar_restore_no_purchase">কোনো সক্রিয় কেনা আইটেম পাওয়া যায়নি।</string>
+    <string name="snackbar_restore_error">একটি ত্রুটি ঘটেছে। অনুগ্রহ করে আপনার সংযোগ পরীক্ষা করুন।</string>
 
-    <string name="content_desc_main_display">কাউন্টার প্রদর্শন</string>
-    <string name="content_desc_app_background">অ্যাপের পটভূমি</string>
+    <string name="content_desc_main_display">কাউন্টার ডিসপ্লে</string>
+    <string name="content_desc_app_background">পটভূমি</string>
     <string name="content_desc_increment_button">কাউন্টার বাড়ান</string>
-    <string name="content_desc_decrement_button">কমান</string>
+    <string name="content_desc_decrement_button">কাউন্টার কমান</string>
     <string name="content_desc_reset_button">কাউন্টার রিসেট করুন</string>
     <string name="content_desc_settings_button">সেটিংস</string>
     <string name="content_desc_counters_list_button">কাউন্টার তালিকা</string>
@@ -148,25 +148,24 @@
     <string name="content_desc_settings_menu_button">সেটিংস মেনু খুলুন</string>
     <string name="content_desc_toggle_panels_button">প্যানেল দেখান/লুকান</string>
     <string name="content_desc_locked_item">লক করা</string>
-    <string name="content_desc_theme_page_background">পাতার পটভূমি</string>
-    <string name="content_desc_theme_preview_background">থিমের পটভূমি রঙ</string>
-    <string name="content_desc_theme_preview_overlay">থিম ইউআই স্তর</string>
+    <string name="content_desc_theme_page_background">পৃষ্ঠার পটভূমি</string>
+    <string name="content_desc_theme_preview_background">থিম পটভূমি</string>
+    <string name="content_desc_theme_preview_overlay">থিম ওভারলে</string>
     <string name="content_desc_counter_actions">কাউন্টার ক্রিয়া</string>
     <string name="content_desc_counter_actions_expanded">প্রসারিত</string>
     <string name="content_desc_counter_actions_collapsed">সংকুচিত</string>
 
-    <string name="accessibility_value">মান </string>
-    <string name="accessibility_target">লক্ষ্য </string>
-    <string name="accessibility_divider"> এর </string>
-    <string name="accessibility_round">চক্কর </string>
-    <string name="accessibility_tour_completed">%1$s, চক্কর %2$s সম্পন্ন হয়েছে</string>
-    <string name="accessibility_update_available">, আপডেট উপলব্ধ</string>
+    <string name="accessibility_value">মান</string>
+    <string name="accessibility_target">লক্ষ্য</string>
+    <string name="accessibility_divider">/</string>
+    <string name="accessibility_round">রাউন্ড</string>
+    <string name="accessibility_update_available">আপডেট উপলব্ধ</string>
 
-    <string name="contact_email_subject">জিকির কাউন্টার মতামত</string>
+    <string name="contact_email_subject">যিকির কাউন্টার প্রতিক্রিয়া</string>
     <string name="contact_email_address" translatable="false">appfabrictr@gmail.com</string>
     <string name="privacy_policy_url" translatable="false">https://zikirmatik-sayac-ec148.web.app/privacy.html</string>
 
     <string name="share_title">অ্যাপ শেয়ার করুন</string>
-    <string name="share_text">এই দুর্দান্ত জিকির কাউন্টার অ্যাপটি আপনার চেষ্টা করা উচিত! https://play.google.com/store/apps/details?id=%1$s</string>
+    <string name="share_text">আপনার দৈনিক যিকিরের হিসাব রাখতে এই অ্যাপটি ব্যবহার করে দেখুন: https://play.google.com/store/apps/details?id=%1$s</string>
 
 </resources>
