@@ -54,12 +54,36 @@ kotlin {
         }
         val androidUnitTest by getting
 
-        // DEĞİŞİKLİK: gmsMain/hmsMain tanımlandı VE commonMain'e bağlandı.
+        // DEĞİŞİKLİK: gmsMain/hmsMain tanımlandı VE androidMain'e bağlandı.
         val gmsMain by creating {
-            dependsOn(commonMain) // Expect'ler için commonMain'e bağlı
+            dependsOn(androidMain) // Expect'ler için androidMain'e bağlı
         }
         val hmsMain by creating {
-            dependsOn(commonMain) // Expect'ler için commonMain'e bağlı
+            dependsOn(androidMain) // Expect'ler için androidMain'e bağlı
+        }
+
+        // Android flavor kaynak setlerini açıkça tanımlayarak gradle evaluation sırasında
+        // "androidGmsDebug" vb. kaynak setlerinin eksik olması sorununu çözüyoruz.
+        val androidGms by creating {
+            dependsOn(androidMain)
+            dependsOn(gmsMain)
+        }
+        val androidHms by creating {
+            dependsOn(androidMain)
+            dependsOn(hmsMain)
+        }
+
+        val androidGmsDebug by creating {
+            dependsOn(androidGms)
+        }
+        val androidGmsRelease by creating {
+            dependsOn(androidGms)
+        }
+        val androidHmsDebug by creating {
+            dependsOn(androidHms)
+        }
+        val androidHmsRelease by creating {
+            dependsOn(androidHms)
         }
     }
 }
